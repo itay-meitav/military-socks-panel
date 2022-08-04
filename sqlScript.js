@@ -161,6 +161,10 @@ async function addLocationsToDb() {
 		"Surgut",
 		"Belgorod",
 		"Vladimir",
+		"Arzamas",
+		"Verkhoturye",
+		"Belozersk",
+		"Astrakhan",
 	];
 
 	await pool.query(
