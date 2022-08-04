@@ -1,2 +1,1 @@
-# pokedex-Itay-Nitzan
-https://pokedex-itay-nitzan.herokuapp.com/
+# russian_socks-Itay-Itamar

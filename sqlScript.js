@@ -82,7 +82,7 @@ async function addSocksToDb() {
   );
 
   let location_ids = (await pool.query('SELECT ARRAY_AGG(id) as ids from locations').then(res => res.rows[0].ids))
-  let officers_ids = (await pool.query('SELECT ARRAY_AGG(id) as ids from locations').then(res => res.rows[0].ids))
+  let officers_ids = (await pool.query('SELECT ARRAY_AGG(id) as ids from officers').then(res => res.rows[0].ids))
 
 }
 
