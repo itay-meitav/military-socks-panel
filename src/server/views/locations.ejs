@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Socks Panel</title>
+    <script src="/app.js" defer></script>
+    <%- include('./partials/head') %>
+</head>
+
+<body>
+    <%- include('./partials/nav'); %>
+
+        <div class="container-fluid">
+            <div class="row">
+                <%- include('./partials/left-nav')%>
+
+                    <div class="col-md-9 pad-top-10">
+                        <!-- <div class="alert alert-info">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Maxime repudiandae aliquid perspiciatis unde officiis ab!
+                            Saepe, ipsum eum aliquam inventore temporibus alias quam,
+                            blanditiis ea consectetur! Laudantium nobis, dignissimos
+                            sunt?
+                        </p>
+                    </div> -->
+
+                        <ul class="breadcrumb">
+                            <li>
+                                <a href="#"><span class="glyphicon glyphicon-home"></span> Home</a>
+                            </li>
+                            <li>Dashboard</li>
+                        </ul>
+
+                        <!--Popular-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Socks</div>
+                            <div class="panel-content">
+                                <table id="dtable" class="table">
+                                    <tr>
+                                        <td>
+                                            <span class="label label-info">
+                                                id
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                base name
+                                            </span>
+                                        </td>
+                                        <td>
+                                            nearest city
+                                        </td>
+                                        <td>
+                                            <span>
+                                                latitude
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                longitude
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <% locations.forEach(location=> { %>
+
+                                        <tr>
+                                            <td>
+                                                <span class="label label-info">
+                                                    <%= location.id%>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <%= location.base_name %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <%= location.nearest_city %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <%= location.lat %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <%= location.lon %>
+                                            </td>
+                                        </tr>
+
+                                        <% })%>
+                                            <!-- <tr>
+                                        <td>
+                                            <span class="label label-info">12</span>
+                                            <a href="#">Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit.</a>
+                                        </td>
+                                        <td>
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                            01.13.16
+                                        </td>
+                                    </tr> -->
+
+                                            <tr style="border-top: none;">
+                                                <td colspan="2" style="border-top: none;">
+                                                    <ul class="pagination">
+                                                        <% Array(pages).fill(1).forEach((_,i)=>{ %>
+                                                            <% if (i+1==curr_page){ %>
+                                                                <li class="active"><a href="">
+                                                                        <%= i+1%>
+                                                                    </a></li>
+
+                                                                <% } else{ %>
+                                                                    <li><a href="/socks?page=<%= i+1%>">
+                                                                            <%= i+1%>
+                                                                        </a></li>
+                                                                    <%}})%>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!--End Popular-->
+                    </div>
+            </div>
+        </div>
+</body>
+
+</html>

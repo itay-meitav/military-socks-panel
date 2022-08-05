@@ -18,9 +18,10 @@ async function connect() {
 }
 
 // socks location, officer,
-export async function getAllSocks(page: number = 1) {
+export async function getSocks(page: number = 1) {
 	if (page < 1) page = 1;
 	const pre_page = 20;
+	const offset = (page - 1) * pre_page;
 	const query = {
 		text: `SELECT socks.*,socks.manufacturing_year as year , locations.lat  , locations.lon, locations.base_name, locations.nearest_city, officers.name, officers.army_id_number, officers.email, officers.phone
         from socks
@@ -28,7 +29,7 @@ export async function getAllSocks(page: number = 1) {
         left join officers on officers.id = socks.officer_id
         order by socks.id
         limit ${pre_page} offset $1`,
-		values: [(page - 1) * pre_page],
+		values: [offset],
 	};
 	try {
 		return await pool
@@ -39,27 +40,42 @@ export async function getAllSocks(page: number = 1) {
 	}
 }
 
-export async function countSocks() {
+export async function countRows(
+	table: "socks" | "locations" | "officers" | "locations_history"
+) {
 	try {
 		return await pool
-			.query("select count(*) as count from socks")
+			.query("select count(*) as count from " + table)
 			.then((res) => res.rows[0].count);
 	} catch (e) {
 		console.error(e);
 	}
 }
 
-export async function getLocation(location: string) {
+export async function getLocations(
+	page: number = 1,
+	id: number | undefined = undefined
+) {
+	if (page < 1) page = 1;
+	const pre_page = 20;
+
+	const offset = (page - 1) * pre_page;
 	const query = {
-		text: `SELECT socks.* from socks 
-        left join locations on locations.id = socks.location_id
-        WHERE locations.base_name = $1`,
-		values: [location],
+		text: `SELECT * from locations
+         WHERE 1=1
+        ${id ? `AND id = ${id}` : ""}
+        order by id
+        limit ${pre_page} offset $1`,
+		values: [offset],
 	};
+	console.log(query.text);
+
 	try {
-		return pool
-			.query(query.text, query.values)
-			.then((res) => res.rows as any[]);
+		return pool.query(query.text, query.values).then((res) => {
+			console.log(res);
+
+			return res.rows as any[];
+		});
 	} catch (e) {
 		console.error(e);
 	}
