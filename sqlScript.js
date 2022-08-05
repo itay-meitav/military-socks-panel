@@ -1,6 +1,9 @@
 const { Client, Pool } = require("pg");
 const fs = require("fs");
 
+function Range(n) {
+	return Array(n).fill(1);
+}
 const conStr =
 	"postgres://quhoklmujkkcws:6bdbd3054c0f4258ec3c0faaa8ed8b34249957a2569241bf80653ffd25302a62@ec2-34-253-119-24.eu-west-1.compute.amazonaws.com:5432/d88qsef0e8riaf";
 const pool = new Pool({
@@ -98,10 +101,10 @@ async function addSocksToDb() {
 
 	const params = socks.map((model) => {
 		const quantity = Math.floor(Math.random() * 50 + 40);
-		const size = getNRandomFromArr(sizes, 1)[0];
-		const year = new Date(Math.floor(Math.random() * 22 + 2000) + "");
-		const location_id = getNRandomFromArr(location_ids, 1)[0];
-		const officer_id = getNRandomFromArr(officer_ids, 1)[0];
+		const size = getRandomNFromArr(sizes, 1)[0];
+		const year = new Date(Math.floor(Math.random() * 10 + 1970) + "");
+		const location_id = getRandomNFromArr(location_ids, 1)[0];
+		const officer_id = getRandomNFromArr(officer_ids, 1)[0];
 		return [model, quantity, size, year, location_id, officer_id];
 	});
 	let index = 1;
@@ -139,7 +142,7 @@ async function addOfficersToDb() {
 
 	let params = names.map((name) => {
 		let phone = generatePhoneNumber();
-		let army_id_number = generateID();
+		let army_id_number = generateID(7);
 		let email = name + "@wpra.ru";
 		return [name, army_id_number, email, phone];
 	});
@@ -216,13 +219,10 @@ async function addLocationsHistoryToDb() {
 	const socks_ids = await pool
 		.query("SELECT ARRAY_AGG(id) as ids from socks")
 		.then((res) => res.rows[0].ids);
-
-	const socksToGet = Math.ceil(socks_ids.length / 2);
-	let params = location_ids
-		.map((loc_id) => {
-			// console.log(socks_ids);
-			return getNRandomFromArr(socks_ids, socksToGet)
-				.map((sock_id) => {
+	let params = socks_ids
+		.map((sock_id) => {
+			return getRandomNFromArr(location_ids, 3)
+				.map((loc_id) => {
 					let departure_date = departureDate(
 						new Date(1980, 0, 1),
 						new Date(1990, 0, 1)
@@ -237,21 +237,20 @@ async function addLocationsHistoryToDb() {
 
 	await pool.query(
 		`INSERT INTO locations_history(arrival_date, departure_date, location_id, sock_id) VALUES 
- ${Array(location_ids.length * socksToGet)
-		.fill(1)
+ ${Range(socks_ids.length * 3)
 		.map(() => `($${index++},$${index++},$${index++},$${index++})`)
 		.join(", ")}`,
 		params.flat()
 	);
 }
 
-function getNRandomFromArr(arr = [], n = 0) {
+function getRandomNFromArr(arr = [], n = 0) {
 	const result = [];
 	arr = [...arr];
 	if (n > arr.length || n == 0) {
 		return arr;
 	}
-	for (const i in Array(n).fill(1)) {
+	for (const i in Range(n)) {
 		let index = Math.floor(Math.random() * arr.length);
 		result.push(arr[index]);
 		arr.splice(index, 1);
@@ -268,9 +267,9 @@ function departureDate(start, end) {
 
 function calcArrival(departure_date = new Date()) {
 	const departureDate = Date.parse(departure_date);
-	const oneWeek = new Date(departureDate + 1 * 7 * 24 * 60 * 60 * 1000);
-	const twoWeeks = new Date(departureDate + 2 * 7 * 24 * 60 * 60 * 1000);
-	const threeWeeks = new Date(departureDate + 3 * 7 * 24 * 60 * 60 * 1000);
+	const oneWeek = new Date(departureDate - 1 * 7 * 24 * 60 * 60 * 1000);
+	const twoWeeks = new Date(departureDate - 2 * 7 * 24 * 60 * 60 * 1000);
+	const threeWeeks = new Date(departureDate - 3 * 7 * 24 * 60 * 60 * 1000);
 	const datesArr = [oneWeek, twoWeeks, threeWeeks];
 	const index = Math.floor(Math.random() * datesArr.length);
 	return datesArr[index];
@@ -298,7 +297,7 @@ function generateRandomLat() {
 function generatePhoneNumber() {
 	let base = `+7(${generateID(3)})`;
 	let numbers = "1234567890";
-	for (const i in Array(7).fill(1)) {
+	for (const i in Range(7)) {
 		base += numbers[Math.floor(Math.random() * numbers.length)];
 		if ([2, 4].includes(i)) base += "-";
 	}
@@ -308,9 +307,11 @@ function generatePhoneNumber() {
 function generateID(length = 7) {
 	let base = "";
 	let numbers = "1234567890";
-	for (const i in Array(length).fill(1)) {
+	for (const i in Range(length)) {
 		base +=
-			numbers[Math.floor(Math.random() * numbers.length + i == 0 ? -1 : 0)];
+			numbers[
+				Math.floor(Math.random() * (numbers.length + (i == 0 ? -1 : 0)))
+			];
 	}
 	return base;
 }
