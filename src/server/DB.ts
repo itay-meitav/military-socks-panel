@@ -68,11 +68,10 @@ export async function getLocations(
         limit ${pre_page} offset $1`,
 		values: [offset],
 	};
-	console.log(query.text);
+
 
 	try {
 		return pool.query(query.text, query.values).then((res) => {
-			console.log(res);
 
 			return res.rows as any[];
 		});
