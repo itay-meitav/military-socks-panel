@@ -24,41 +24,45 @@
         <div class="panel panel-default">
             <div class="panel-heading">data</div>
             <div class="panel-body list-group">
-                <a href="/socks" class="list-group-item">
+                <a href="/socks" class="list-group-item"><span class="glyphicon glyphicon-search"></span>
                     <!-- <span class="glyphicon glyphicon-list"></span> -->
-                    socks
+                    Socks
                 </a>
-                <a href="/locations" class="list-group-item">
+                <a href="/locations" class="list-group-item"><span class="glyphicon glyphicon-pushpin"></span>
                     <!-- <span class="glyphicon glyphicon-list"></span> -->
-                    locations
+                    Locations
                 </a>
-                <a href="history" class="list-group-item">
+                <a href="/history" class="list-group-item"><span class="	glyphicon glyphicon-list-alt"></span>
                     <!-- <span class="glyphicon glyphicon-list"></span> -->
-                    history
+                    History
                 </a>
-                <a href="officers" class="list-group-item">
+                <a href="/officers" class="list-group-item"><span class="glyphicon glyphicon-user"></span>
                     <!-- <span class="glyphicon glyphicon-list"></span> -->
-                    officers
+                    Officers
                 </a>
             </div>
         </div>
         <!---->
 
         <!---->
-        <!-- <div class="panel panel-default">
-                            <div class="panel-heading">Users</div>
-                            <div class="panel-body list-group">
-                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> User
-                                    Manager</a>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">Configuration</div>
-                            <div class="panel-body list-group">
-                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-cog"></span> Global
-                                    Settings</a>
-                            </div>
-                        </div> -->
-        <!---->
+        <% if (pageName) { %>
+            <div class="panel panel-default">
+                <div class="panel-heading">Tools</div>
+                <div class="panel-body list-group">
+
+                    <a href="/add/<%= pageName%>" class="list-group-item"><span
+                            class="glyphicon glyphicon-pencil"></span>
+                        Add new item</a>
+                </div>
+            </div>
+            <% }%>
+                <!-- <div class="panel panel-default">
+            <div class="panel-heading">Configuration</div>
+            <div class="panel-body list-group">
+                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-cog"></span> Global
+                    Edit exists item</a>
+            </div>
+        </div> -->
+                <!---->
     </div>
 </div>

@@ -19,12 +19,12 @@
                             <li>
                                 <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
                             </li>
-                            <li>Locations</li>
+                            <li>History Locations</li>
                         </ul>
 
                         <!--Popular-->
                         <div class="panel panel-default">
-                            <div class="panel-heading">Locations</div>
+                            <div class="panel-heading">History Locations</div>
                             <div class="panel-content">
                                 <table id="dtable" class="table">
                                     <tr>
@@ -35,51 +35,60 @@
                                         </td>
                                         <td>
                                             <span>
-                                                Base name
-                                            </span>
-                                        </td>
-                                        <td>
-                                            Nearest city
-                                        </td>
-                                        <td>
-                                            <span>
-                                                Latitude
+                                                Model
                                             </span>
                                         </td>
                                         <td>
                                             <span>
-                                                Longitude
+                                                Arrival
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                Departure
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                Coordinates
                                             </span>
                                         </td>
                                     </tr>
-                                    <% locations.forEach(location=> { %>
+                                    <% history.forEach(location=> { %>
 
                                         <tr>
                                             <td>
                                                 <span class="label label-info">
                                                     <%= location.id%>
-                                                </span>
-                                                <br>
+                                                </span><br>
                                                 <a href="/edit/location?id=<%= location.id%>"
                                                     style="font-size: small;">edit</a>
                                             </td>
                                             <td>
                                                 <span>
-                                                    <%= location.base_name %>
+                                                    <%= location.model %>
                                                 </span>
                                             </td>
                                             <td>
                                                 <span>
-                                                    <%= location.nearest_city %>
+                                                    <%= location.arrival_date.toISOString().split('T')[0].split('-').reverse().join('/')
+                                                        %>
                                                 </span>
                                             </td>
                                             <td>
                                                 <span>
-                                                    <%= location.lat %>
+                                                    <%= location.departure_date.toISOString().split('T')[0].split('-').reverse().join('/')
+                                                        %>
                                                 </span>
                                             </td>
                                             <td>
-                                                <%= location.lon %>
+                                                <%= location.lon + ',' + location.lat %>
+                                            </td>
+
+                                            <td>
+                                                <a href="/socks?id=<%= location.sock_id%>">
+                                                    View sock
+                                                </a>
                                             </td>
                                         </tr>
 
@@ -95,7 +104,7 @@
                                                                         </a></li>
 
                                                                     <% } else{ %>
-                                                                        <li><a href="/locations?page=<%= i+1%>">
+                                                                        <li><a href="/history?page=<%= i+1%>">
                                                                                 <%= i+1%>
                                                                             </a></li>
                                                                         <%}})%>

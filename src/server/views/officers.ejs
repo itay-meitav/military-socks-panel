@@ -19,12 +19,12 @@
                             <li>
                                 <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
                             </li>
-                            <li>Locations</li>
+                            <li>Officers</li>
                         </ul>
 
                         <!--Popular-->
                         <div class="panel panel-default">
-                            <div class="panel-heading">Locations</div>
+                            <div class="panel-heading">Officers</div>
                             <div class="panel-content">
                                 <table id="dtable" class="table">
                                     <tr>
@@ -35,51 +35,60 @@
                                         </td>
                                         <td>
                                             <span>
-                                                Base name
+                                                Name
                                             </span>
                                         </td>
                                         <td>
-                                            Nearest city
+                                            Army id number
                                         </td>
                                         <td>
                                             <span>
-                                                Latitude
+                                                Email
                                             </span>
                                         </td>
                                         <td>
                                             <span>
-                                                Longitude
+                                                Phone
                                             </span>
                                         </td>
                                     </tr>
-                                    <% locations.forEach(location=> { %>
+                                    <% officers.forEach(officer=> { %>
 
                                         <tr>
                                             <td>
                                                 <span class="label label-info">
-                                                    <%= location.id%>
+                                                    <%= officer.id%>
                                                 </span>
                                                 <br>
-                                                <a href="/edit/location?id=<%= location.id%>"
-                                                    style="font-size: small;">edit</a>
+                                                <a href="/edit/officer?id=<%= officer.id%>" style="font-size: smaller;">
+                                                    edit</a>
+
                                             </td>
                                             <td>
                                                 <span>
-                                                    <%= location.base_name %>
+                                                    <%= officer.name %>
                                                 </span>
                                             </td>
                                             <td>
                                                 <span>
-                                                    <%= location.nearest_city %>
+                                                    <%= officer.army_id_number %>
                                                 </span>
                                             </td>
                                             <td>
                                                 <span>
-                                                    <%= location.lat %>
+                                                    <%= officer.email %>
                                                 </span>
                                             </td>
                                             <td>
-                                                <%= location.lon %>
+                                                <span>
+                                                    <%= officer.phone %>
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <a href="/socks?officer_id=<%= officer.id%>">
+                                                    View socks
+                                                </a>
                                             </td>
                                         </tr>
 
@@ -95,7 +104,7 @@
                                                                         </a></li>
 
                                                                     <% } else{ %>
-                                                                        <li><a href="/locations?page=<%= i+1%>">
+                                                                        <li><a href="/officers?page=<%= i+1%>">
                                                                                 <%= i+1%>
                                                                             </a></li>
                                                                         <%}})%>
