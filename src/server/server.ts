@@ -13,10 +13,10 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.json());
 
-app.get("/add", (req, res) => {
+
+app.get(["/add/socks", "/add/officers", "/add/history", "/add/locations"], (req, res) => {
 	res.render("add");
 });
-
 
 app.use(pages)
 
