@@ -5,20 +5,30 @@ if (process.env.MODE_ENV != "production") {
 import path from "path";
 import express from "express";
 import cors from "cors";
-import { countRows, getLocations, getSocks, getOfficers, getHistory } from "./DB";
-import pages from './pages'
+import {
+	countRows,
+	getLocations,
+	getSocks,
+	getOfficers,
+	getHistory,
+} from "./DB";
+import pages from "./pages";
+import editRouter from "./edit_routes";
 
 const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.json());
 
+app.get(
+	["/add/socks", "/add/officers", "/add/history", "/add/locations"],
+	(req, res) => {
+		res.render("add");
+	}
+);
 
-app.get(["/add/socks", "/add/officers", "/add/history", "/add/locations"], (req, res) => {
-	res.render("add");
-});
-
-app.use(pages)
+app.use(pages);
+app.use("/edit", editRouter);
 
 app.use(express.static(path.join(__dirname, "../client")));
 
