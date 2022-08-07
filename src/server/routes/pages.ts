@@ -26,7 +26,13 @@ router.get(["/", "/socks"], async (req, res) => {
 	if (id || officer_id) {
 		pages = 1;
 	}
-	res.render("socks", { socks, pages, curr_page: page, info: { pageName: "sock" } });
+
+	res.render("socks", {
+		socks,
+		pages,
+		curr_page: page,
+		info: { pageName: "sock" },
+	});
 });
 
 router.get("/locations", async (req, res) => {
