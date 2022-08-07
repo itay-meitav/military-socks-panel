@@ -60,9 +60,12 @@
                                                     <%= officer.id%>
                                                 </span>
                                                 <br>
-                                                <a href="/edit/officer/<%= officer.id%>" style="font-size: smaller;">
-                                                    edit</a>
-
+                                                <div class="buttons"
+                                                    style="display: flex; justify-content: center; gap: 4px; font-size: small;">
+                                                    <a href="/edit/officer/<%= officer.id%>">edit</a>
+                                                    <a style="cursor: pointer;"
+                                                        onclick="deleteItem('officer', '<%= officer.id%>', event)">delete</a>
+                                                </div>
                                             </td>
                                             <td>
                                                 <span>

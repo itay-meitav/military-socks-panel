@@ -1,23 +1,4 @@
-import { Pool } from "pg";
-import { stringify } from "querystring";
-const pool = new Pool({
-	connectionString: process.env.DATABASE_URL,
-	ssl: {
-		rejectUnauthorized: false,
-	},
-});
-connect();
-
-async function connect() {
-	try {
-		await pool.connect();
-		console.log("Connected to database");
-	} catch (error) {
-		console.log("Could not connect to database");
-		console.log(error);
-	}
-}
-
+import { query as execQuery } from './general'
 // socks location, officer,
 export async function getSocks(
 	page: number = 1,
@@ -41,15 +22,14 @@ export async function getSocks(
         ${limit ? `limit ${pre_page} offset ${offset}` : ""}`,
 		values: [],
 	};
-	return await executeQuery("get", query);
+	return await execQuery("get", query).then(res => res.rows);
 }
 
 export async function countRows(
 	table: "socks" | "locations" | "officers" | "locations_history"
 ) {
 	try {
-		return await pool
-			.query("select count(*) as count from " + table)
+		return await execQuery('count', { text: "select count(*) as count from " + table, values: [] })
 			.then((res) => res.rows[0].count);
 	} catch (e) {
 		console.error(e);
@@ -73,7 +53,7 @@ export function getLocations(
         ${limit ? `limit ${pre_page} offset ${offset}` : ""}`,
 		values: [],
 	};
-	return executeQuery("get", query);
+	return execQuery("get", query).then(res => res.rows);
 }
 
 export function getOfficers(
@@ -93,7 +73,7 @@ export function getOfficers(
         ${limit ? `limit ${pre_page} offset ${offset}` : ""}`,
 		values: [],
 	};
-	return executeQuery("get", query);
+	return execQuery("get", query).then(res => res.rows);
 }
 
 export function getHistory(
@@ -121,56 +101,56 @@ export function getHistory(
 	   `,
 		values: [],
 	};
-	return executeQuery("get", query);
+	return execQuery("get", query).then(res => res.rows);
 }
 
-export function addItem(type: string, details) {
+export function addItem(type: 'sock' | 'officer' | 'location' | 'history', details) {
 	if (type == "sock") {
 		const query = {
-			text: `INSERT INTO socks(model, quantity, size, manufacturing_year, "location_id", "officer_id") VALUES ($1, $2, $3, $4, $5 $6)`,
+			text: `INSERT INTO socks(model, quantity, size, manufacturing_year, "location_id", "officer_id") VALUES ($1, $2, $3, $4, $5 $6) RETURNING id`,
 			values: [
 				details.model,
 				details.quantity,
 				details.size,
 				details.year,
-				details.location_id,
-				details.officer_id,
+				details.locationId,
+				details.officerId,
 			],
 		};
-		return executeQuery("add", query);
+		return execQuery("add", query).then(data => data[0].id);
 	} else if (type == "officer") {
 		const query = {
-			text: `INSERT INTO officers(name, army_id_number, email, phone) VALUES ($1, $2, $3, $4)`,
+			text: `INSERT INTO officers(name, army_id_number, email, phone) VALUES ($1, $2, $3, $4) RETURNING id`,
 			values: [
 				details.name,
-				details.army_id_number,
+				details.armyIdNumber,
 				details.email,
 				details.phone,
 			],
 		};
-		return executeQuery("add", query);
+		return execQuery("add", query).then(data => data[0].id);
 	} else if (type == "location") {
 		const query = {
-			text: `INSERT INTO locations(nearest_city, base_name, lon,lat) VALUES($1, $2, $3, $4)`,
+			text: `INSERT INTO locations(nearest_city, base_name, lon,lat) VALUES($1, $2, $3, $4) RETURNING id`,
 			values: [
-				details.nearest_city,
-				details.base_name,
+				details.nearestCity,
+				details.baseName,
 				details.lon,
 				details.lat,
 			],
 		};
-		return executeQuery("add", query);
+		return execQuery("add", query).then(data => data[0].id);
 	} else if (type == "history") {
 		const query = {
-			text: `INSERT INTO locations_history(arrival_date, departure_date, location_id, sock_id) VALUES($1, $2, $3, $4)`,
+			text: `INSERT INTO locations_history(arrival_date, departure_date, location_id, sock_id) VALUES($1, $2, $3, $4) RETURNING id`,
 			values: [
-				details.arrival_date,
-				details.departure_date,
-				details.location_id,
-				details.sock_id,
+				details.arrivalDate,
+				details.departureDate,
+				details.locationId,
+				details.sockId,
 			],
 		};
-		return executeQuery("add", query);
+		return execQuery("add", query).then(data => data[0].id);
 	} else {
 		console.log("Unknown item type");
 	}
@@ -192,7 +172,7 @@ export async function editItem(type: string, itemId: number, details) {
 				itemId,
 			],
 		};
-		await executeQuery("edit", query);
+		await execQuery("edit", query);
 	} else if (type == "officer") {
 		const query = {
 			text: `UPDATE officers
@@ -206,7 +186,7 @@ export async function editItem(type: string, itemId: number, details) {
 				itemId,
 			],
 		};
-		await executeQuery("edit", query);
+		await execQuery("edit", query);
 	} else if (type == "location") {
 		const query = {
 			text: `UPDATE locations
@@ -220,7 +200,7 @@ export async function editItem(type: string, itemId: number, details) {
 				itemId,
 			],
 		};
-		await executeQuery("edit", query);
+		await execQuery("edit", query);
 	} else if (type == "history") {
 		const query = {
 			text: `UPDATE locations_history
@@ -234,7 +214,7 @@ export async function editItem(type: string, itemId: number, details) {
 				itemId,
 			],
 		};
-		await executeQuery("edit", query);
+		await execQuery("edit", query);
 	} else {
 		console.log("Unknown item type");
 	}
@@ -246,49 +226,52 @@ export async function removeItem(type: string, itemId: number) {
 			text: `DELETE FROM socks WHERE socks.id = $1;`,
 			values: [itemId],
 		};
-		await executeQuery("delete", query);
+		await execQuery("delete", query);
 	} else if (type == "officer") {
 		const query = {
 			text: `DELETE FROM officers WHERE officers.id = $1;`,
 			values: [itemId],
 		};
-		await executeQuery("delete", query);
+		await execQuery("delete", query);
 	} else if (type == "location") {
 		const query = {
 			text: `DELETE FROM locations WHERE locations.id = $1;`,
 			values: [itemId],
 		};
-		await executeQuery("delete", query);
+		await execQuery("delete", query);
 	} else if (type == "history") {
 		const query = {
 			text: `DELETE FROM locations_history WHERE locations_history.id = $1;`,
 			values: [itemId],
 		};
-		await executeQuery("delete", query);
+		await execQuery("delete", query);
 	}
 }
 
-async function executeQuery(
-	type: string,
-	query: { text: string; values: any[] }
-) {
-	if (["add", "edit", "delete"].includes(type)) {
-		try {
-			return await pool.query(query.text, query.values).then(() => {
-				console.log(
-					type[0].toUpperCase() + type.substring(1) + "ed Successfully"
-				);
-			});
-		} catch (e) {
-			console.error(e);
-		}
-	} else {
-		try {
-			return await pool.query(query.text, query.values).then((res) => {
-				return res.rows;
-			});
-		} catch (e) {
-			console.error(e);
-		}
-	}
+export function isArmyIdExists(armyId: string) {
+	const query = 'SELECT * from officers where army_id_number = $1'
+	return execQuery('check', { text: query, values: [armyId] }).then(data => !!data.rows?.length)
+}
+
+export function isBaseExists(baseName: string) {
+	const query = 'SELECT * from locations where base_name = $1'
+	return execQuery('check', { text: query, values: [baseName] }).then(data => !!data.rows?.length)
+}
+
+export async function isLocationExists(locationId: number) {
+	const query = 'SELECT * from locations where id = $1'
+	const locationExist = await execQuery('check', { text: query, values: [locationId] }).then(data => !!data.rows?.length)
+	return locationExist
+}
+
+export async function isSockExists(sockId: number) {
+	const query = 'SELECT * from socks where id = $1'
+	const sockExist = await execQuery('check', { text: query, values: [sockId] }).then(data => !!data.rows?.length)
+	return sockExist
+}
+
+export async function isOfficerExists(officerId: number) {
+	const query = 'SELECT * from officers where id = $1'
+	const officerExist = await execQuery('check', { text: query, values: [officerId] }).then(data => !!data.rows?.length)
+	return officerExist
 }

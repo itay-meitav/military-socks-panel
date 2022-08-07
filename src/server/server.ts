@@ -11,26 +11,15 @@ import {
 	getSocks,
 	getOfficers,
 	getHistory,
-} from "./DB";
-import pages from "./pages";
-import editRouter from "./edit_routes";
+} from "./db";
+import pageRoutes from "./routes/index";
+import RestApi from './api/index'
+
 
 const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.json());
-
-app.get(
-	["/add/socks", "/add/officers", "/add/history", "/add/locations"],
-	(req, res) => {
-		res.render("add");
-	}
-);
-
-app.use(pages);
-app.use("/edit", editRouter);
-
-app.use(express.static(path.join(__dirname, "../client")));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -39,6 +28,11 @@ app.use(
 		origin: true,
 	})
 );
+app.use('/api', RestApi);
+app.use(pageRoutes);
+
+app.use(express.static(path.join(__dirname, "../client")));
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

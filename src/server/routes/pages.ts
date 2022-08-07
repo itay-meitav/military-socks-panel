@@ -6,7 +6,7 @@ import {
 	getHistory,
 	getLocations,
 	getOfficers,
-} from "./DB";
+} from "../db";
 const router = express.Router();
 
 // router.get("/", (req, res) => {
@@ -28,7 +28,7 @@ router.get(["/", "/socks"], async (req, res) => {
 	}
 	console.log(socks);
 
-	res.render("socks", { socks, pages, curr_page: page, pageName: "socks" });
+	res.render("socks", { socks, pages, curr_page: page, info: { pageName: "sock" } });
 });
 
 router.get("/locations", async (req, res) => {
@@ -48,7 +48,7 @@ router.get("/locations", async (req, res) => {
 		locations,
 		pages,
 		curr_page: page,
-		pageName: "locations",
+		info: { pageName: "location" },
 	});
 });
 
@@ -70,7 +70,7 @@ router.get("/history", async (req, res) => {
 		history,
 		pages,
 		curr_page: page,
-		pageName: "history",
+		info: { pageName: "history" },
 	});
 });
 
@@ -91,7 +91,7 @@ router.get("/officers", async (req, res) => {
 		officers,
 		pages,
 		curr_page: page,
-		pageName: "officers",
+		info: { pageName: "officer" },
 	});
 });
 

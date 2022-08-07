@@ -73,8 +73,13 @@
                                             <td>
                                                 <span class="label label-info">
                                                     <%= sock.id%>
-                                                </span>
-                                                <a href="/edit/sock/<%= sock.id%>" style="font-size: small;">edit</a>
+                                                </span><br>
+                                                <div class="buttons"
+                                                    style="display: flex; justify-content: center; gap: 4px; font-size: small;">
+                                                    <a href="/edit/sock/<%= sock.id%>">edit</a>
+                                                    <a style="cursor: pointer;"
+                                                        onclick="deleteItem('sock','<%= sock.id%>', event)">delete</a>
+                                                </div>
                                             </td>
                                             <td>
                                                 <span>

@@ -6,7 +6,7 @@ import {
 	getHistory,
 	getLocations,
 	getOfficers,
-} from "./DB";
+} from "../db/index";
 const editRouter = express.Router();
 
 // router.get("/", (req, res) => {
