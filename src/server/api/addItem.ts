@@ -1,5 +1,5 @@
 import express from 'express'
-import { addItem, isArmyIdExists, isBaseExists, isSockExists, isOfficerExists, isLocationExists } from '../db'
+import { isArmyIdExists, isBaseExists, isSockExists, isOfficerExists, isLocationExists, addHistory, addLocation, addOfficer, addSock } from '../db'
 
 const router = express.Router()
 
@@ -16,7 +16,7 @@ router.post('/sock', async (req, res) => {
     if (model && officerId && quantity && size && year && locationId) {
         const isExists = (await Promise.all([isLocationExists(Number(locationId)), isOfficerExists(Number(officerId))])).every(Boolean)
         if (isExists) {
-            const id = await addItem('sock', {
+            const id = await addSock({
                 model,
                 officerId,
                 quantity,
@@ -50,7 +50,7 @@ router.post('/location', async (req, res) => {
         if (isExist) {
             res.json({ message: 'this base already exists', success: false })
         } else {
-            const id = await addItem('location', { nearestCity: city, baseName: base, lon, lat })
+            const id = await addLocation({ nearestCity: city, baseName: base, lon, lat })
             res.redirect('/locations?id=' + id)
         }
 
@@ -70,7 +70,7 @@ router.post('/history', async (req, res) => {
         const isExists = (await Promise.all([isLocationExists(Number(locationId)), isSockExists(Number(sockId))])).every(Boolean)
 
         if (isExists) {
-            const id = await addItem('history', { arrivalDate, departureDate, locationId, sockId })
+            const id = await addHistory({ arrivalDate, departureDate, locationId, sockId })
             res.redirect('/history?id=' + id)
         }
         else {
@@ -100,7 +100,7 @@ router.post('/officer', async (req, res) => {
         if (isExists)
             res.send('army id already exists')
         else {
-            const id = await addItem('officer', details)
+            const id = await addOfficer(details)
             res.redirect('/officers?id=' + id)
         }
     }

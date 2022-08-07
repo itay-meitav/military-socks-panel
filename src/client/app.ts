@@ -18,3 +18,11 @@ function deleteItem(type, id, e: MouseEvent) {
 }
 
 window.deleteItem = deleteItem
+
+function resetAll() {
+    fetch('/api/reset', {
+        method: 'put'
+    })
+}
+
+window.resetAll = resetAll

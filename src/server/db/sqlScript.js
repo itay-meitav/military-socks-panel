@@ -111,11 +111,11 @@ async function addSocksToDb() {
 
 	const queryStr = `INSERT INTO socks(model, quantity, size, manufacturing_year, "location_id", "officer_id") VALUES 
  ${params
-		.map(
-			() =>
-				`($${index++},$${index++},$${index++},$${index++},$${index++},$${index++})`
-		)
-		.join(", ")}`;
+			.map(
+				() =>
+					`($${index++},$${index++},$${index++},$${index++},$${index++},$${index++})`
+			)
+			.join(", ")}`;
 	await pool.query(queryStr, params.flat());
 }
 
@@ -151,8 +151,8 @@ async function addOfficersToDb() {
 
 	const queryStr = `INSERT INTO officers(name, army_id_number, email, phone) VALUES 
  ${params
-		.map(() => `($${index++},$${index++},$${index++},$${index++})`)
-		.join(", ")}`;
+			.map(() => `($${index++},$${index++},$${index++},$${index++})`)
+			.join(", ")}`;
 	await pool.query(queryStr, params.flat());
 }
 
@@ -190,8 +190,8 @@ async function addLocationsToDb() {
 	await pool.query(
 		`INSERT INTO locations(nearest_city, base_name, lon,lat) VALUES 
   ${params
-		.map(() => `($${index++},$${index++},$${index++},$${index++})`)
-		.join(", ")}`,
+			.map(() => `($${index++},$${index++},$${index++},$${index++})`)
+			.join(", ")}`,
 		params.flat()
 	);
 }
@@ -238,8 +238,8 @@ async function addLocationsHistoryToDb() {
 	await pool.query(
 		`INSERT INTO locations_history(arrival_date, departure_date, location_id, sock_id) VALUES 
  ${Range(socks_ids.length * 3)
-		.map(() => `($${index++},$${index++},$${index++},$${index++})`)
-		.join(", ")}`,
+			.map(() => `($${index++},$${index++},$${index++},$${index++})`)
+			.join(", ")}`,
 		params.flat()
 	);
 }
@@ -310,12 +310,12 @@ function generateID(length = 7) {
 	for (const i in Range(length)) {
 		base +=
 			numbers[
-				Math.floor(Math.random() * (numbers.length + (i == 0 ? -1 : 0)))
+			Math.floor(Math.random() * (numbers.length + (i == 0 ? -1 : 0)))
 			];
 	}
 	return base;
 }
-async function initDB() {
+module.exports = async function initDB() {
 	await dropAllTables();
 	await addOfficersToDb();
 	await addLocationsToDb();
@@ -324,4 +324,4 @@ async function initDB() {
 	console.log("done!");
 }
 // if (false)
-initDB();
+// initDB();

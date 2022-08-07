@@ -19,7 +19,7 @@
                             <li>
                                 <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
                             </li>
-                            <li>Add Officer</li>
+                            <li>Edit Officer</li>
                         </ul>
 
                         <!--Popular-->
@@ -28,27 +28,27 @@
                             <div class="panel-content">
                                 <div class="card card-outline-secondary">
                                     <div class="card-body" style="margin: 15px;">
-                                        <form action="/api/add/officer" method="post" autocomplete="off" class="form"
-                                            role="form">
+                                        <form action="/api/edit/officer/<%= officer.id%>" method="post"
+                                            autocomplete="off" class="form" role="form">
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Name</label>
                                                 <div class="col-lg-9">
-                                                    <input name="name" class="form-control" type="text" value=""
-                                                        required>
+                                                    <input name="name" class="form-control" type="text"
+                                                        value="<%= officer.name%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Email</label>
                                                 <div class="col-lg-9">
                                                     <input name="email" type="email" class="form-control"
-                                                        value="@wpra.ru" required>
+                                                        value="<%= officer.email%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Phone</label>
                                                 <div class="col-lg-9">
                                                     <input name="phone" maxlength="12" class="form-control" type="text"
-                                                        value="+7" required>
+                                                        value="<%= officer.phone%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -56,7 +56,7 @@
                                                     number</label>
                                                 <div class="col-lg-9">
                                                     <input name="armyIdNumber" maxlength="7" class="form-control"
-                                                        type="text" value="" required>
+                                                        type="text" value="<%= officer.army_id_number%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">

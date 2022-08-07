@@ -19,7 +19,7 @@
                             <li>
                                 <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
                             </li>
-                            <li>Add History</li>
+                            <li>Edit History</li>
                         </ul>
 
                         <!--Popular-->
@@ -28,13 +28,14 @@
                             <div class="panel-content">
                                 <div class="card card-outline-secondary">
                                     <div class="card-body" style="margin: 15px;">
-                                        <form action="/api/add/history" method="post" autocomplete="off" class="form"
-                                            role="form">
+                                        <form action="/api/edit/history/<%= history.id%>" method="post"
+                                            autocomplete="off" class="form" role="form">
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Arrival
                                                     Date</label>
                                                 <div class="col-lg-9">
-                                                    <input name="arrivalDate" class="form-control" type="date" value=""
+                                                    <input name="arrivalDate" class="form-control" type="date"
+                                                        value="<%= history.arrival_date.toISOString().split('T')[0] %>"
                                                         required>
                                                 </div>
                                             </div>
@@ -43,29 +44,37 @@
                                                     Date</label>
                                                 <div class="col-lg-9">
                                                     <input name="departureDate" class="form-control" type="date"
-                                                        value="" required>
+                                                        value="<%= history.departure_date.toISOString().split('T')[0] %>"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label
                                                     class="col-lg-3 col-form-label form-control-label">Location</label>
                                                 <div class="col-lg-9">
-                                                    <select name="location" class="form-control" id="officers_list"
+                                                    <select name="locationId" class="form-control" id="officers_list"
                                                         size="0" required>
-                                                        <option value="Hawaii">
-                                                            Hawaii
-                                                        </option>
+                                                        <% locations.forEach(location=>{ %>
+                                                            <option value="<%= location.id%>"
+                                                                <%=location.id==history.location_id ? ' selected' : ''
+                                                                %>>
+                                                                <%= location.base_name%>
+                                                            </option>
+                                                            <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Sock</label>
                                                 <div class="col-lg-9">
-                                                    <select name="sock" name="location" class="form-control"
+                                                    <select name="sockId" name="location" class="form-control"
                                                         id="officers_list" size="0" required>
-                                                        <option value="Hawaii">
-                                                            Hawaii
-                                                        </option>
+                                                        <% socks.forEach(sock=>{ %>
+                                                            <option value="<%= sock.id%>" <%=sock.id==history.sock_id
+                                                                ? ' selected' : '' %>>
+                                                                <%= sock.model%>
+                                                            </option>
+                                                            <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -73,7 +82,7 @@
                                                 <label class="col-lg-3 col-form-label form-control-label"></label>
                                                 <div class="col-lg-9">
                                                     <input class="btn btn-secondary" type="reset" value="Reset">
-                                                    <input class="btn btn-primary" type="button" value="Submit">
+                                                    <input class="btn btn-primary" type="submit" value="Submit">
                                                 </div>
                                             </div>
                                         </form>

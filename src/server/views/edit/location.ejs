@@ -19,7 +19,7 @@
                             <li>
                                 <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
                             </li>
-                            <li>Add Location</li>
+                            <li>Edit Location</li>
                         </ul>
 
                         <!--Popular-->
@@ -28,22 +28,22 @@
                             <div class="panel-content">
                                 <div class="card card-outline-secondary">
                                     <div class="card-body" style="margin: 15px;">
-                                        <form action="/api/add/location" autocomplete="on" method="post" class="form"
-                                            role="form">
+                                        <form action="/api/edit/location/<%= location.id%>" autocomplete="on"
+                                            method="post" class="form" role="form">
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Base
                                                     Name</label>
                                                 <div class="col-lg-9">
-                                                    <input name="base" class="form-control" type="text" value=""
-                                                        required>
+                                                    <input name="base" class="form-control" type="text"
+                                                        value="<%= location.base_name%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Nearest
                                                     City</label>
                                                 <div class="col-lg-9">
-                                                    <input name="city" class="form-control" type="text" value=""
-                                                        required>
+                                                    <input name="city" class="form-control" type="text"
+                                                        value="<%= location.nearest_city%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -51,7 +51,7 @@
                                                     class="col-lg-3 col-form-label form-control-label">Longtitude</label>
                                                 <div class="col-lg-9">
                                                     <input name="lon" maxlength="8" class="form-control" type="text"
-                                                        value="" required>
+                                                        value="<%= location.lon%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -59,7 +59,7 @@
                                                     class="col-lg-3 col-form-label form-control-label">Latitude</label>
                                                 <div class="col-lg-9">
                                                     <input name="lat" maxlength="8" class="form-control" type="text"
-                                                        value="" required>
+                                                        value="<%= location.lat%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">

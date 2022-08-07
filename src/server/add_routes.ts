@@ -1,9 +1,9 @@
 import express from 'express'
-import { } from '"DB"'
+// import { } from './DB'
 
 const addRouter = express.Router()
 addRouter.get(
-    ["/sock"],
+    "/sock",
     (req, res) => {
         res.render("add", { info: {} });
     }

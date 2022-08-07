@@ -114,6 +114,7 @@ gulp.task(
 gulp.task("nodemon", () => {
 	const nodemon = exec("nodemon dist/server/server.js");
 	nodemon.stdout.on("data", (m) => console.log(m));
+	nodemon.stdout.on("error", (err) => console.log(err));
 	exec("google-chrome http://localhost:3000");
 });
 

@@ -30,6 +30,6 @@ export async function query(
         });
     } catch (e) {
         console.error(e);
-        return {} as QueryResult<any>
+        return { error: e, rows: [] }
     }
 }

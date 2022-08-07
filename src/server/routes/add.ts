@@ -1,11 +1,16 @@
 import express from 'express'
 
+import { getLocations, getHistory, getOfficers, getSocks, getLocationsShort, getOfficersShort, getSocksShort } from '../db'
 const router = express.Router()
 
 router.get(
     "/sock",
-    (req, res) => {
-        res.render("add/sock", { info: {} });
+    async (req, res) => {
+        const [locations, officers] = await Promise.all([
+            getLocationsShort(),
+            getOfficersShort()
+        ])
+        res.render("add/sock", { info: {}, locations, officers });
     }
 );
 
@@ -19,8 +24,9 @@ router.get(
 
 router.get(
     "/history",
-    (req, res) => {
-        res.render("add/history", { info: {} });
+    async (req, res) => {
+        const [locations, socks] = await Promise.all([getLocationsShort(), getSocksShort()])
+        res.render("add/history", { info: {}, locations, socks });
     }
 );
 

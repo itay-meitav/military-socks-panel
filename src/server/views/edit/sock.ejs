@@ -19,7 +19,7 @@
                             <li>
                                 <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
                             </li>
-                            <li>Add Sock</li>
+                            <li>Edit Sock</li>
                         </ul>
 
                         <!--Popular-->
@@ -28,37 +28,52 @@
                             <div class="panel-content">
                                 <div class="card card-outline-secondary">
                                     <div class="card-body" style="margin: 15px;">
-                                        <form action="/api/add/sock" method="post" autocomplete="off" class="form"
-                                            role="form">
+                                        <form action="/api/edit/sock/<%= sock.id%>" method="post" autocomplete="off"
+                                            class="form" role="form">
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Model
                                                     Name</label>
                                                 <div class="col-lg-9">
-                                                    <input name="model" class="form-control" type="text" required>
+                                                    <input name="model" class="form-control" type="text"
+                                                        value="<%= sock.model%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label
                                                     class="col-lg-3 col-form-label form-control-label">Quantity</label>
                                                 <div class="col-lg-9">
-                                                    <input name="quantity" class="form-control" type="text" required>
+                                                    <input name="quantity" class="form-control" type="text"
+                                                        value="<%= sock.quantity%>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Size</label>
                                                 <div class="col-lg-9">
-                                                    <input name="size" class="form-control" type="text" required>
+                                                    <input name="size" class="form-control" type="text"
+                                                        value="<%= sock.size%>" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label form-control-label">Manufacturing
+                                                    year</label>
+                                                <div class="col-lg-9">
+                                                    <input name="year" class="form-control" type="date"
+                                                        value="<%= sock.manufacturing_year.toISOString().split('T')[0] %>"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label
                                                     class="col-lg-3 col-form-label form-control-label">Location</label>
                                                 <div class="col-lg-9">
-                                                    <select name="location" class="form-control" id="locations_list"
+                                                    <select name="locationId" class="form-control" id="officers_list"
                                                         size="0" required>
-                                                        <option value="Hawaii">
-                                                            (GMT-10:00) Hawaii
-                                                        </option>
+                                                        <% locations.forEach(location=>{ %>
+                                                            <option value="<%= location.id%>"
+                                                                <%=location.id==sock.location_id ? ' selected' : '' %>>
+                                                                <%= location.base_name%>
+                                                            </option>
+                                                            <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -66,11 +81,14 @@
                                                 <label
                                                     class="col-lg-3 col-form-label form-control-label">Officer</label>
                                                 <div class="col-lg-9">
-                                                    <select name="officer" class="form-control" id="officers_list"
+                                                    <select name="officerId" class="form-control" id="officers_list"
                                                         size="0" required>
-                                                        <option value="Hawaii">
-                                                            (GMT-10:00) Hawaii
-                                                        </option>
+                                                        <% officers.forEach(officer=>{ %>
+                                                            <option value="<%= officer.id%>"
+                                                                <%=officer.id==sock.officer_id ? ' selected' : '' %>>
+                                                                <%= officer.name%>
+                                                            </option>
+                                                            <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -78,7 +96,7 @@
                                                 <label class="col-lg-3 col-form-label form-control-label"></label>
                                                 <div class="col-lg-9">
                                                     <input class="btn btn-secondary" type="reset" value="Reset">
-                                                    <input class="btn btn-primary" type="button" value="Submit">
+                                                    <input class="btn btn-primary" type="submit" value="Submit">
                                                 </div>
                                             </div>
                                         </form>

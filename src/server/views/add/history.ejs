@@ -49,22 +49,26 @@
                                                 <label
                                                     class="col-lg-3 col-form-label form-control-label">Location</label>
                                                 <div class="col-lg-9">
-                                                    <select name="location" class="form-control" id="officers_list"
+                                                    <select name="locationId" class="form-control" id="officers_list"
                                                         size="0" required>
-                                                        <option value="Hawaii">
-                                                            Hawaii
-                                                        </option>
+                                                        <% locations.forEach(location=>{ %>
+                                                            <option value="<%= location.id%>">
+                                                                <%= location.name%>
+                                                            </option>
+                                                            <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label form-control-label">Sock</label>
                                                 <div class="col-lg-9">
-                                                    <select name="sock" name="location" class="form-control"
-                                                        id="officers_list" size="0" required>
-                                                        <option value="Hawaii">
-                                                            Hawaii
-                                                        </option>
+                                                    <select name="sockId" name="location" class="form-control"
+                                                        id="socks_list" size="0" required>
+                                                        <% socks.forEach(sock=>{ %>
+                                                            <option value="<%= sock.id%>">
+                                                                <%= sock.model%>
+                                                            </option>
+                                                            <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -72,7 +76,7 @@
                                                 <label class="col-lg-3 col-form-label form-control-label"></label>
                                                 <div class="col-lg-9">
                                                     <input class="btn btn-secondary" type="reset" value="Reset">
-                                                    <input class="btn btn-primary" type="button" value="Submit">
+                                                    <input class="btn btn-primary" type="submit" value="Submit">
                                                 </div>
                                             </div>
                                         </form>

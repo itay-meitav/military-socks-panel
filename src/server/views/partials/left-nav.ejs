@@ -30,10 +30,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Tools</div>
                 <div class="panel-body list-group">
-
                     <a href="/add/<%= info.pageName%>" class="list-group-item"><span
                             class="glyphicon glyphicon-pencil"></span>
                         Add new item</a>
+                    <a href="/" onclick="resetAll()" class="list-group-item"><span
+                            class="glyphicon glyphicon-refresh"></span>
+                        Reset data</a>
                 </div>
             </div>
             <% }%>
