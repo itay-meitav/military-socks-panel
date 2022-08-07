@@ -44,7 +44,7 @@ export function addOfficer(details: {
             details.phone,
         ],
     };
-    return execQuery("add", query).then(data => data[0].id);
+    return execQuery("add", query).then(data => data.rows[0].id);
 }
 
 export function editOfficer(id: number, values: {

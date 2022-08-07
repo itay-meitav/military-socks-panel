@@ -44,7 +44,7 @@ export function addSock(details: {
     officerId: number
 }) {
     const query = {
-        text: `INSERT INTO socks(model, quantity, size, manufacturing_year, "location_id", "officer_id") VALUES ($1, $2, $3, $4, $5 $6) RETURNING id`,
+        text: `INSERT INTO socks(model, quantity, size, manufacturing_year, "location_id", "officer_id") VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
         values: [
             details.model,
             details.quantity,
@@ -54,7 +54,7 @@ export function addSock(details: {
             details.officerId,
         ],
     };
-    return execQuery("add", query).then(data => data[0].id);
+    return execQuery("add", query).then(data => data.rows[0].id);
 }
 
 export function editSock(id: number, values: {
@@ -82,12 +82,12 @@ export function editSock(id: number, values: {
     return execQuery("edit", query);
 }
 
-export async function deleteSock(id: number) {
+export function deleteSock(id: number) {
     const query = {
         text: `DELETE FROM socks WHERE id = $1 RETURNING *;`,
         values: [id],
     };
-    await deleteHistoryBySockId(id)
+    // await deleteHistoryBySockId(id)
     return execQuery("delete", query);
 }
 

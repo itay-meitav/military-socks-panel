@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-3 left-nav">
     <p class="pad-top-15 text-muted">
         <span class="glyphicon glyphicon-user"></span> Hello,
         <strong>Admin</strong>!
@@ -33,9 +33,9 @@
                     <a href="/add/<%= info.pageName%>" class="list-group-item"><span
                             class="glyphicon glyphicon-pencil"></span>
                         Add new item</a>
-                    <a href="/" onclick="resetAll()" class="list-group-item"><span
+                    <span onclick="resetAll(event)" class="list-group-item" style="cursor: pointer;"><span
                             class="glyphicon glyphicon-refresh"></span>
-                        Reset data</a>
+                        Reset data</span>
                 </div>
             </div>
             <% }%>

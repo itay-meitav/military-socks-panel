@@ -86,7 +86,9 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <%= location.lon + ',' + location.lat %>
+                                                <a href="/locations?id=<%= location.location_id %>">
+                                                    <%= location.lon + ',' + location.lat %>
+                                                </a>
                                             </td>
 
                                             <td>

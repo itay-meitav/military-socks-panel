@@ -44,7 +44,7 @@ export function addLocation(details: {
             details.lat,
         ],
     };
-    return execQuery("add", query).then(data => data[0].id);
+    return execQuery("add", query).then(data => data.rows[0].id);
 }
 
 export function editLocation(id: number, values: {

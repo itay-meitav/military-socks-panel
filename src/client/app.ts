@@ -19,10 +19,27 @@ function deleteItem(type, id, e: MouseEvent) {
 
 window.deleteItem = deleteItem
 
-function resetAll() {
+function resetAll(e) {
+    e.target.querySelector('span').classList.add('spin')
     fetch('/api/reset', {
         method: 'put'
     })
+        .then(res => { if (res.ok) return res.json() })
+        .then((res) => {
+            if (res.success)
+                window.location.href = window.location.href
+        }).catch(() => {
+            e.target.querySelector('span').classList.remove('spin')
+        })
 }
 
 window.resetAll = resetAll
+
+
+
+
+window.onload = () => {
+    document.getElementsByClassName('navbar-toggle')![0].addEventListener('click', (e) => {
+        document.querySelector('.left-nav').classList.toggle('hide-left-nav')
+    })
+}

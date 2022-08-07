@@ -46,7 +46,7 @@ export function addHistory(details: {
             details.sockId,
         ],
     };
-    return execQuery("add", query).then(data => data[0].id);
+    return execQuery("add", query).then(data => data.rows[0].id);
 }
 
 export function editHistory(id: number, values: {

@@ -101,8 +101,9 @@
                                                 <%= sock.manufacturing_year.toISOString().split('-')[0] %>
                                             </td>
                                             <td>
-                                                <span>
-                                                    <%= sock.lat +','+sock.lon %>
+                                                <span><a href="/locations?id=<%=sock.location_id %>">
+                                                        <%= sock.lat +','+sock.lon %>
+                                                    </a>
                                                 </span>
                                             </td>
                                             <td>

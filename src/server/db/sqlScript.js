@@ -82,14 +82,21 @@ async function addSocksToDb() {
         size INTEGER NOT NULL,
         manufacturing_year DATE NOT NULL,
         location_id INTEGER,
+		FOREIGN KEY(location_id) REFERENCES locations(id) ON DELETE CASCADE,
         officer_id INTEGER,
-        CONSTRAINT "fk_location"
-            FOREIGN KEY(location_id)
-                REFERENCES locations(id),
-        CONSTRAINT "fk_officer"
-            FOREIGN KEY(officer_id)
-                REFERENCES officers(id)
-    )`
+		FOREIGN KEY(officer_id) REFERENCES officers(id) ON DELETE CASCADE       
+		)`
+
+		/*
+		CONSTRAINT "fk_location"
+			FOREIGN KEY(location_id)
+				REFERENCES locations(id)
+					ON DELETE CASCADE,
+		CONSTRAINT "fk_officer"
+			FOREIGN KEY(officer_id)
+				REFERENCES officers(id)
+					ON DELETE CASCADE
+		*/
 	);
 
 	let location_ids = await pool
@@ -203,14 +210,20 @@ async function addLocationsHistoryToDb() {
         arrival_date DATE NOT NULL,
         departure_date DATE NOT NULL,
         location_id INTEGER,
+		FOREIGN KEY(location_id) REFERENCES locations(id) ON DELETE CASCADE,
         sock_id INTEGER,
-        CONSTRAINT fk_location
-            FOREIGN KEY(location_id)
-                REFERENCES locations(id),
-        CONSTRAINT fk_sock
-            FOREIGN KEY(sock_id)
-                REFERENCES socks(id)
+		FOREIGN KEY(sock_id) REFERENCES socks(id) ON DELETE CASCADE
         )`
+		/*
+		 CONSTRAINT fk_location
+			FOREIGN KEY(location_id)
+				REFERENCES locations(id)
+					ON DELETE CASCADE,
+		CONSTRAINT fk_sock
+			FOREIGN KEY(sock_id)
+				REFERENCES socks(id)
+					ON DELETE CASCADE
+		*/
 	);
 
 	let location_ids = await pool
@@ -315,7 +328,8 @@ function generateID(length = 7) {
 	}
 	return base;
 }
-module.exports = async function initDB() {
+module.exports = initDB
+async function initDB() {
 	await dropAllTables();
 	await addOfficersToDb();
 	await addLocationsToDb();
