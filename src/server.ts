@@ -11,10 +11,9 @@ import {
 	getSocks,
 	getOfficers,
 	getHistory,
-} from "./db";
-import pageRoutes from "./routes/index";
-import RestApi from './api/index'
-
+} from "./code/db";
+import pageRoutes from "./code/routes/index";
+import RestApi from "./api/index";
 
 const app = express();
 app.set("view engine", "ejs");
@@ -28,10 +27,10 @@ app.use(
 		origin: true,
 	})
 );
-app.use('/api', RestApi);
+app.use("/api", RestApi);
 app.use(pageRoutes);
 
-app.use(express.static(path.join(__dirname, "../client")));
+app.use(express.static(path.join(__dirname, "./public")));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
