@@ -1,10 +1,7 @@
 function Nav() {
 	return (
 		<>
-			<nav
-				role="navigation"
-				className="navbar navbar-inverse navbar-fixed-top"
-			>
+			<nav role="navigation" className="navbar">
 				<div className="container">
 					<div className="navbar-header">
 						<button
@@ -39,7 +36,7 @@ function Nav() {
 						</div>
 					</div>
 
-					<div className="navbar-collapse collapse">
+					{/* <div className="navbar-collapse collapse">
 						<ul className="nav navbar-nav navbar-right">
 							<li>
 								<a href="#">
@@ -48,7 +45,7 @@ function Nav() {
 								</a>
 							</li>
 						</ul>
-					</div>
+					</div> */}
 				</div>
 			</nav>
 		</>
