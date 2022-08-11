@@ -111,7 +111,7 @@ function AddSock() {
               onChange={(option) => {
                 console.log(option);
 
-                const val = option.currentTarget.value;
+                const val = option.target.value;
                 setLocation(val);
               }}
               select
@@ -129,7 +129,7 @@ function AddSock() {
             </TextField>
             <TextField
               onChange={(e) => {
-                const val = e.currentTarget.value;
+                const val = e.target.value;
                 setOfficer(val);
               }}
               select
