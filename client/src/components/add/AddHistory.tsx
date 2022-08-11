@@ -57,12 +57,21 @@ function AddHistory() {
 	const [socks, setSocks] = useState<any[]>([]);
 	const [alert, setAlert] = useState<string>("");
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		getLocationsAndSocks().then((data) => {
 			setLocations(data.locations);
 			setSocks(data.socks);
 		});
 	}, []);
+
+	function reset() {
+		setArrivalDate(new Date());
+		setDepartureDate(new Date());
+		setLocationId("");
+		setSockId("");
+	}
+
 	return (
 		<div id="container">
 			<Card subTitle="" title="Add History">
@@ -164,6 +173,9 @@ function AddHistory() {
 							type="reset"
 							variant="outlined"
 							startIcon={<DeleteIcon />}
+							onClick={() => {
+								reset();
+							}}
 						>
 							Reset
 						</Button>

@@ -42,6 +42,13 @@ function AddLocation() {
 	const [alert, setAlert] = useState<string>("");
 	const navigate = useNavigate();
 
+	function reset() {
+		setBase("");
+		setCity("");
+		setLon("");
+		setLat("");
+	}
+
 	return (
 		<div id="container">
 			<Card subTitle="" title="Add Location">
@@ -129,6 +136,7 @@ function AddLocation() {
 							type="reset"
 							variant="outlined"
 							startIcon={<DeleteIcon />}
+							onClick={reset}
 						>
 							Reset
 						</Button>

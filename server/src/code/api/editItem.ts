@@ -28,12 +28,12 @@ router.post("/sock/:id", async (req, res) => {
 				year,
 				locationId,
 			}).then((data) => {
-				res
-					// .json({ success: true, officer: data.rows[0] })
-					.redirect("/edit/sock/" + id);
+				res.json({ success: true, sock: data.rows[0] });
+				// res.json({ success: false, message: "this is an error message" });
+				// .redirect("/edit/sock/" + id);
 			});
 		} else {
-			res.json({ success: false, message: "this sock doesnt exists" });
+			res.json({ success: false, message: "this sock does'nt exists" });
 		}
 	} else {
 		res.json({
@@ -64,12 +64,12 @@ router.post("/location/:id", async (req, res) => {
 				lon,
 				lat,
 			}).then((data) => {
-				res
-					// .json({ success: true, officer: data.rows[0] })
-					.redirect("/edit/location/" + id);
+				// res.json({ success: false, message: "this sock does'nt exists" });
+				res.json({ success: true, location: data.rows[0] });
+				// .redirect("/edit/location/" + id);
 			});
 		} else {
-			res.json({ success: false, message: "this location doesnt exists" });
+			res.json({ success: false, message: "this location does'nt exists" });
 		}
 	} else {
 		res.json({
@@ -96,9 +96,8 @@ router.post("/history/:id", async (req, res) => {
 				locationId,
 				sockId,
 			}).then((data) => {
-				res
-					// .json({ success: true, officer: data.rows[0] })
-					.redirect("/edit/history/" + id);
+				res.json({ success: true, history: data.rows[0] });
+				// .redirect("/edit/history/" + id);
 			});
 		} else {
 			res.json({
@@ -132,16 +131,16 @@ router.post("/officer/:id", async (req, res) => {
 				phone,
 				armyIdNumber,
 			}).then((data) => {
-				res
-					// .json({ success: true, officer: data.rows[0] })
-					.redirect("/edit/officer/" + id);
+				// res.json({ success: false, message: "this is an error message" });
+				res.json({ success: true, officer: data.rows[0] });
+				// .redirect("/edit/officer/" + id);
 			});
 		} else {
 			res.json({ message: "this officer does not exists", success: false });
 		}
 	} else {
 		res.json({
-			messgae: "make sure you have all the fields needed",
+			message: "make sure you have all the fields needed",
 			success: false,
 		});
 	}

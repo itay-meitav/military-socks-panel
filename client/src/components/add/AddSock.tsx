@@ -64,6 +64,15 @@ function AddSock() {
 	const [alert, setAlert] = useState<string>("");
 	const navigate = useNavigate();
 
+	function reset() {
+		setModel("");
+		setQuantity("");
+		setSize("");
+		setYear(new Date());
+		setLocationId("");
+		setOfficerId("");
+	}
+
 	useEffect(() => {
 		getLocationsAndOfficers().then((data) => {
 			setLocations(data.locations);
@@ -196,6 +205,7 @@ function AddSock() {
 							type="reset"
 							variant="outlined"
 							startIcon={<DeleteIcon />}
+							onClick={reset}
 						>
 							Reset
 						</Button>

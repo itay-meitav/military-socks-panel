@@ -47,6 +47,13 @@ function AddOfficer() {
 
 	const navigate = useNavigate();
 
+	function reset() {
+		setName("");
+		setEmail("@wpra.ru");
+		setPhone("+7");
+		setArmyIdNumber("");
+	}
+
 	return (
 		<div id="container">
 			<Card subTitle="" title="Add Officer">
@@ -108,10 +115,10 @@ function AddOfficer() {
 								if (/^\+(7[0-9]*|)$|^$/.test(val)) setPhone(val);
 							}}
 							inputProps={{
-								maxLength: 11,
+								maxLength: 12,
 								inputMode: "numeric",
 								type: "tel",
-								pattern: "\\+[0-9]{10}",
+								pattern: "\\+[0-9]{11}",
 								title: "a phone starts with +7 and has 10 digits",
 							}}
 							name="phone"
@@ -141,6 +148,7 @@ function AddOfficer() {
 							type="reset"
 							variant="outlined"
 							startIcon={<DeleteIcon />}
+							onClick={reset}
 						>
 							Reset
 						</Button>
