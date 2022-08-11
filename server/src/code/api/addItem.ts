@@ -32,15 +32,15 @@ router.post("/sock", async (req, res) => {
 				year,
 				locationId,
 			});
-			if (id) res.redirect("/socks?id=" + id);
+			if (id) res.json({ id, success: true });
 			else
 				res.json({
-					message: "something went wront please try again later",
+					message: "something went wrong please try again later",
 					success: false,
 				});
 		} else {
 			res.json({
-				messgae: "dont play with our api, you'll get yourself banned",
+				message: "don't play with our api, you'll get yourself banned",
 				success: false,
 			});
 		}
@@ -66,7 +66,7 @@ router.post("/location", async (req, res) => {
 				lon,
 				lat,
 			});
-			res.redirect("/locations?id=" + id);
+			res.json({ id, success: true });
 		}
 	} else {
 		res.json({
@@ -93,15 +93,15 @@ router.post("/history", async (req, res) => {
 				locationId,
 				sockId,
 			});
-			res.redirect("/history?id=" + id);
+			res.json({ id, success: true });
 		} else {
 			res.json({
-				message: "dont play with our api. it's not a playground",
+				message: "don't play with our api. it's not a playground",
 				success: false,
 			});
 		}
 	} else {
-		res.send({
+		res.json({
 			message: "make sure to fill all the necessary fields",
 			success: false,
 		});
@@ -118,14 +118,21 @@ router.post("/officer", async (req, res) => {
 			armyIdNumber,
 		};
 		const isExists = await isArmyIdExists(armyIdNumber);
-		if (isExists) res.send("army id already exists");
+		if (isExists)
+			res.json({ message: "army id already exists", success: false });
 		else {
 			const id = await addOfficer(details);
-			res.redirect("/officers?id=" + id);
+			res.json({
+				id,
+				success: !!id,
+				message: id
+					? undefined
+					: "something went wrong while trying to save the officer",
+			});
 		}
 	} else {
 		res.json({
-			messgae: "make sure you have all the fields needed",
+			message: "make sure you have all the fields needed",
 			success: false,
 		});
 	}

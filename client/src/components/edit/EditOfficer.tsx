@@ -7,82 +7,90 @@ import SendIcon from "@mui/icons-material/Send";
 import Card from "../Card";
 
 function EditOfficer() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("@wpra.ru");
-  const [phone, setPhone] = useState("");
-  const [armyIdNumber, setArmyIdNumber] = useState("");
-  return (
-    <div id="container">
-      <Card subTitle="" title="Add Officer">
-        <form
-          action="/api/add/officer"
-          method="post"
-          autoComplete={"off"}
-          role="form"
-        >
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Name"
-            placeholder="Name"
-            name="name"
-            required
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setName(val);
-            }}
-          />
-          <div className="column">
-            <TextField
-              label="Email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => {
-                const val = e.currentTarget.value;
-                setEmail(val);
-              }}
-              name="email"
-              required
-            />
-            <TextField
-              label="Phone"
-              placeholder="Phone"
-              onChange={(e) => {
-                const val = e.currentTarget.value;
-                if (/^\+[0-9]*/.test(val)) setPhone(val);
-              }}
-              inputProps={{
-                maxLength: 12,
-              }}
-              name="phone"
-              required
-            />
-          </div>
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Army id number"
-            placeholder="Army id number"
-            inputProps={{
-              maxLength: 7,
-            }}
-            name="armyIdNumber"
-            required
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setArmyIdNumber(val.substring(0, 7));
-            }}
-          />
-          <Stack direction="row" spacing={2}>
-            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
-              Reset
-            </Button>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-              Submit
-            </Button>
-          </Stack>
-        </form>
-      </Card>
-    </div>
-  );
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("@wpra.ru");
+	const [phone, setPhone] = useState("");
+	const [armyIdNumber, setArmyIdNumber] = useState("");
+	return (
+		<div id="container">
+			<Card subTitle="" title="Add Officer">
+				<form
+					action="/api/add/officer"
+					method="post"
+					autoComplete={"on"}
+					role="form"
+				>
+					<TextField
+						style={{ minWidth: "50%" }}
+						label="Name"
+						placeholder="Name"
+						name="name"
+						required
+						onChange={(e) => {
+							const val = e.currentTarget.value;
+							setName(val);
+						}}
+					/>
+					<div className="column">
+						<TextField
+							label="Email"
+							placeholder="Email"
+							value={email}
+							onChange={(e) => {
+								const val = e.currentTarget.value;
+								setEmail(val);
+							}}
+							name="email"
+							required
+						/>
+						<TextField
+							label="Phone"
+							placeholder="Phone"
+							onChange={(e) => {
+								const val = e.currentTarget.value;
+								if (/^\+[0-9]*/.test(val)) setPhone(val);
+							}}
+							inputProps={{
+								maxLength: 12,
+							}}
+							name="phone"
+							required
+						/>
+					</div>
+					<TextField
+						style={{ minWidth: "50%" }}
+						label="Army id number"
+						placeholder="Army id number"
+						inputProps={{
+							maxLength: 7,
+						}}
+						name="armyIdNumber"
+						required
+						onChange={(e) => {
+							const val = e.currentTarget.value;
+							setArmyIdNumber(val.substring(0, 7));
+						}}
+					/>
+					<Stack direction="row" spacing={2}>
+						<Button
+							type="reset"
+							variant="outlined"
+							startIcon={<DeleteIcon />}
+						>
+							Reset
+						</Button>
+						<Button
+							type="submit"
+							variant="contained"
+							endIcon={<SendIcon />}
+						>
+							Submit
+						</Button>
+					</Stack>
+				</form>
+			</Card>
+		</div>
+	);
 }
 
 export default EditOfficer;
