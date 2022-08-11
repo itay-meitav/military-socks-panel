@@ -8,7 +8,7 @@ import {
   getLocationsShort,
   getOfficersShort,
   getSocksShort,
-} from "../db";
+} from "../../db";
 const router = express.Router();
 
 router.get("/sock/:id", async (req, res) => {
@@ -18,15 +18,19 @@ router.get("/sock/:id", async (req, res) => {
     getOfficersShort(),
   ]);
   if (sock?.length)
-    res.render("edit/sock", { info: {}, sock: sock[0], locations, officers });
-  else res.redirect("/socks");
+    res.json({ sock: sock[0], locations, officers, success: true });
+  else
+    res.json({ success: false, message: "could'nt find a sock with that id" });
 });
 
 router.get("/officer/:id", async (req, res) => {
   const officer = await getOfficers(1, { id: Number(req.params.id) });
-  if (officer?.length)
-    res.render("edit/officer", { info: {}, officer: officer[0] });
-  else res.redirect("/officers");
+  if (officer?.length) res.json({ officer: officer[0] });
+  else
+    res.json({
+      success: false,
+      message: "could'nt find an officer with that id",
+    });
 });
 
 router.get("/history/:id", async (req, res) => {
@@ -36,23 +40,27 @@ router.get("/history/:id", async (req, res) => {
     getSocksShort(),
   ]);
   if (history?.length)
-    res.render("edit/history", {
-      info: {},
+    res.json({
       history: history[0],
       locations,
       socks,
     });
   else {
-    res.redirect("/history");
+    res.json({
+      success: false,
+      message: "could'nt find a location history with this id",
+    });
   }
 });
 
 router.get("/location/:id", async (req, res) => {
   const location = await getLocations(2, 0, { id: Number(req.params.id) });
-  if (location?.length)
-    res.render("edit/location", { info: {}, location: location[0] });
+  if (location?.length) res.json({ location: location[0] });
   else {
-    res.redirect("/locations");
+    res.json({
+      success: false,
+      message: "could'nt find a location with this id",
+    });
   }
 });
 

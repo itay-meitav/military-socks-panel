@@ -1,50 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./Card";
-import HistoryTable from "./tables/HistoryTable";
+import HistoryTable, { IHistory } from "./tables/HistoryTable";
+import Pagination from "@mui/material/Pagination";
+import { useSearchParams } from "react-router-dom";
 
-const raw = [
-	{
-		arrival_date: new Date(),
-		departure_date: new Date(),
-		id: 1,
-		lat: 11.34,
-		location_id: 1,
-		lon: -123.844,
-		model: "this is the model",
-		sock_id: 1,
-	},
-	{
-		arrival_date: new Date(),
-		departure_date: new Date(),
-		id: 2,
-		lat: 11.34,
-		location_id: 2,
-		lon: -223.844,
-		model: "this is the model",
-		sock_id: 2,
-	},
-	{
-		arrival_date: new Date(),
-		departure_date: new Date(),
-		id: 3,
-		lat: 11.34,
-		location_id: 3,
-		lon: -323.844,
-		model: "this is the model",
-		sock_id: 3,
-	},
-];
+import config from "../assets/config";
+
+interface IGetHistoryOptopns {
+  id?: number;
+  sock_id?: number;
+  location_id?: number;
+  limit: number;
+  offset: number;
+}
+
+const getHistory = async (options: IGetHistoryOptopns) => {
+  const searchParams = new URLSearchParams(Object.entries(options));
+  const url = `${config.apiHost}/api/get/history?${searchParams.toString()}`;
+  console.log(url);
+
+  const response = await fetch(url);
+  if (response.ok) {
+    const data = await response.json();
+    if (data.success) return data as { history: IHistory[]; pages: number };
+    else {
+      console.log(data.message);
+      return { history: [], pages: 0 };
+    }
+  } else {
+    console.log(response);
+    return { history: [], pages: 0 };
+  }
+};
+
 function HistoryPage() {
-	return (
-		<div id="container">
-			<Card
-				title="locations history table"
-				subTitle="table to view sock location history"
-			>
-				<HistoryTable rows={raw}></HistoryTable>
-			</Card>
-		</div>
-	);
+  const [history, setHistory] = useState<IHistory[]>([]);
+  const [searchParams, setSearParams] = useSearchParams();
+  const [page, setPage] = useState<number>(
+    Number(searchParams.get("page")) || 1
+  );
+  const [pages, setPages] = useState(0);
+
+  useEffect(() => {
+    // set current page to search params
+    searchParams.set("page", page + "");
+    setSearParams(searchParams);
+
+    const id = Number(searchParams.get("id")) || undefined;
+    const sock_id = Number(searchParams.get("sock_id")) || undefined;
+    const location_id = Number(searchParams.get("location_id")) || undefined;
+    const limit = 20;
+    const offset = (page - 1) * limit;
+
+    // set fetch options
+    const options: IGetHistoryOptopns = { limit, offset };
+
+    id && (options.id = id);
+    sock_id && (options.sock_id = sock_id);
+    location_id && (options.location_id = location_id);
+
+    // get socks
+    getHistory(options).then((data) => {
+      setHistory(data.history);
+      setPages(data.pages);
+    });
+  }, [page]);
+
+  return (
+    <div id="container">
+      <Card
+        title="locations history table"
+        subTitle="table to view sock location history"
+      >
+        <HistoryTable rows={history}></HistoryTable>
+      </Card>
+
+      <div className="pagination">
+        <Pagination
+          count={pages}
+          page={page}
+          onChange={(e, value: number) => {
+            setPage(value);
+          }}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default HistoryPage;

@@ -1,57 +1,87 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./Card";
-import SocksTable from "./tables/SocksTable";
+import SocksTable, { ISock } from "./tables/SocksTable";
+import Pagination from "@mui/material/Pagination";
+import { useSearchParams } from "react-router-dom";
 
-const raw = [
-	{
-		id: 1,
-		officer_id: 1,
-		location_id: 1,
-		model: "this is a model",
-		quantity: 332,
-		size: 48,
-		name: "mikahel",
-		base_name: "base",
-		lat: -339.23,
-		lon: 234.843,
-		manufacturing_year: new Date(),
-	},
-	{
-		id: 2,
-		officer_id: 2,
-		location_id: 2,
-		model: "this is a model",
-		quantity: 332,
-		size: 48,
-		name: "mikahel",
-		base_name: "base",
-		lat: -339.23,
-		lon: 234.843,
-		manufacturing_year: new Date(),
-	},
-	{
-		id: 3,
-		officer_id: 3,
-		location_id: 3,
-		model: "this is a model",
-		quantity: 332,
-		size: 48,
-		name: "mikahel",
-		base_name: "base",
-		lat: -339.23,
-		lon: 234.843,
-		manufacturing_year: new Date(),
-	},
-];
+import config from "../assets/config";
+
+interface IGetSocksOptopns {
+  id?: number;
+  officer_id?: number;
+  location_id?: number;
+  limit: number;
+  offset: number;
+}
+
+const getSocks = async (options: IGetSocksOptopns) => {
+  const searchParams = new URLSearchParams(Object.entries(options));
+  const url = `${config.apiHost}/api/get/socks?${searchParams.toString()}`;
+  console.log(url);
+
+  const response = await fetch(url);
+  if (response.ok) {
+    const data = await response.json();
+    if (data.success) return data as { socks: ISock[]; pages: number };
+    else {
+      console.log(data.message);
+      return { socks: [], pages: 0 };
+    }
+  } else {
+    console.log(response);
+    return { socks: [], pages: 0 };
+  }
+};
 
 function SocksPage() {
-	return (
-		<div id="container">
-			<Card subTitle="this is the socks table" title="socks table">
-				<SocksTable rows={raw}></SocksTable>
-			</Card>
-		</div>
-	);
+  const [socks, setSocks] = useState<ISock[]>([]);
+  const [searchParams, setSearParams] = useSearchParams();
+  const [page, setPage] = useState<number>(
+    Number(searchParams.get("page")) || 1
+  );
+  const [pages, setPages] = useState(0);
+
+  useEffect(() => {
+    // set current page to search params
+    searchParams.set("page", page + "");
+    setSearParams(searchParams);
+
+    const id = Number(searchParams.get("id")) || undefined;
+    const officer_id = Number(searchParams.get("officer_id")) || undefined;
+    const location_id = Number(searchParams.get("location_id")) || undefined;
+    const limit = 20;
+    const offset = (page - 1) * limit;
+
+    // set fetch options
+    const options: IGetSocksOptopns = { limit, offset };
+
+    id && (options.id = id);
+    officer_id && (options.officer_id = officer_id);
+    location_id && (options.location_id = location_id);
+
+    // get socks
+    getSocks(options).then((data) => {
+      setSocks(data.socks);
+      setPages(data.pages);
+    });
+  }, [page]);
+
+  return (
+    <div id="container">
+      <Card subTitle="this is the socks table" title="socks table">
+        <SocksTable rows={socks}></SocksTable>
+      </Card>
+      <div className="pagination">
+        <Pagination
+          count={pages}
+          page={page}
+          onChange={(e, value: number) => {
+            setPage(value);
+          }}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default SocksPage;
