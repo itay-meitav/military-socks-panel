@@ -37,10 +37,11 @@ function AddLocation() {
               placeholder="Latitude"
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                setLat(val);
+                if (/^[-]?[0-9]{1,3}.[0-9]{1,3}$/.test(val)) setLat(val);
               }}
               name="lat"
               inputProps={{
+                inputMode: "numeric",
                 pattern: "^[-]?[0-9]{1,3}.[0-9]{1,3}$",
                 maxLength: 8,
                 title: `longtitude should contain up to 3 digits
@@ -52,18 +53,20 @@ function AddLocation() {
             <TextField
               label="Longtitude"
               placeholder="Longtitude"
+              value={lon}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                setLon(val);
+                if (/^\-?[0-9]{0,3}(\.[0-9]{0,3})?$/.test(val)) setLon(val);
               }}
               name="lon"
               inputProps={{
+                inputMode: "numeric",
                 pattern: "^[-]?[0-9]{1,3}.[0-9]{1,3}$",
                 maxLength: 8,
+                title: `longtitude should contain up to 3 digits
+							  before the decimal and up to 3 after
+							  can also be a negative`,
               }}
-              title="longtitude should contain up to 3 digits
-							before the decimal and up to 3 after
-							can also be a negative"
               required
             />
           </div>
@@ -79,10 +82,10 @@ function AddLocation() {
             required
           />
           <Stack direction="row" spacing={2}>
-            <Button variant="outlined" startIcon={<DeleteIcon />}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
               Reset
             </Button>
-            <Button variant="contained" endIcon={<SendIcon />}>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
               Submit
             </Button>
           </Stack>

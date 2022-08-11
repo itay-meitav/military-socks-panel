@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../Card";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,13 +9,24 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
+import config from "../../assets/config";
 
-const locations = [
-  {
-    id: 1,
-    base_name: "vladimir base",
-  },
-];
+async function getLocationsAndOfficers() {
+  const response = await fetch(`${config.apiHost}/api/get/add/sock`);
+  if (response.ok) {
+    const data = await response.json();
+    return data as { locations: any[]; officers: any[] };
+  } else {
+    return { locations: [], officers: [] };
+  }
+}
+
+// const locations = [
+//   {
+//     id: 1,
+//     base_name: "vladimir base",
+//   },
+// ];
 
 function AddSock() {
   const [model, setModel] = useState("");
@@ -23,7 +34,18 @@ function AddSock() {
   const [size, setSize] = useState("");
   const [year, setYear] = useState(new Date());
   const [location, setLocation] = useState("");
+  const [locations, setLocations] = useState<any[]>([]);
   const [officer, setOfficer] = useState("");
+  const [officers, setOfficers] = useState<any[]>([]);
+
+  useEffect(() => {
+    getLocationsAndOfficers().then((data) => {
+      setLocations(data.locations);
+      setOfficers(data.officers);
+      console.log(data);
+    });
+  }, []);
+
   return (
     <div id="container">
       <Card subTitle="" title="Add Sock">
@@ -39,6 +61,7 @@ function AddSock() {
             placeholder="Model"
             name="model"
             required
+            value={model}
             onChange={(e) => {
               const val = e.currentTarget.value;
               setModel(val);
@@ -48,9 +71,10 @@ function AddSock() {
             <TextField
               label="Quantity"
               placeholder="Quantity"
+              value={quantity}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                setQuantity(val);
+                if (/^[0-9]*$/.test(val)) setQuantity(val);
               }}
               name="quantity"
               required
@@ -58,6 +82,7 @@ function AddSock() {
             <TextField
               label="Size"
               placeholder="Size"
+              value={size}
               onChange={(e) => {
                 const val = e.currentTarget.value;
                 setSize(val);
@@ -83,8 +108,10 @@ function AddSock() {
           </div>
           <div className="column">
             <TextField
-              onChange={(e) => {
-                const val = e.currentTarget.value;
+              onChange={(option) => {
+                console.log(option);
+
+                const val = option.currentTarget.value;
                 setLocation(val);
               }}
               select
@@ -112,18 +139,18 @@ function AddSock() {
               helperText="Please select an officer"
               required
             >
-              {locations.map((option) => (
+              {officers.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
-                  {option.base_name}
+                  {option.name}
                 </MenuItem>
               ))}
             </TextField>
           </div>
           <Stack direction="row" spacing={2}>
-            <Button variant="outlined" startIcon={<DeleteIcon />}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
               Reset
             </Button>
-            <Button variant="contained" endIcon={<SendIcon />}>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
               Submit
             </Button>
           </Stack>

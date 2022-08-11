@@ -13,117 +13,125 @@ import { useState } from "react";
 import NavItem from "./NavItem";
 
 function LeftNav() {
-	const [showNav, setShowNav] = useState(false);
-	const [spinIcon, setSpinIcon] = useState(false);
+  const [showNav, setShowNav] = useState(false);
+  const [spinIcon, setSpinIcon] = useState(false);
 
-	const loc = useLocation();
-	return (
-		<>
-			<div className={"left-nav" + (showNav ? " show" : "")}>
-				<div className="page-name">
-					<div className="title">
-						<img src={logo} alt="russian socks logo" />
-						<span className=""></span> {"page name".toUpperCase()}
-					</div>
-					<Button
-						variant={"text"}
-						id="close-logo"
-						style={{ color: "white" }}
-						onClick={() => {
-							setShowNav(false);
-						}}
-					>
-						<CloseIcon />
-					</Button>
-					<Button
-						variant={"text"}
-						id="open-menu"
-						style={{ color: "white" }}
-						onClick={() => {
-							setShowNav(true);
-						}}
-					>
-						<MenuIcon></MenuIcon>
-					</Button>
-				</div>
+  function hideNav() {
+    setShowNav(false);
+  }
 
-				<div className="nav-panel">
-					<div className="nav-items">
-						<span className="title">Menu</span>
+  const loc = useLocation();
+  return (
+    <>
+      <div className={"left-nav" + (showNav ? " show" : "")}>
+        <div className="page-name">
+          <div className="title">
+            <img src={logo} alt="russian socks logo" />
+            <span className=""></span> {"page name".toUpperCase()}
+          </div>
+          <Button
+            variant={"text"}
+            id="close-logo"
+            style={{ color: "white" }}
+            onClick={() => {
+              setShowNav(false);
+            }}
+          >
+            <CloseIcon />
+          </Button>
+          <Button
+            variant={"text"}
+            id="open-menu"
+            style={{ color: "white" }}
+            onClick={() => {
+              setShowNav(true);
+            }}
+          >
+            <MenuIcon></MenuIcon>
+          </Button>
+        </div>
 
-						<NavItem
-							path="/socks"
-							text="Socks"
-							icon={<SearchIcon />}
-							key={0}
-						/>
-						<NavItem
-							path="/locations"
-							text="Locations"
-							icon={<LocationOnIcon />}
-							key={1}
-						/>
-						<NavItem
-							path="/history"
-							text="history"
-							icon={<ListAltIcon />}
-							key={2}
-						/>
-						<NavItem
-							path="/officers"
-							text="officers"
-							icon={<AccountBoxIcon />}
-							key={3}
-						/>
-						{/* <div> */}
-						<span className="title">Tools</span>
+        <div className="nav-panel">
+          <div className="nav-items">
+            <span className="title">Menu</span>
 
-						<NavItem
-							path={`/${
-								loc.pathname.replace(/^\//g, "").split("/")[0] ||
-								"socks"
-							}/add`}
-							text="Add new item"
-							icon={<ModeIcon />}
-							key={4}
-						/>
-						<div
-							className="nav-item"
-							onClick={(e) => {
-								setSpinIcon(true);
-								fetch("/api/reset", {
-									method: "put",
-								})
-									.then((res) => {
-										if (res.ok) return res.json();
-									})
-									.then((res) => {
-										setSpinIcon(false);
-									})
-									.catch(() => {
-										setSpinIcon(false);
-										// e.target
-										// 	.querySelector("span")
-										// 	.classList.remove("spin");
-									});
-							}}
-						>
-							<Button
-								variant={"text"}
-								style={{ color: "white" }}
-								startIcon={
-									<RestartAltIcon className={spinIcon ? "spin" : ""} />
-								}
-							>
-								Reset data
-							</Button>
-						</div>
-					</div>
-					{/* </div> */}
-				</div>
-			</div>
-		</>
-	);
+            <NavItem
+              hide={hideNav}
+              path="/socks"
+              text="Socks"
+              icon={<SearchIcon />}
+              key={0}
+            />
+            <NavItem
+              hide={hideNav}
+              path="/locations"
+              text="Locations"
+              icon={<LocationOnIcon />}
+              key={1}
+            />
+            <NavItem
+              hide={hideNav}
+              path="/history"
+              text="history"
+              icon={<ListAltIcon />}
+              key={2}
+            />
+            <NavItem
+              hide={hideNav}
+              path="/officers"
+              text="officers"
+              icon={<AccountBoxIcon />}
+              key={3}
+            />
+            {/* <div> */}
+            <span className="title">Tools</span>
+
+            <NavItem
+              hide={hideNav}
+              path={`/${
+                loc.pathname.replace(/^\//g, "").split("/")[0] || "socks"
+              }/add`}
+              text="Add new item"
+              icon={<ModeIcon />}
+              key={4}
+            />
+            <div
+              className="nav-item"
+              onClick={(e) => {
+                setSpinIcon(true);
+                fetch("/api/reset", {
+                  method: "put",
+                })
+                  .then((res) => {
+                    if (res.ok) return res.json();
+                  })
+                  .then((res) => {
+                    setSpinIcon(false);
+                  })
+                  .catch(() => {
+                    setSpinIcon(false);
+                    // e.target
+                    // 	.querySelector("span")
+                    // 	.classList.remove("spin");
+                  });
+              }}
+            >
+              <Button
+                variant={"text"}
+                style={{ color: "white" }}
+                startIcon={
+                  <RestartAltIcon className={spinIcon ? "spin" : ""} />
+                }
+              >
+                Reset data
+              </Button>
+            </div>
+          </div>
+          {/* </div> */}
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default LeftNav;

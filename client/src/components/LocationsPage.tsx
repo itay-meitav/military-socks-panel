@@ -40,10 +40,8 @@ function LocationsPage() {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    // set current page to search params
-    searchParams.set("page", page + "");
-    setSearParams(searchParams);
-
+    const page = Number(searchParams.get("page")) || 1;
+    setPage(page);
     const id = Number(searchParams.get("id")) || undefined;
     const officer_id = Number(searchParams.get("officer_id")) || undefined;
     const location_id = Number(searchParams.get("location_id")) || undefined;
@@ -60,7 +58,7 @@ function LocationsPage() {
       setLocations(data.locations);
       setPages(data.pages);
     });
-  }, [page]);
+  }, [searchParams]);
 
   return (
     <div id="container">
@@ -76,6 +74,9 @@ function LocationsPage() {
           page={page}
           onChange={(e, value: number) => {
             setPage(value);
+            // set current page to search params
+            searchParams.set("page", page + "");
+            setSearParams(searchParams);
           }}
         />
       </div>

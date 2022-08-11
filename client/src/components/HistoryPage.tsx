@@ -42,9 +42,9 @@ function HistoryPage() {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    // set current page to search params
-    searchParams.set("page", page + "");
-    setSearParams(searchParams);
+    // set current page from search params to state
+    const page = Number(searchParams.get("page")) || 1;
+    setPage(page);
 
     const id = Number(searchParams.get("id")) || undefined;
     const sock_id = Number(searchParams.get("sock_id")) || undefined;
@@ -64,7 +64,7 @@ function HistoryPage() {
       setHistory(data.history);
       setPages(data.pages);
     });
-  }, [page]);
+  }, [searchParams]);
 
   return (
     <div id="container">
@@ -81,6 +81,9 @@ function HistoryPage() {
           page={page}
           onChange={(e, value: number) => {
             setPage(value);
+
+            searchParams.set("page", value + "");
+            setSearParams(searchParams);
           }}
         />
       </div>

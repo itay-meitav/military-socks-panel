@@ -1,64 +1,84 @@
 import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 import Card from "../Card";
 
 function EditOfficer() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("@wpra.ru");
   const [phone, setPhone] = useState("");
   const [armyIdNumber, setArmyIdNumber] = useState("");
   return (
     <div id="container">
-      <Card subTitle="" title="Add History">
+      <Card subTitle="" title="Add Officer">
         <form
-          action="/api/edit/officer/officer.id"
+          action="/api/add/officer"
           method="post"
-          autoComplete="off"
+          autoComplete={"off"}
           role="form"
         >
-          <label>Name</label>
-          <input
-            onInput={(e) => {
+          <TextField
+            style={{ minWidth: "50%" }}
+            label="Name"
+            placeholder="Name"
+            name="name"
+            required
+            onChange={(e) => {
               const val = e.currentTarget.value;
               setName(val);
             }}
-            name="name"
-            type="text"
-            value="officer.name"
-            required
-          ></input>
-          <label>Email</label>
-          <input
-            name="email"
-            type="email"
-            value="officer.email"
-            required
-          ></input>
-          <label>Phone</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setPhone(val);
-            }}
-            name="phone"
-            maxLength={12}
-            type="text"
-            value="officer.phone"
-            required
-          ></input>
-          <label>Army id number</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setArmyIdNumber(val);
+          />
+          <div className="column">
+            <TextField
+              label="Email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setEmail(val);
+              }}
+              name="email"
+              required
+            />
+            <TextField
+              label="Phone"
+              placeholder="Phone"
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                if (/^\+[0-9]*/.test(val)) setPhone(val);
+              }}
+              inputProps={{
+                maxLength: 12,
+              }}
+              name="phone"
+              required
+            />
+          </div>
+          <TextField
+            style={{ minWidth: "50%" }}
+            label="Army id number"
+            placeholder="Army id number"
+            inputProps={{
+              maxLength: 7,
             }}
             name="armyIdNumber"
-            maxLength={7}
-            type="text"
-            value="officer.army_id_number"
             required
-          ></input>
-          <input type="reset" value="Reset"></input>
-          <input type="submit" value="Submit"></input>
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setArmyIdNumber(val.substring(0, 7));
+            }}
+          />
+          <Stack direction="row" spacing={2}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
+              Reset
+            </Button>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+              Submit
+            </Button>
+          </Stack>
         </form>
       </Card>
     </div>

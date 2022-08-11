@@ -8,8 +8,8 @@ import Card from "../Card";
 
 function AddOfficer() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("@wpra.ru");
+  const [phone, setPhone] = useState("+7");
   const [armyIdNumber, setArmyIdNumber] = useState("");
   return (
     <div id="container">
@@ -26,6 +26,7 @@ function AddOfficer() {
             placeholder="Name"
             name="name"
             required
+            value={name}
             onChange={(e) => {
               const val = e.currentTarget.value;
               setName(val);
@@ -35,23 +36,31 @@ function AddOfficer() {
             <TextField
               label="Email"
               placeholder="Email"
-              value={"@wpra.ru"}
+              value={email}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                setEmail(val);
+                if (/^.*[^ ]*@wpra\.ru$/.test(val)) setEmail(val);
               }}
               name="email"
+              inputProps={{
+                pattern: ".{3,}@wpra.ru",
+                title: "the format is user@wpra.ru. user must be over 3 letter",
+              }}
               required
             />
             <TextField
               label="Phone"
               placeholder="Phone"
+              value={phone}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                setPhone(val);
+                if (/^\+[0-9]*$/.test(val)) setPhone(val);
               }}
               inputProps={{
                 maxLength: 12,
+                inputMode: "numeric",
+                type: "tel",
+                pattern: "+[0-9]{10}",
               }}
               name="phone"
               required
@@ -72,10 +81,10 @@ function AddOfficer() {
             }}
           />
           <Stack direction="row" spacing={2}>
-            <Button variant="outlined" startIcon={<DeleteIcon />}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
               Reset
             </Button>
-            <Button variant="contained" endIcon={<SendIcon />}>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
               Submit
             </Button>
           </Stack>

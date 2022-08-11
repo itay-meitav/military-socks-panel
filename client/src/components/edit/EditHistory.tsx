@@ -1,70 +1,112 @@
 import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 import Card from "../Card";
 
+const locations = [
+  {
+    id: 1,
+    base_name: "vladimir base",
+  },
+];
+
 function EditHistory() {
-  const [arrivalDate, setarrivalDate] = useState("");
-  const [departureDate, setdepartureDate] = useState("");
-  const [locationId, setlocationId] = useState("");
-  const [sockId, setsockId] = useState("");
+  const [arrivalDate, setArrivalDate] = useState(new Date());
+  const [departureDate, setDepartureDate] = useState(new Date());
+  const [locationId, setLocationId] = useState("");
+  const [sockId, setSockId] = useState("");
   return (
     <div id="container">
-      <Card subTitle="" title="Edit History">
+      <Card subTitle="" title="Add History">
         <form
-          action="/api/edit/history/history.id"
+          action="/api/add/history"
           method="post"
           autoComplete={"off"}
           role="form"
         >
-          <label>Arrival Date</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setarrivalDate(val);
-            }}
-            name="arrivalDate"
-            type="date"
-            value="history.arrival_date.toISOString().split('T')[0]"
-            required
-          ></input>
-          <label>Departure Date</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setdepartureDate(val);
-            }}
-            name="departureDate"
-            type="date"
-            value="history.departure_date.toISOString().split('T')[0]"
-            required
-          ></input>
-          <label>Location</label>
-          {/* <select onChange={(e) => {
+          <TextField
+            style={{ minWidth: "50%" }}
+            onChange={(e) => {
               const val = e.currentTarget.value;
               setLocationId(val);
-            }} name="locationId" id="officers_list" size={0} required>
-						<option
-							value={location.id}
-							className={
-								location.id == history.location_id ? "selected" : ""
-							}
-						>
-							{location.base_name}
-						</option>
-					</select>
-					<label>Sock</label>
-					<select onChange={(e) => {
+            }}
+            select
+            label="Location"
+            name="locationId"
+            helperText="Please select a location"
+            required
+          >
+            {locations.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.base_name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <div className="column">
+            <div className="date-container">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack spacing={3}>
+                  <DesktopDatePicker
+                    renderInput={(params) => <TextField {...params} />}
+                    inputFormat="MM/dd/yyyy"
+                    label="Departure Date"
+                    value={departureDate as Date}
+                    onChange={(value) => {
+                      setDepartureDate(value || new Date());
+                    }}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </div>
+            <div className="date-container">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack spacing={3}>
+                  <DesktopDatePicker
+                    renderInput={(params) => <TextField {...params} />}
+                    inputFormat="MM/dd/yyyy"
+                    label="Arrival Date"
+                    value={arrivalDate}
+                    onChange={(value) => {
+                      setArrivalDate(value || new Date());
+                    }}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </div>
+          </div>
+          <TextField
+            style={{ minWidth: "50%" }}
+            onChange={(e) => {
               const val = e.currentTarget.value;
               setSockId(val);
-            }}name="sockId" id="officers_list" size={0} required>
-						<option
-							value="sock.id"
-							className={sock.id == history.sock_id ? " selected" : ""}
-						>
-							{sock.model}
-						</option>
-					</select> */}
-          <input type="reset" value="Reset"></input>
-          <input type="submit" value="Submit"></input>
+            }}
+            select
+            label="Sock"
+            name="sockId"
+            helperText="Please select a sock"
+            required
+          >
+            {locations.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.base_name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <Stack direction="row" spacing={2}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
+              Reset
+            </Button>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+              Submit
+            </Button>
+          </Stack>
         </form>
       </Card>
     </div>

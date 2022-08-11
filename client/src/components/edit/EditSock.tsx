@@ -1,86 +1,132 @@
 import React, { useState } from "react";
 import Card from "../Card";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
+
+const locations = [
+  {
+    id: 1,
+    base_name: "vladimir base",
+  },
+];
 
 function EditSock() {
   const [model, setModel] = useState("");
   const [quantity, setQuantity] = useState("");
   const [size, setSize] = useState("");
-  const [year, setYear] = useState("");
-  const [locationId, setLocationId] = useState("");
-  const [officerId, setOfficerId] = useState("");
+  const [year, setYear] = useState(new Date());
+  const [location, setLocation] = useState("");
+  const [officer, setOfficer] = useState("");
   return (
     <div id="container">
-      <Card subTitle="" title="Add History">
+      <Card subTitle="" title="Add Sock">
         <form
-          action="/api/edit/sock/sock.id"
+          action="/api/add/sock"
           method="post"
-          autoComplete="off"
+          autoComplete={"off"}
           role="form"
         >
-          <label>Model Name</label>
-          <input
-            onInput={(e) => {
+          <TextField
+            style={{ minWidth: "50%" }}
+            label="Model Name"
+            placeholder="Model"
+            name="model"
+            required
+            onChange={(e) => {
               const val = e.currentTarget.value;
               setModel(val);
             }}
-            name="model"
-            type="text"
-            value="sock.model"
-            required
-          ></input>
-          <label>Quantity</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setQuantity(val);
-            }}
-            name="quantity"
-            type="text"
-            value="sock.quantity"
-            required
-          ></input>
-          <label>Size</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setSize(val);
-            }}
-            name="size"
-            type="text"
-            value="sock.size"
-            required
-          ></input>
-          <label>Manufacturing year</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setYear(val);
-            }}
-            name="year"
-            type="date"
-            value="sock.manufacturing_year.toISOString().split('T')[0] "
-            required
-          ></input>
-          <label>Location</label>
-          {/* <select onChange={(e) => {
-              const val = e.currentTarget.value;
-              setLocationId(val);
-            }} name="locationId" id="officers_list" size={0} required>
-								<option value="location.id" className={location.id==sock.location_id ? ' selected' : ''}>
-									location.base_name
-								</option>
-						</select>
-					<label>Officer</label>
-						<select   onChange={(e) => {
-              const val = e.currentTarget.value;
-              setOfficerId(val);
-            }} name="officerId" id="officers_list" size={0} required>
-								<option value="officer.id" className={officer.id==sock.officer_id ? ' selected' : ''}>
-									officer.name
-								</option>
-						</select> */}
-          <input type="reset" value="Reset"></input>
-          <input type="submit" value="Submit"></input>
+          />
+          <div className="column">
+            <TextField
+              label="Quantity"
+              placeholder="Quantity"
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setQuantity(val);
+              }}
+              name="quantity"
+              required
+            />
+            <TextField
+              label="Size"
+              placeholder="Size"
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setSize(val);
+              }}
+              name="size"
+              required
+            />
+          </div>
+          <div className="date-container">
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Stack spacing={3}>
+                <DesktopDatePicker
+                  renderInput={(params) => <TextField {...params} />}
+                  inputFormat="MM/dd/yyyy"
+                  label="Manufacturing year"
+                  onChange={(value) => {
+                    setYear(value || new Date());
+                  }}
+                  value={year}
+                />
+              </Stack>
+            </LocalizationProvider>
+          </div>
+          <div className="column">
+            <TextField
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setLocation(val);
+              }}
+              select
+              label="Location"
+              name="locationId"
+              id="locations_list"
+              helperText="Please select a location"
+              required
+            >
+              {locations.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.base_name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setOfficer(val);
+              }}
+              select
+              label="Officer"
+              name="officerId"
+              id="officers_list"
+              helperText="Please select an officer"
+              required
+            >
+              {locations.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.base_name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </div>
+          <Stack direction="row" spacing={2}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
+              Reset
+            </Button>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+              Submit
+            </Button>
+          </Stack>
         </form>
       </Card>
     </div>

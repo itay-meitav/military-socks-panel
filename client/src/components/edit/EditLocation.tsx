@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 import Card from "../Card";
 
 function EditLocation() {
@@ -8,69 +13,79 @@ function EditLocation() {
   const [lat, setLat] = useState("");
   return (
     <div id="container">
-      <Card subTitle="" title="Add History">
+      <Card subTitle="" title="Add Location">
         <form
-          action="/api/edit/location/location.id"
-          autoComplete="on"
+          action="/api/add/location"
+          autoComplete={"on"}
           method="post"
           role="form"
         >
-          <label>Base Name</label>
-          <input
-            onInput={(e) => {
+          <TextField
+            style={{ minWidth: "50%" }}
+            label="Base Name"
+            placeholder="Base Name"
+            name="base"
+            required
+            onChange={(e) => {
               const val = e.currentTarget.value;
               setBase(val);
             }}
-            name="base"
-            type="text"
-            value="location.base_name"
-            required
-          ></input>
-          <label>Nearest City</label>
-          <input
-            onInput={(e) => {
+          />
+          <div className="column">
+            <TextField
+              label="Latitude"
+              placeholder="Latitude"
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setLat(val);
+              }}
+              name="lat"
+              inputProps={{
+                pattern: "^[-]?[0-9]{1,3}.[0-9]{1,3}$",
+                maxLength: 8,
+                title: `longtitude should contain up to 3 digits
+							  before the decimal and up to 3 after
+							  can also be a negative`,
+              }}
+              required
+            />
+            <TextField
+              label="Longtitude"
+              placeholder="Longtitude"
+              onChange={(e) => {
+                const val = e.currentTarget.value;
+                setLon(val);
+              }}
+              name="lon"
+              inputProps={{
+                pattern: "^[-]?[0-9]{1,3}.[0-9]{1,3}$",
+                maxLength: 8,
+              }}
+              title="longtitude should contain up to 3 digits
+							before the decimal and up to 3 after
+							can also be a negative"
+              required
+            />
+          </div>
+          <TextField
+            style={{ minWidth: "50%" }}
+            label="Nearest City"
+            placeholder="Nearest City"
+            onChange={(e) => {
               const val = e.currentTarget.value;
               setCity(val);
             }}
             name="city"
-            type="text"
-            value="location.nearest_city"
             required
-          ></input>
-          <label>Longtitude</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setLon(val);
-            }}
-            pattern="^[-]?[0-9]{1,3}\.[0-9]{1,3}$"
-            name="lon"
-            maxLength={8}
-            type="text"
-            value="location.lon"
-            required
-            title="longtitude should contain up to 3 digits
-							before the decimal and up to 3 after
-							can also be a negative"
-          ></input>
-          <label>Latitude</label>
-          <input
-            onInput={(e) => {
-              const val = e.currentTarget.value;
-              setLat(val);
-            }}
-            pattern="^[-]?[0-9]{1,3}\.[0-9]{1,3}$"
-            name="lat"
-            maxLength={8}
-            type="text"
-            value="location.lat"
-            required
-            title="latitude should contain up to 3 digits
-							before the decimal and up to 3 after
-							can also be a negative"
-          ></input>
-          <input type="reset" value="Reset"></input>
-          <input type="submit" value="Submit"></input>
+          />
+          <Stack direction="row" spacing={2}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
+              Reset
+            </Button>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+              Submit
+            </Button>
+          </Stack>
         </form>
       </Card>
     </div>

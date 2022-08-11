@@ -57,8 +57,8 @@ function AddHistory() {
                     renderInput={(params) => <TextField {...params} />}
                     inputFormat="MM/dd/yyyy"
                     label="Departure Date"
-                    value={departureDate}
-                    onChange={(e, value) => {
+                    value={departureDate as Date}
+                    onChange={(value) => {
                       setDepartureDate(value || new Date());
                     }}
                   />
@@ -100,10 +100,10 @@ function AddHistory() {
             ))}
           </TextField>
           <Stack direction="row" spacing={2}>
-            <Button variant="outlined" startIcon={<DeleteIcon />}>
+            <Button type="reset" variant="outlined" startIcon={<DeleteIcon />}>
               Reset
             </Button>
-            <Button variant="contained" endIcon={<SendIcon />}>
+            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
               Submit
             </Button>
           </Stack>
