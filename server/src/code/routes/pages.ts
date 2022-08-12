@@ -61,7 +61,7 @@ router.get("/history", async (req, res) => {
   const id = Number(req.query.id) || undefined;
   const sock_id = Number(req.query.sock_id) || undefined;
   const [history, count] = await Promise.all([
-    getHistory(page, { id, sock_id }),
+    getHistory(20, (page - 1) * 20, { id, sock_id }),
     countRows("locations_history"),
   ]);
   // console.log(count);
@@ -82,7 +82,7 @@ router.get("/officers", async (req, res) => {
   const page = Number(req.query.page) || 1;
   const id = Number(req.query.id) || undefined;
   const [officers, count] = await Promise.all([
-    getOfficers(page, { id }),
+    getOfficers(20, (page - 1) * 20, { id }),
     countRows("officers"),
   ]);
   // console.log(count);
