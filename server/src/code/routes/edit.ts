@@ -23,7 +23,7 @@ router.get("/sock/:id", async (req, res) => {
 });
 
 router.get("/officer/:id", async (req, res) => {
-  const officer = await getOfficers(1, { id: Number(req.params.id) });
+  const officer = await getOfficers(2, 0, { id: Number(req.params.id) });
   if (officer?.length)
     res.render("edit/officer", { info: {}, officer: officer[0] });
   else res.redirect("/officers");
@@ -31,7 +31,7 @@ router.get("/officer/:id", async (req, res) => {
 
 router.get("/history/:id", async (req, res) => {
   const [history, locations, socks] = await Promise.all([
-    getHistory(1, { id: Number(req.params.id) }),
+    getHistory(2, 0, { id: Number(req.params.id) }),
     getLocationsShort(),
     getSocksShort(),
   ]);
