@@ -3,3 +3,14 @@
   margin: auto;
   margin-top: 30px;
 }
+
+a {
+  text-decoration: none;
+  color: #037cd4;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  // #3498db
+  // #037cd4
+}

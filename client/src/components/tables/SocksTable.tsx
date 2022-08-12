@@ -5,9 +5,14 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
+import Popup from "../mini/Popup";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import config from "../../assets/config";
 
 import DateIcon from "@mui/icons-material/CalendarMonth";
 
@@ -23,6 +28,7 @@ function createData(
 
 interface ISocksTableProps {
   rows: ISock[];
+  deleteItemById: Function;
 }
 
 export interface ISock {
@@ -37,6 +43,19 @@ export interface ISock {
   lon: number;
   base_name: string;
   name: string;
+}
+
+function deleteItem(id: number) {
+  return fetch(`${config.apiHost}/api/delete/sock/${id}`, {
+    method: "DELETE",
+  }).then(async (res) => {
+    if (res.ok) {
+      const data = await res.json();
+      return data as { success: boolean };
+    } else {
+      return { success: false };
+    }
+  });
 }
 
 export default function SocksTable(props: ISocksTableProps) {
@@ -63,7 +82,37 @@ export default function SocksTable(props: ISocksTableProps) {
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center">{row.id}</TableCell>
+              <TableCell align="center" style={{ position: "relative" }}>
+                <div style={{ marginBottom: "10px" }}> {row.id}</div>
+                <Popup>
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={0}
+                  >
+                    <Link to={"/socks/edit/" + row.id}>
+                      <IconButton aria-label="edit">
+                        <DriveFileRenameOutlineIcon
+                          color="success"
+                          fontSize="small"
+                        />
+                      </IconButton>
+                    </Link>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={async () => {
+                        const { success } = await deleteItem(row.id);
+                        if (success) {
+                          props.deleteItemById(row.id);
+                        }
+                      }}
+                    >
+                      <DeleteIcon color="error" fontSize="small" />
+                    </IconButton>
+                  </Stack>
+                </Popup>
+              </TableCell>
 
               <TableCell align="center">{row.model}</TableCell>
               <TableCell align="center">{row.quantity}</TableCell>

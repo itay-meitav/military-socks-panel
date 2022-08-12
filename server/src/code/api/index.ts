@@ -13,9 +13,11 @@ router.use("/get", pages);
 
 router.put("/reset", async (req, res) => {
   try {
-    await require("../code/db/sqlScript.js")();
+    await require("../db/sqlScript.js")();
     res.json({ success: true });
   } catch (error) {
+    console.log(error);
+
     res.json({ success: false, error });
   }
 });

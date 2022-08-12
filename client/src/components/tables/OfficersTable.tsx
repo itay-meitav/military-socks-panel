@@ -8,8 +8,14 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-
 import DateIcon from "@mui/icons-material/CalendarMonth";
+import Popup from "../mini/Popup";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import config from "../../assets/config";
 
 function createData(
   name: string,
@@ -23,6 +29,7 @@ function createData(
 
 interface IOfficersTableProps {
   rows: IOfficer[];
+  deleteItemById: Function;
 }
 
 export interface IOfficer {
@@ -31,6 +38,19 @@ export interface IOfficer {
   army_id_number: string;
   email: string;
   phone: string;
+}
+
+function deleteItem(id: number) {
+  return fetch(`${config.apiHost}/api/delete/officer/${id}`, {
+    method: "DELETE",
+  }).then(async (res) => {
+    if (res.ok) {
+      const data = await res.json();
+      return data as { success: boolean };
+    } else {
+      return { success: false };
+    }
+  });
 }
 
 export default function OfficersTable(props: IOfficersTableProps) {
@@ -54,7 +74,37 @@ export default function OfficersTable(props: IOfficersTableProps) {
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center">{row.id}</TableCell>
+              <TableCell align="center" style={{ position: "relative" }}>
+                <div style={{ marginBottom: "10px" }}> {row.id}</div>
+                <Popup>
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={0}
+                  >
+                    <Link to={"/officers/edit/" + row.id}>
+                      <IconButton aria-label="edit">
+                        <DriveFileRenameOutlineIcon
+                          color="success"
+                          fontSize="small"
+                        />
+                      </IconButton>
+                    </Link>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={async () => {
+                        const { success } = await deleteItem(row.id);
+                        if (success) {
+                          props.deleteItemById(row.id);
+                        }
+                      }}
+                    >
+                      <DeleteIcon color="error" fontSize="small" />
+                    </IconButton>
+                  </Stack>
+                </Popup>
+              </TableCell>
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.army_id_number}</TableCell>
               <TableCell align="center">{row.email}</TableCell>

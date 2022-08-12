@@ -1,39 +1,36 @@
 import React, { useState, useEffect } from "react";
-import Card from "./Card";
-import LocationsTable, { ILocation } from "./tables/LocationsTable";
+import Card from "../mini/Card";
+import LocationsTable, { ILocation } from "../tables/LocationsTable";
 import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
 
-import config from "../assets/config";
+import config from "../../assets/config";
 
-interface IGetLocationsOptopns {
+interface IGetLocationsOptions {
   id?: number;
   limit: number;
   offset: number;
 }
 
-const getLocations = async (options: IGetLocationsOptopns) => {
+const getLocations = async (options: IGetLocationsOptions) => {
   const searchParams = new URLSearchParams(Object.entries(options));
   const url = `${config.apiHost}/api/get/Locations?${searchParams.toString()}`;
-  console.log(url);
 
   const response = await fetch(url);
   if (response.ok) {
     const data = await response.json();
     if (data.success) return data as { locations: ILocation[]; pages: number };
     else {
-      console.log(data.message);
       return { locations: [], pages: 0 };
     }
   } else {
-    console.log(response);
     return { locations: [], pages: 0 };
   }
 };
 
 function LocationsPage() {
   const [locations, setLocations] = useState<ILocation[]>([]);
-  const [searchParams, setSearParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(
     Number(searchParams.get("page")) || 1
   );
@@ -49,7 +46,7 @@ function LocationsPage() {
     const offset = (page - 1) * limit;
 
     // set fetch options
-    const options: IGetLocationsOptopns = { limit, offset };
+    const options: IGetLocationsOptions = { limit, offset };
 
     id && (options.id = id);
 
@@ -60,13 +57,23 @@ function LocationsPage() {
     });
   }, [searchParams]);
 
+  function deleteById(id: number) {
+    setLocations((pre) => {
+      const newLocations = pre.filter((location) => location.id != id);
+      return newLocations;
+    });
+  }
+
   return (
     <div id="container">
       <Card
         title="locations table"
         subTitle="this is a locations table of all the locations"
       >
-        <LocationsTable rows={locations}></LocationsTable>
+        <LocationsTable
+          deleteItemById={deleteById}
+          rows={locations}
+        ></LocationsTable>
       </Card>
       <div className="pagination">
         <Pagination
@@ -76,7 +83,7 @@ function LocationsPage() {
             setPage(value);
             // set current page to search params
             searchParams.set("page", page + "");
-            setSearParams(searchParams);
+            setSearchParams(searchParams);
           }}
         />
       </div>

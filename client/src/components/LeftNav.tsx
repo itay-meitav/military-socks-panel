@@ -10,7 +10,8 @@ import ModeIcon from "@mui/icons-material/Mode";
 import Button from "@mui/material/Button/Button";
 import logo from "../assets/logo.png";
 import { useState } from "react";
-import NavItem from "./NavItem";
+import NavItem from "./mini/NavItem";
+import config from "../assets/config";
 
 function LeftNav() {
   const [showNav, setShowNav] = useState(false);
@@ -25,35 +26,59 @@ function LeftNav() {
     <>
       <div className={"left-nav" + (showNav ? " show" : "")}>
         <div className="page-name">
-          <div className="title">
+          <Link to="/" className="title">
             <img src={logo} alt="russian socks logo" />
-            <span className=""></span> {"page name".toUpperCase()}
-          </div>
-          <Button
-            variant={"text"}
-            id="close-logo"
-            style={{ color: "white" }}
-            onClick={() => {
-              setShowNav(false);
-            }}
-          >
-            <CloseIcon />
-          </Button>
-          <Button
-            variant={"text"}
-            id="open-menu"
-            style={{ color: "white" }}
-            onClick={() => {
-              setShowNav(true);
-            }}
-          >
-            <MenuIcon></MenuIcon>
-          </Button>
+            <span>{"socks panel".toUpperCase()}</span>
+          </Link>
+          {showNav ? (
+            <Button
+              variant={"text"}
+              // color={"secondary"}
+              id="close-logo"
+              className="nav-icon"
+              style={{
+                color: "white",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "10px",
+              }}
+              onClick={() => {
+                setShowNav(false);
+              }}
+            >
+              <CloseIcon />
+            </Button>
+          ) : (
+            <></>
+          )}
+          {!showNav ? (
+            <Button
+              variant={"text"}
+              // color={""}
+              id="open-menu"
+              className="nav-icon"
+              style={{
+                color: "white",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "10px",
+              }}
+              onClick={() => {
+                setShowNav(true);
+              }}
+            >
+              <MenuIcon />
+            </Button>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="nav-panel">
           <div className="nav-items">
-            <span className="title">Menu</span>
+            <span style={{ userSelect: "none" }} className="title">
+              Menu
+            </span>
 
             <NavItem
               hide={hideNav}
@@ -84,7 +109,9 @@ function LeftNav() {
               key={3}
             />
             {/* <div> */}
-            <span className="title">Tools</span>
+            <span style={{ userSelect: "none" }} className="title">
+              Tools
+            </span>
 
             <NavItem
               hide={hideNav}
@@ -99,7 +126,7 @@ function LeftNav() {
               className="nav-item"
               onClick={(e) => {
                 setSpinIcon(true);
-                fetch("/api/reset", {
+                fetch(config.apiHost + "/api/reset", {
                   method: "put",
                 })
                   .then((res) => {

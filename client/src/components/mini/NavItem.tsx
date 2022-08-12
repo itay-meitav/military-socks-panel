@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Button from "@mui/material/Button/Button";
 import { Link } from "react-router-dom";
-import { JsxElement } from "typescript";
+
 interface IProp {
   icon?: ReactNode;
   path: string;

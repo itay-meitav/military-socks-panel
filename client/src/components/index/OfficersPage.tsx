@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import Card from "./Card";
+import Card from "../mini/Card";
 import Pagination from "@mui/material/Pagination";
-import OfficersTable, { IOfficer } from "./tables/OfficersTable";
+import OfficersTable, { IOfficer } from "../tables/OfficersTable";
 
-import config from "../assets/config";
+import config from "../../assets/config";
 
-interface IGetofficersOptopns {
+interface IGetofficersOptions {
   id?: number;
   page: number;
   limit: number;
   offset: number;
 }
 
-const getofficers = async (options: IGetofficersOptopns) => {
+const getofficers = async (options: IGetofficersOptions) => {
   const searchParams = new URLSearchParams(Object.entries(options));
   const response = await fetch(
     `${config.apiHost}/api/get/officers?${searchParams.toString()}`
@@ -22,18 +22,16 @@ const getofficers = async (options: IGetofficersOptopns) => {
     const data = await response.json();
     if (data.success) return data as { officers: IOfficer[]; pages: number };
     else {
-      console.log(data.message);
       return { officers: [], pages: 0 };
     }
   } else {
-    console.log(response);
     return { officers: [], pages: 0 };
   }
 };
 
 function OfficersPage() {
   const [officers, setOfficers] = useState<IOfficer[]>([]);
-  const [searchParams, setSearParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(
     Number(searchParams.get("page")) || 1
   );
@@ -50,7 +48,7 @@ function OfficersPage() {
     const offset = (page - 1) * limit;
 
     // set fetch options
-    const options: IGetofficersOptopns = { page, limit, offset };
+    const options: IGetofficersOptions = { page, limit, offset };
 
     id && (options.id = id);
 
@@ -60,13 +58,23 @@ function OfficersPage() {
       setPages(data.pages);
     });
   }, [searchParams]);
+
+  function deleteById(id: number) {
+    setOfficers((pre) => {
+      const newOfficers = pre.filter((officer) => officer.id != id);
+      return newOfficers;
+    });
+  }
   return (
     <div id="container">
       <Card
         title="officers table"
         subTitle="this table shows a list of all officers on the russian army"
       >
-        <OfficersTable rows={officers}></OfficersTable>
+        <OfficersTable
+          deleteItemById={deleteById}
+          rows={officers}
+        ></OfficersTable>
       </Card>
       <div className="pagination">
         <Pagination
@@ -76,7 +84,7 @@ function OfficersPage() {
             setPage(value);
             // set current page to search params
             searchParams.set("page", page + "");
-            setSearParams(searchParams);
+            setSearchParams(searchParams);
           }}
         />
       </div>
