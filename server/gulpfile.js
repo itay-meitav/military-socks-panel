@@ -102,6 +102,18 @@ gulp.task("copy-node-to-deploy", () => {
 		.pipe(gulp.dest("./deploy"));
 });
 
+gulp.task("react", (cb) => {
+	const process = exec(
+		"cd ../client && npm run build && cp -r build ../server/deploy",
+		cb
+	);
+
+	process.stdout.on("data", console.log);
+	process.stdout.on("error", console.log);
+	process.stderr.on("data", console.log);
+	process.stderr.on("error", console.log);
+});
+
 task("deploy-heruku", (cb) => {
 	execSync("chmod +x deploy.sh");
 	const deploy = execFile("./deploy.sh", (err) => {
@@ -138,6 +150,7 @@ gulp.task(
 		"clean-deploy",
 		"copy-dist-to-deploy",
 		"copy-node-to-deploy",
+		"react",
 		"deploy-heruku"
 	)
 );
