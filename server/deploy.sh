@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-HEROKU_APP_NAME="cyber4s-socks"
+HEROKU_APP_NAME="socks4s-api"
 
 cd deploy
 git init
