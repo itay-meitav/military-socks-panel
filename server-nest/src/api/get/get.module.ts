@@ -7,6 +7,6 @@ import { AddModule } from './add/add.module';
 @Module({
   controllers: [GetController],
   providers: [GetService],
-  imports: [EditModule, AddModule]
+  imports: [EditModule, AddModule],
 })
 export class GetModule {}

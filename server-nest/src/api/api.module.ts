@@ -9,6 +9,6 @@ import { EditModule } from './edit/edit.module';
 @Module({
   controllers: [ApiController],
   providers: [ApiService],
-  imports: [GetModule, AddModule, DeleteModule, EditModule]
+  imports: [GetModule, AddModule, DeleteModule, EditModule],
 })
 export class ApiModule {}

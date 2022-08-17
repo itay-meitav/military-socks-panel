@@ -24,6 +24,7 @@ export class DeleteController {
       return { success: false };
     }
   }
+
   @Delete('history/:id')
   async history(@Param('id') id: number) {
     try {
@@ -34,6 +35,7 @@ export class DeleteController {
       return { success: false };
     }
   }
+
   @Delete('location/:id')
   async location(@Param('id') id: number) {
     try {
