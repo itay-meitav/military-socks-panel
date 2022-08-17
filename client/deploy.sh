@@ -6,11 +6,12 @@ cp index.js deploy
 cd deploy
 npm init -y
 npm i express
-rm -rf node_modules
+# rm -rf node_modules
 
 
 echo "web: node index" >> Procfile
-
+echo "node_modules
+*.map" > .gitignore
 
 APP_NAME="socks4s"
 
