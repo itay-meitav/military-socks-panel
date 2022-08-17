@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import OfficersTable, { IOfficer } from "../tables/OfficersTable";
 
 import config from "../../assets/config";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 interface IGetofficersOptions {
   id?: number;
@@ -37,6 +38,7 @@ function OfficersPage() {
   );
 
   const [pages, setPages] = useState(0);
+  const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     const page = Number(searchParams.get("page")) || 1;
@@ -56,6 +58,7 @@ function OfficersPage() {
     getofficers(options).then((data) => {
       setOfficers(data.officers);
       setPages(data.pages);
+      setSkeleton(false);
     });
   }, [searchParams]);
 
@@ -71,10 +74,16 @@ function OfficersPage() {
         title="officers table"
         subTitle="this table shows a list of all officers on the russian army"
       >
-        <OfficersTable
-          deleteItemById={deleteById}
-          rows={officers}
-        ></OfficersTable>
+        {skeleton ? (
+          <>
+            <TableSkeleton cols={6} rows={10} />
+          </>
+        ) : (
+          <OfficersTable
+            deleteItemById={deleteById}
+            rows={officers}
+          ></OfficersTable>
+        )}
       </Card>
       <div className="pagination">
         <Pagination

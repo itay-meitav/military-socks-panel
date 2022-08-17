@@ -8,6 +8,7 @@ import Card from "../mini/Card";
 import config from "../../assets/config";
 import { useNavigate, useParams } from "react-router-dom";
 import { Alert } from "@mui/material";
+import FormSkeleton from "../skeletons/FormSkeleton";
 
 function getInfo(id: number, navigate: Function) {
   return fetch(`${config.apiHost}/api/get/edit/officer/${id}`).then((res) => {
@@ -55,6 +56,7 @@ function EditOfficer() {
   const navigate = useNavigate();
   const params = useParams();
   const [officer, setOfficer] = useState<any>({});
+  const [skeleton, setSkeleton] = useState(true);
 
   const id = Number(params.id);
 
@@ -70,6 +72,7 @@ function EditOfficer() {
       const { officer } = data;
       setOfficer(officer);
       setState(officer);
+      setSkeleton(false);
     });
   }, []);
 
@@ -80,104 +83,111 @@ function EditOfficer() {
   return (
     <div id="container">
       <Card subTitle="" title="Edit Officer">
-        <form
-          autoComplete={"on"}
-          role="form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const res = await updateOfficer(
-              name,
-              email,
-              phone,
-              Number(armyIdNumber),
-              Number(id)
-            );
-            if (res.success) {
-              navigate("/officers?id=" + id);
-            } else {
-              setAlert(res.message);
-            }
-          }}
-        >
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Name"
-            placeholder="Name"
-            name="name"
-            required
-            value={name}
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setName(val);
+        {skeleton ? (
+          <>
+            <FormSkeleton />
+          </>
+        ) : (
+          <form
+            autoComplete={"on"}
+            role="form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const res = await updateOfficer(
+                name,
+                email,
+                phone,
+                Number(armyIdNumber),
+                Number(id)
+              );
+              if (res.success) {
+                navigate("/officers?id=" + id);
+              } else {
+                setAlert(res.message);
+              }
             }}
-          />
-          <div className="column">
+          >
             <TextField
-              label="Email"
-              placeholder="Email"
-              value={email}
+              style={{ minWidth: "50%" }}
+              label="Name"
+              placeholder="Name"
+              name="name"
+              required
+              value={name}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                if (/^(.*[^ ])*@wpra\.ru$/.test(val)) setEmail(val);
+                setName(val);
               }}
-              name="email"
-              inputProps={{
-                pattern: "(.*[^ ]){3,}@wpra.ru",
-                title: "the format is user@wpra.ru. user must be over 3 letter",
-              }}
-              required
             />
+            <div className="column">
+              <TextField
+                label="Email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => {
+                  const val = e.currentTarget.value;
+                  if (/^(.*[^ ])*@wpra\.ru$/.test(val)) setEmail(val);
+                }}
+                name="email"
+                inputProps={{
+                  pattern: "(.*[^ ]){3,}@wpra.ru",
+                  title:
+                    "the format is user@wpra.ru. user must be over 3 letter",
+                }}
+                required
+              />
+              <TextField
+                label="Phone"
+                placeholder="Phone"
+                value={phone}
+                onChange={(e) => {
+                  const val = e.currentTarget.value;
+                  if (/^\+(7[0-9]*|)$|^$/.test(val)) setPhone(val);
+                }}
+                inputProps={{
+                  maxLength: 12,
+                  inputMode: "numeric",
+                  type: "tel",
+                  pattern: "\\+[0-9]{11}",
+                  title: "a phone starts with +7 and has 10 digits",
+                }}
+                name="phone"
+                required
+              />
+            </div>
             <TextField
-              label="Phone"
-              placeholder="Phone"
-              value={phone}
+              style={{ minWidth: "50%" }}
+              label="Army id number"
+              placeholder="Army id number"
+              inputProps={{
+                maxLength: 7,
+                pattern: "[0-9]{6,8}",
+                title: "army id number must have 6 to 7 digits",
+              }}
+              name="armyIdNumber"
+              required
+              value={armyIdNumber}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                if (/^\+(7[0-9]*|)$|^$/.test(val)) setPhone(val);
+                if (/^[0-9]*$/.test(val)) setArmyIdNumber(val.substring(0, 7));
               }}
-              inputProps={{
-                maxLength: 12,
-                inputMode: "numeric",
-                type: "tel",
-                pattern: "\\+[0-9]{11}",
-                title: "a phone starts with +7 and has 10 digits",
-              }}
-              name="phone"
-              required
             />
-          </div>
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Army id number"
-            placeholder="Army id number"
-            inputProps={{
-              maxLength: 7,
-              pattern: "[0-9]{6,8}",
-              title: "army id number must have 6 to 7 digits",
-            }}
-            name="armyIdNumber"
-            required
-            value={armyIdNumber}
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              if (/^[0-9]*$/.test(val)) setArmyIdNumber(val.substring(0, 7));
-            }}
-          />
-          <Stack direction="row" spacing={2}>
-            <Button
-              type="reset"
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              onClick={() => setState(officer)}
-            >
-              Reset
-            </Button>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-              Submit
-            </Button>
-          </Stack>
-          {alert ? <Alert severity="error">{alert}</Alert> : <></>}
-        </form>
+            <Stack direction="row" spacing={2}>
+              <Button
+                type="reset"
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => setState(officer)}
+              >
+                Reset
+              </Button>
+              <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+                Submit
+              </Button>
+            </Stack>
+            {alert ? <Alert severity="error">{alert}</Alert> : <></>}
+          </form>
+        )}
       </Card>
     </div>
   );

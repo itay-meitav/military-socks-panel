@@ -1,0 +1,45 @@
+.skeleton {
+  margin: 10px 10px 20px;
+
+  &.row {
+    display: inline-block;
+  }
+}
+
+.skeleton-table {
+  width: 100%;
+  overflow: auto;
+
+  .skeleton {
+    // margin: auto;
+  }
+  .table-head {
+    // width: 100%;
+    // display: flex;
+
+    .skeleton {
+      width: 35px;
+      height: 30px;
+      margin: auto;
+    }
+    th:first-child {
+      .skeleton {
+        width: 25px;
+      }
+    }
+  }
+  .table-body {
+    // width: 100%;
+    // display: flex;
+
+    .skeleton {
+      width: 65px;
+      margin: 10px 25px;
+      height: 25px;
+
+      &.small {
+        width: 35px;
+      }
+    }
+  }
+}

@@ -50,12 +50,13 @@ export class EditController {
 
   @Get('history/:id')
   async history(@Param('id') id: string) {
-    const [sock, locations, socks] = await Promise.all([
-      this.editService.getSocks(2, 0, { id: Number(id) }),
+    const [history, locations, socks] = await Promise.all([
+      this.editService.getHistory(2, 0, { id: Number(id) }),
       this.editService.getLocationsShort(),
       this.editService.getSocksShort(),
     ]);
-    if (sock?.length) return { sock: sock[0], locations, socks, success: true };
+    if (history?.length)
+      return { history: history[0], locations, socks, success: true };
     else
       return {
         success: false,

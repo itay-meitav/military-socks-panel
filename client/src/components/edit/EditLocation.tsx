@@ -8,6 +8,7 @@ import Card from "../mini/Card";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../assets/config";
 import { Alert } from "@mui/material";
+import FormSkeleton from "../skeletons/FormSkeleton";
 
 function getInfo(id: number, navigate: Function) {
   return fetch(`${config.apiHost}/api/get/edit/location/${id}`).then((res) => {
@@ -56,6 +57,7 @@ function EditLocation() {
   const params = useParams();
   const { id } = params;
   const [location, setLocation] = useState<any>({});
+  const [skeleton, setSkeleton] = useState(true);
 
   function setState(location: any) {
     setBase(location.base_name);
@@ -68,100 +70,113 @@ function EditLocation() {
     getInfo(Number(id), navigate).then((data) => {
       setLocation(data.location);
       setState(data.location);
+      setSkeleton(false);
     });
   }, []);
 
   return (
     <div id="container">
       <Card subTitle="" title="Edit location">
-        <form
-          autoComplete={"on"}
-          role="form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const res = await updateLocation(Number(id), base, city, lon, lat);
-            if (res.success) {
-              navigate("/locations?id=" + id);
-            } else {
-              if (res.message) setAlert(() => res.message);
-            }
-          }}
-        >
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Base Name"
-            placeholder="Base Name"
-            name="base"
-            required
-            value={base}
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setBase(val);
+        {skeleton ? (
+          <>
+            <FormSkeleton />
+          </>
+        ) : (
+          <form
+            autoComplete={"on"}
+            role="form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const res = await updateLocation(
+                Number(id),
+                base,
+                city,
+                lon,
+                lat
+              );
+              if (res.success) {
+                navigate("/locations?id=" + id);
+              } else {
+                if (res.message) setAlert(() => res.message);
+              }
             }}
-          />
-          <div className="column">
+          >
             <TextField
-              label="Latitude"
-              placeholder="Latitude"
-              value={lat}
+              style={{ minWidth: "50%" }}
+              label="Base Name"
+              placeholder="Base Name"
+              name="base"
+              required
+              value={base}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                if (/^\-?[0-9]{0,3}(\.[0-9]{0,3})?$/.test(val)) setLat(val);
+                setBase(val);
               }}
-              name="lat"
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "^[\\-]?[0-9]{1,3}\\.[0-9]{1,3}$",
-                maxLength: 8,
-                title: `latitude should contain up to 3 digits\nbefore the decimal and up to 3 after\ncan also be a negative`,
-              }}
-              required
             />
+            <div className="column">
+              <TextField
+                label="Latitude"
+                placeholder="Latitude"
+                value={lat}
+                onChange={(e) => {
+                  const val = e.currentTarget.value;
+                  if (/^\-?[0-9]{0,3}(\.[0-9]{0,3})?$/.test(val)) setLat(val);
+                }}
+                name="lat"
+                inputProps={{
+                  inputMode: "numeric",
+                  pattern: "^[\\-]?[0-9]{1,3}\\.[0-9]{1,3}$",
+                  maxLength: 8,
+                  title: `latitude should contain up to 3 digits\nbefore the decimal and up to 3 after\ncan also be a negative`,
+                }}
+                required
+              />
+              <TextField
+                label="Longtitude"
+                placeholder="Longtitude"
+                value={lon}
+                onChange={(e) => {
+                  const val = e.currentTarget.value;
+                  if (/^\-?[0-9]{0,3}(\.[0-9]{0,3})?$/.test(val)) setLon(val);
+                }}
+                name="lon"
+                inputProps={{
+                  inputMode: "numeric",
+                  pattern: "^[\\-]?[0-9]{1,3}\\.[0-9]{1,3}$",
+                  maxLength: 8,
+                  title: `longtitude should contain up to 3 digits\nbefore the decimal and up to 3 after\ncan also be a negative`,
+                }}
+                required
+              />
+            </div>
             <TextField
-              label="Longtitude"
-              placeholder="Longtitude"
-              value={lon}
+              style={{ minWidth: "50%" }}
+              label="Nearest City"
+              placeholder="Nearest City"
+              value={city}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                if (/^\-?[0-9]{0,3}(\.[0-9]{0,3})?$/.test(val)) setLon(val);
+                setCity(val);
               }}
-              name="lon"
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "^[\\-]?[0-9]{1,3}\\.[0-9]{1,3}$",
-                maxLength: 8,
-                title: `longtitude should contain up to 3 digits\nbefore the decimal and up to 3 after\ncan also be a negative`,
-              }}
+              name="city"
               required
             />
-          </div>
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Nearest City"
-            placeholder="Nearest City"
-            value={city}
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setCity(val);
-            }}
-            name="city"
-            required
-          />
-          <Stack direction="row" spacing={2}>
-            <Button
-              type="reset"
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              onClick={() => setState(location)}
-            >
-              Reset
-            </Button>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-              Submit
-            </Button>
-          </Stack>
-          {alert ? <Alert severity="error">{alert}</Alert> : <></>}
-        </form>
+            <Stack direction="row" spacing={2}>
+              <Button
+                type="reset"
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => setState(location)}
+              >
+                Reset
+              </Button>
+              <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+                Submit
+              </Button>
+            </Stack>
+            {alert ? <Alert severity="error">{alert}</Alert> : <></>}
+          </form>
+        )}
       </Card>
     </div>
   );

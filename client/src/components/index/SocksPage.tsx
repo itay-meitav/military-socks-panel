@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
 
 import config from "../../assets/config";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 interface IGetSocksOptions {
   id?: number;
@@ -37,6 +38,7 @@ function SocksPage() {
     Number(searchParams.get("page")) || 1
   );
   const [pages, setPages] = useState(0);
+  const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     const page = Number(searchParams.get("page")) || 1;
@@ -57,6 +59,7 @@ function SocksPage() {
     getSocks(options).then((data) => {
       setSocks(data.socks);
       setPages(data.pages);
+      setSkeleton(false);
     });
   }, [searchParams]);
 
@@ -70,7 +73,13 @@ function SocksPage() {
   return (
     <div id="container">
       <Card subTitle="this is the socks table" title="socks table">
-        <SocksTable deleteItemById={deleteById} rows={socks}></SocksTable>
+        {skeleton ? (
+          <>
+            <TableSkeleton cols={9} rows={10} />
+          </>
+        ) : (
+          <SocksTable deleteItemById={deleteById} rows={socks}></SocksTable>
+        )}
       </Card>
       <div className="pagination">
         <Pagination

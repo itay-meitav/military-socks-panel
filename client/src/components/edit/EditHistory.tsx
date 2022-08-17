@@ -10,8 +10,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Card from "../mini/Card";
 import config from "../../assets/config";
-import { Alert } from "@mui/material";
+import { Alert, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import FormSkeleton from "../skeletons/FormSkeleton";
 
 function getInfo(id: number, navigate: Function) {
   return fetch(`${config.apiHost}/api/get/edit/history/${id}`).then((res) => {
@@ -58,6 +59,7 @@ function EditHistory() {
   const [locations, setLocations] = useState<any[]>([]);
   const [socks, setSocks] = useState<any[]>([]);
   const [alert, setAlert] = useState<string>("");
+  const [skeleton, setSkeleton] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -78,117 +80,124 @@ function EditHistory() {
       setSocks(data.socks);
       setHistory(data.history);
       setState(data.history);
+      setSkeleton(false);
     });
   }, []);
   return (
     <div id="container">
-      <Card subTitle="" title="Add History">
-        <form
-          autoComplete={"on"}
-          role="form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const res = await updateHistory(
-              Number(id),
-              arrivalDate,
-              departureDate,
-              Number(locationId),
-              Number(sockId)
-            );
-            if (res.success) {
-              navigate("/history?id=" + id);
-            } else {
-              if (res.message) setAlert(() => res.message);
-            }
-          }}
-        >
-          <TextField
-            style={{ minWidth: "50%" }}
-            onChange={(select) => {
-              const val = select.target.value;
-              setLocationId(val);
+      <Card subTitle="" title="Edit History">
+        {skeleton ? (
+          <>
+            <FormSkeleton />
+          </>
+        ) : (
+          <form
+            autoComplete={"on"}
+            role="form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const res = await updateHistory(
+                Number(id),
+                arrivalDate,
+                departureDate,
+                Number(locationId),
+                Number(sockId)
+              );
+              if (res.success) {
+                navigate("/history?id=" + id);
+              } else {
+                if (res.message) setAlert(() => res.message);
+              }
             }}
-            select
-            label="Location"
-            name="locationId"
-            helperText="Please select a location"
-            required
-            value={locationId}
           >
-            {locations.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
-                {option.base_name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <div className="column">
-            <div className="date-container">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Stack spacing={3}>
-                  <DesktopDatePicker
-                    renderInput={(params) => <TextField {...params} />}
-                    inputFormat="MM/dd/yyyy"
-                    label="Departure Date"
-                    value={departureDate as Date}
-                    onChange={(value) => {
-                      setDepartureDate(value || new Date());
-                    }}
-                  />
-                </Stack>
-              </LocalizationProvider>
-            </div>
-            <div className="date-container">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Stack spacing={3}>
-                  <DesktopDatePicker
-                    renderInput={(params) => <TextField {...params} />}
-                    inputFormat="MM/dd/yyyy"
-                    label="Arrival Date"
-                    value={arrivalDate}
-                    onChange={(value) => {
-                      setArrivalDate(value || new Date());
-                    }}
-                  />
-                </Stack>
-              </LocalizationProvider>
-            </div>
-          </div>
-          <TextField
-            style={{ minWidth: "50%" }}
-            onChange={(select) => {
-              const val = select.target.value;
-              setSockId(val);
-            }}
-            select
-            label="Sock"
-            name="sockId"
-            helperText="Please select a sock"
-            required
-            value={sockId}
-          >
-            {socks.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
-                {option.model}
-              </MenuItem>
-            ))}
-          </TextField>
-          <Stack direction="row" spacing={2}>
-            <Button
-              type="reset"
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              onClick={() => {
-                setState(history);
+            <TextField
+              style={{ minWidth: "50%" }}
+              onChange={(select) => {
+                const val = select.target.value;
+                setLocationId(val);
               }}
+              select
+              label="Location"
+              name="locationId"
+              helperText="Please select a location"
+              required
+              value={locationId}
             >
-              Reset
-            </Button>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-              Submit
-            </Button>
-          </Stack>
-          {alert ? <Alert severity="error">{alert}</Alert> : <></>}
-        </form>
+              {locations.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.base_name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <div className="column">
+              <div className="date-container">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={3}>
+                    <DesktopDatePicker
+                      renderInput={(params) => <TextField {...params} />}
+                      inputFormat="MM/dd/yyyy"
+                      label="Departure Date"
+                      value={departureDate as Date}
+                      onChange={(value) => {
+                        setDepartureDate(value || new Date());
+                      }}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </div>
+              <div className="date-container">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={3}>
+                    <DesktopDatePicker
+                      renderInput={(params) => <TextField {...params} />}
+                      inputFormat="MM/dd/yyyy"
+                      label="Arrival Date"
+                      value={arrivalDate}
+                      onChange={(value) => {
+                        setArrivalDate(value || new Date());
+                      }}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </div>
+            </div>
+            <TextField
+              style={{ minWidth: "50%" }}
+              onChange={(select) => {
+                const val = select.target.value;
+                setSockId(val);
+              }}
+              select
+              label="Sock"
+              name="sockId"
+              helperText="Please select a sock"
+              required
+              value={sockId}
+            >
+              {socks.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.model}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Stack direction="row" spacing={2}>
+              <Button
+                type="reset"
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => {
+                  setState(history);
+                }}
+              >
+                Reset
+              </Button>
+              <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+                Submit
+              </Button>
+            </Stack>
+            {alert ? <Alert severity="error">{alert}</Alert> : <></>}
+          </form>
+        )}
       </Card>
     </div>
   );

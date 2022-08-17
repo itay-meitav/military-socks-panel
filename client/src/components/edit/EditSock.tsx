@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import config from "../../assets/config";
 import { useNavigate, useParams } from "react-router-dom";
 import { Alert } from "@mui/material";
+import FormSkeleton from "../skeletons/FormSkeleton";
 
 function getInfo(id: number, navigate: Function) {
   return fetch(`${config.apiHost}/api/get/edit/sock/${id}`).then((res) => {
@@ -68,6 +69,7 @@ function EditSock() {
   const params = useParams();
   const { id } = params;
   const [sock, setSock] = useState<any>({});
+  const [skeleton, setSkeleton] = useState(true);
 
   function setState(sock: any) {
     setModel(sock.model);
@@ -86,6 +88,7 @@ function EditSock() {
       const sock = data.sock;
       setSock(sock);
       setState(sock);
+      setSkeleton(false);
     });
   }, []);
 
@@ -96,133 +99,139 @@ function EditSock() {
   return (
     <div id="container">
       <Card subTitle="" title="Edit Sock">
-        <form
-          autoComplete={"on"}
-          role="form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const res = await updateSock(
-              Number(id),
-              model,
-              Number(quantity),
-              size,
-              year,
-              Number(locationId),
-              Number(officerId)
-            );
-            if (res.success) {
-              navigate("/socks?id=" + id);
-            } else {
-              if (res.message) setAlert(() => res.message);
-            }
-          }}
-        >
-          <TextField
-            style={{ minWidth: "50%" }}
-            label="Model Name"
-            placeholder="Model"
-            name="model"
-            required
-            value={model}
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setModel(val);
+        {skeleton ? (
+          <>
+            <FormSkeleton />
+          </>
+        ) : (
+          <form
+            autoComplete={"on"}
+            role="form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const res = await updateSock(
+                Number(id),
+                model,
+                Number(quantity),
+                size,
+                year,
+                Number(locationId),
+                Number(officerId)
+              );
+              if (res.success) {
+                navigate("/socks?id=" + id);
+              } else {
+                if (res.message) setAlert(() => res.message);
+              }
             }}
-          />
-          <div className="column">
+          >
             <TextField
-              label="Quantity"
-              placeholder="Quantity"
-              value={quantity}
+              style={{ minWidth: "50%" }}
+              label="Model Name"
+              placeholder="Model"
+              name="model"
+              required
+              value={model}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                if (/^[0-9]*$/.test(val)) setQuantity(val);
+                setModel(val);
               }}
-              name="quantity"
-              required
             />
-            <TextField
-              label="Size"
-              placeholder="Size"
-              value={size}
-              onChange={(e) => {
-                const val = e.currentTarget.value;
-                setSize(val);
-              }}
-              name="size"
-              required
-            />
-          </div>
-          <div className="date-container">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={3}>
-                <DesktopDatePicker
-                  renderInput={(params) => <TextField {...params} />}
-                  inputFormat="MM/dd/yyyy"
-                  label="Manufacturing year"
-                  onChange={(value) => {
-                    setYear(value || new Date());
-                  }}
-                  value={year}
-                />
-              </Stack>
-            </LocalizationProvider>
-          </div>
-          <div className="column">
-            <TextField
-              onChange={(select) => {
-                const val = select.target.value;
-                setLocationId(val);
-              }}
-              select
-              label="Location"
-              name="locationId"
-              id="locations_list"
-              helperText="Please select a location"
-              required
-              value={locationId}
-            >
-              {locations.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.base_name}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              onChange={(select) => {
-                const val = select.target.value;
-                setOfficerId(val);
-              }}
-              select
-              label="Officer"
-              name="officerId"
-              id="officers_list"
-              helperText="Please select an officer"
-              required
-              value={officerId}
-            >
-              {officers.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-          <Stack direction="row" spacing={2}>
-            <Button
-              type="reset"
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              onClick={() => setState(sock)}
-            >
-              Reset
-            </Button>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-              Submit
-            </Button>
-          </Stack>
-          {alert ? <Alert severity="error">{alert}</Alert> : <></>}
-        </form>
+            <div className="column">
+              <TextField
+                label="Quantity"
+                placeholder="Quantity"
+                value={quantity}
+                onChange={(e) => {
+                  const val = e.currentTarget.value;
+                  if (/^[0-9]*$/.test(val)) setQuantity(val);
+                }}
+                name="quantity"
+                required
+              />
+              <TextField
+                label="Size"
+                placeholder="Size"
+                value={size}
+                onChange={(e) => {
+                  const val = e.currentTarget.value;
+                  setSize(val);
+                }}
+                name="size"
+                required
+              />
+            </div>
+            <div className="date-container">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack spacing={3}>
+                  <DesktopDatePicker
+                    renderInput={(params) => <TextField {...params} />}
+                    inputFormat="MM/dd/yyyy"
+                    label="Manufacturing year"
+                    onChange={(value) => {
+                      setYear(value || new Date());
+                    }}
+                    value={year}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </div>
+            <div className="column">
+              <TextField
+                onChange={(select) => {
+                  const val = select.target.value;
+                  setLocationId(val);
+                }}
+                select
+                label="Location"
+                name="locationId"
+                id="locations_list"
+                helperText="Please select a location"
+                required
+                value={locationId}
+              >
+                {locations.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.base_name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                onChange={(select) => {
+                  const val = select.target.value;
+                  setOfficerId(val);
+                }}
+                select
+                label="Officer"
+                name="officerId"
+                id="officers_list"
+                helperText="Please select an officer"
+                required
+                value={officerId}
+              >
+                {officers.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <Stack direction="row" spacing={2}>
+              <Button
+                type="reset"
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => setState(sock)}
+              >
+                Reset
+              </Button>
+              <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+                Submit
+              </Button>
+            </Stack>
+            {alert ? <Alert severity="error">{alert}</Alert> : <></>}
+          </form>
+        )}
       </Card>
     </div>
   );

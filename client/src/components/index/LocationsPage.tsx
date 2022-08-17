@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
 
 import config from "../../assets/config";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 interface IGetLocationsOptions {
   id?: number;
@@ -35,6 +36,7 @@ function LocationsPage() {
     Number(searchParams.get("page")) || 1
   );
   const [pages, setPages] = useState(0);
+  const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     const page = Number(searchParams.get("page")) || 1;
@@ -54,6 +56,7 @@ function LocationsPage() {
     getLocations(options).then((data) => {
       setLocations(data.locations);
       setPages(data.pages);
+      setSkeleton(false);
     });
   }, [searchParams]);
 
@@ -70,10 +73,16 @@ function LocationsPage() {
         title="locations table"
         subTitle="this is a locations table of all the locations"
       >
-        <LocationsTable
-          deleteItemById={deleteById}
-          rows={locations}
-        ></LocationsTable>
+        {skeleton ? (
+          <>
+            <TableSkeleton cols={6} rows={10} />
+          </>
+        ) : (
+          <LocationsTable
+            deleteItemById={deleteById}
+            rows={locations}
+          ></LocationsTable>
+        )}
       </Card>
       <div className="pagination">
         <Pagination

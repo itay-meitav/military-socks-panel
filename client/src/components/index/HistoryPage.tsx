@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
 
 import config from "../../assets/config";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 interface IGetHistoryOptions {
   id?: number;
@@ -37,6 +38,7 @@ function HistoryPage() {
     Number(searchParams.get("page")) || 1
   );
   const [pages, setPages] = useState(0);
+  const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     // set current page from search params to state
@@ -60,6 +62,7 @@ function HistoryPage() {
     getHistory(options).then((data) => {
       setHistory(data.history);
       setPages(data.pages);
+      setSkeleton(false);
     });
   }, [searchParams]);
 
@@ -76,7 +79,16 @@ function HistoryPage() {
         title="locations history table"
         subTitle="table to view sock location history"
       >
-        <HistoryTable deleteItemById={deleteById} rows={history}></HistoryTable>
+        {skeleton ? (
+          <>
+            <TableSkeleton cols={7} rows={10} />
+          </>
+        ) : (
+          <HistoryTable
+            deleteItemById={deleteById}
+            rows={history}
+          ></HistoryTable>
+        )}
       </Card>
 
       <div className="pagination">
