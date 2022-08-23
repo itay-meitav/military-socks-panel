@@ -9,9 +9,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ModeIcon from "@mui/icons-material/Mode";
 import Button from "@mui/material/Button/Button";
 import logo from "../assets/logo.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import NavItem from "./mini/NavItem";
 import config from "../assets/config";
+import { PageContext } from "../App";
 
 function LeftNav() {
   const [showNav, setShowNav] = useState(false);
@@ -22,6 +23,8 @@ function LeftNav() {
   }
 
   const loc = useLocation();
+
+  const [page, setPage] = useContext(PageContext);
   return (
     <>
       <div className={"left-nav" + (showNav ? " show" : "")}>
@@ -33,7 +36,6 @@ function LeftNav() {
           {showNav ? (
             <Button
               variant={"text"}
-              // color={"secondary"}
               id="close-logo"
               className="nav-icon"
               style={{
@@ -108,7 +110,6 @@ function LeftNav() {
               icon={<AccountBoxIcon />}
               key={3}
             />
-            {/* <div> */}
             <span style={{ userSelect: "none" }} className="title">
               Tools
             </span>
@@ -116,7 +117,8 @@ function LeftNav() {
             <NavItem
               hide={hideNav}
               path={`/${
-                loc.pathname.replace(/^\//g, "").split("/")[0] || "socks"
+                // loc.pathname.replace(/^\//g, "").split("/")[0] || "socks"
+                page
               }/add`}
               text="Add new item"
               icon={<ModeIcon />}
@@ -137,9 +139,6 @@ function LeftNav() {
                   })
                   .catch(() => {
                     setSpinIcon(false);
-                    // e.target
-                    // 	.querySelector("span")
-                    // 	.classList.remove("spin");
                   });
               }}
             >
@@ -154,7 +153,6 @@ function LeftNav() {
               </Button>
             </div>
           </div>
-          {/* </div> */}
         </div>
       </div>
     </>

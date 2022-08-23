@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./css/App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SocksPage from "./components/index/SocksPage";
-import Render from "./components/mini/Render";
 import Template from "./components/Template";
 import OfficersPage from "./components/index/OfficersPage";
 import LocationsPage from "./components/index/LocationsPage";
@@ -16,47 +15,153 @@ import EditLocation from "./components/edit/EditLocation";
 import EditOfficer from "./components/edit/EditOfficer";
 import EditSock from "./components/edit/EditSock";
 
+export const PageContext = React.createContext<[string, Function]>([
+  "history",
+  () => {},
+]);
+
 function App() {
+  const [currPage, setCurrPage] = useState("history");
+  function SetPage({ page }: { page: string }) {
+    useEffect(() => {
+      if (currPage !== page) setCurrPage(page);
+    }, []);
+    return <></>;
+  }
+
   return (
     <Router>
-      <Template>
-        <Routes>
-          <Route index element={<SocksPage />} />
-          <Route path="socks">
-            {/* <Route path=":id" element={<Render text="socks with id" />} /> */}
-            <Route path="add" element={<AddSock />} />
-            <Route path="edit/:id" element={<EditSock />} />
-            <Route index element={<SocksPage />} />
-          </Route>
-          <Route path="officers">
-            {/* <Route
-							path=":id"
-							element={<Render text="officers with id" />}
-						/> */}
-            <Route path="add" element={<AddOfficer />} />
-            <Route path="edit/:id" element={<EditOfficer />} />
-            <Route index element={<OfficersPage />} />
-          </Route>
-          <Route path="locations">
-            {/* <Route
-							path=":id"
-							element={<Render text="locations with id" />}
-						/> */}
-            <Route path="add" element={<AddLocation />} />
-            <Route path="edit/:id" element={<EditLocation />} />
-            <Route index element={<LocationsPage />} />
-          </Route>
-          <Route path="history">
-            {/* <Route
-							path=":id"
-							element={<Render text="history with id" />}
-						/> */}
-            <Route path="add" element={<AddHistory />} />
-            <Route path="edit/:id" element={<EditHistory />} />
-            <Route index element={<HistoryPage />} />
-          </Route>
-        </Routes>
-      </Template>
+      <PageContext.Provider value={[currPage, SetPage]}>
+        <Template>
+          <Routes>
+            <Route
+              index
+              element={
+                <>
+                  <SetPage page="socks" />
+                  <SocksPage />
+                </>
+              }
+            />
+            <Route path="socks">
+              <Route
+                path="add"
+                element={
+                  <>
+                    <SetPage page="socks" />
+                    <AddSock />
+                  </>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <>
+                    <SetPage page="socks" />
+                    <EditSock />
+                  </>
+                }
+              />
+              <Route
+                index
+                element={
+                  <>
+                    <SetPage page="socks" />
+                    <SocksPage />
+                  </>
+                }
+              />
+            </Route>
+            <Route path="officers">
+              <Route
+                path="add"
+                element={
+                  <>
+                    <SetPage page="officers" />
+                    <AddOfficer />
+                  </>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <>
+                    <SetPage page="officers" />
+                    <EditOfficer />
+                  </>
+                }
+              />
+              <Route
+                index
+                element={
+                  <>
+                    <SetPage page="officers" />
+                    <OfficersPage />
+                  </>
+                }
+              />
+            </Route>
+            <Route path="locations">
+              <Route
+                path="add"
+                element={
+                  <>
+                    <SetPage page="locations" />
+                    <AddLocation />
+                  </>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <>
+                    <SetPage page="locations" />
+                    <EditLocation />
+                  </>
+                }
+              />
+              <Route
+                index
+                element={
+                  <>
+                    <SetPage page="locations" />
+                    <LocationsPage />
+                  </>
+                }
+              />
+            </Route>
+            <Route path="history">
+              <Route
+                path="add"
+                element={
+                  <>
+                    <SetPage page="history" />
+                    <AddHistory />
+                  </>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <>
+                    <SetPage page="history" />
+                    <EditHistory />
+                  </>
+                }
+              />
+              <Route
+                index
+                element={
+                  <>
+                    <SetPage page="history" />
+                    <HistoryPage />
+                  </>
+                }
+              />
+            </Route>
+          </Routes>
+        </Template>
+      </PageContext.Provider>
     </Router>
   );
 }
