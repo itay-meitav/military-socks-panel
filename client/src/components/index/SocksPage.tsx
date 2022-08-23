@@ -13,6 +13,7 @@ interface IGetSocksOptions {
   location_id?: number;
   limit: number;
   offset: number;
+  search?: string;
 }
 
 const getSocks = async (options: IGetSocksOptions) => {
@@ -47,6 +48,7 @@ function SocksPage(props: { setPage: Function }) {
     const id = Number(searchParams.get("id")) || undefined;
     const officer_id = Number(searchParams.get("officer_id")) || undefined;
     const location_id = Number(searchParams.get("location_id")) || undefined;
+    const search = searchParams.get("search") || undefined;
     const limit = 20;
     const offset = (page - 1) * limit;
     // set fetch options
@@ -55,6 +57,7 @@ function SocksPage(props: { setPage: Function }) {
     id && (options.id = id);
     officer_id && (options.officer_id = officer_id);
     location_id && (options.location_id = location_id);
+    search && (options.search = search);
 
     // get socks
     getSocks(options).then((data) => {

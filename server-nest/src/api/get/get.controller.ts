@@ -13,6 +13,7 @@ export class GetController {
     const id = Number(query.id) || undefined;
     const officer_id = Number(query.officer_id) || undefined;
     const location_id = Number(query.location_id) || undefined;
+    const search = query.search || undefined;
     const orderBy = query.orderBy
       ? (query.orderBy + '')?.split(' ')[0].replace(/\-/g, '')
       : undefined;
@@ -23,6 +24,7 @@ export class GetController {
         officer_id,
         location_id,
         orderBy,
+        search,
       }),
       countRows('socks'),
     ]);
@@ -41,11 +43,12 @@ export class GetController {
     const limit = Number(query.limit) || 20;
     const offset = Number(query.offset) || 0;
     const id = Number(query.id) || undefined;
+    const search = query.search || undefined;
     const orderBy = query.orderBy
       ? (query.orderBy + '')?.split(' ')[0].replace(/\-/g, '')
       : undefined;
     const [locations, count] = await Promise.all([
-      this.getService.getLocations(limit, offset, { id, orderBy }),
+      this.getService.getLocations(limit, offset, { id, orderBy, search }),
       countRows('locations'),
     ]);
 
@@ -62,11 +65,12 @@ export class GetController {
     const limit = Number(query.limit) || 20;
     const offset = Number(query.offset) || 0;
     const id = Number(query.id) || undefined;
+    const search = query.search || undefined;
     const orderBy = query.orderBy
       ? (query.orderBy + '')?.split(' ')[0].replace(/\-/g, '')
       : undefined;
     const [officers, count] = await Promise.all([
-      this.getService.getOfficers(limit, offset, { id, orderBy }),
+      this.getService.getOfficers(limit, offset, { id, orderBy, search }),
       countRows('officers'),
     ]);
 
@@ -85,6 +89,7 @@ export class GetController {
     const id = Number(query.id) || undefined;
     const sock_id = Number(query.sock_id) || undefined;
     const location_id = Number(query.location_id) || undefined;
+    const search = query.search || undefined;
     const orderBy = query.orderBy
       ? (query.orderBy + '')?.split(' ')[0].replace(/\-/g, '')
       : undefined;
@@ -94,6 +99,7 @@ export class GetController {
         sock_id,
         location_id,
         orderBy,
+        search,
       }),
       countRows('locations_history'),
     ]);

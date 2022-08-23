@@ -6,23 +6,27 @@ interface ISocksFilters {
   officer_id?: number | undefined;
   location_id?: number | undefined;
   orderBy?: string;
+  search?: string | undefined;
 }
 
 interface ILocationsFilters {
   id?: number | undefined;
   orderBy?: string | undefined;
+  search?: string | undefined;
 }
 
 interface IHistoryFilters {
   id?: number | undefined;
   sock_id?: number | undefined;
   location_id?: number | undefined;
+  search?: string | undefined;
   orderBy?: string | undefined;
 }
 
 interface IOfficersFilters {
   id?: number | undefined;
   orderBy?: string | undefined;
+  search?: string | undefined;
 }
 
 @Injectable()
@@ -32,7 +36,7 @@ export class GetService {
     offset: number = 0,
     filters: ISocksFilters,
   ) {
-    const { id, officer_id, location_id, orderBy } = filters;
+    const { id, officer_id, location_id, orderBy, search } = filters;
 
     let index = 3;
     const queryStr = `SELECT socks.*,socks.manufacturing_year as year , locations.lat  , locations.lon, locations.base_name, locations.nearest_city, officers.name, officers.army_id_number, officers.email, officers.phone
@@ -43,14 +47,16 @@ export class GetService {
           ${id ? `AND socks.id = $${index++}` : ''}
           ${officer_id ? `AND officer_id = $${index++}` : ''}
           ${location_id ? `AND location_id = $${index++}` : ''}
+          ${search ? `AND model LIKE '%'  || $${index++} || '%'` : ''}
           order by ${orderBy || 'socks.id'}
           limit $1 offset $2	`;
 
-    const queryParams = [limit, offset];
+    const queryParams: any[] = [limit, offset];
 
     id && queryParams.push(id);
     officer_id && queryParams.push(officer_id);
     location_id && queryParams.push(location_id);
+    search && queryParams.push(search);
     return query(queryStr, queryParams).then((res) => res.rows);
   }
 
@@ -59,16 +65,22 @@ export class GetService {
     offset: number = 1,
     searchParams: ILocationsFilters = {},
   ) {
-    const { id, orderBy } = searchParams;
+    const { id, orderBy, search } = searchParams;
     let index = 3;
     const queryString = `SELECT * from locations
           WHERE 1=1
           ${id ? `AND locations.id = $${index++}` : ''}
+          ${
+            search
+              ? `AND locations.base_name LIKE '%'  || $${index++} || '%'`
+              : ''
+          }
           ORDER BY ${orderBy || 'id'}
           limit $1 offset $2`;
 
-    const queryParams = [limit, offset];
+    const queryParams: any[] = [limit, offset];
     id && queryParams.push(id);
+    search && queryParams.push(search);
 
     return query(queryString, queryParams).then((res) => res.rows);
   }
@@ -78,7 +90,7 @@ export class GetService {
     offset: number = 1,
     searchParams: IHistoryFilters = {},
   ) {
-    const { id, sock_id, location_id, orderBy } = searchParams;
+    const { id, sock_id, location_id, orderBy, search } = searchParams;
     let index = 3;
     const queryStr = `SELECT locations_history.*, model, lon, lat, base_name from locations_history
               left join socks on socks.id = locations_history.sock_id
@@ -91,15 +103,21 @@ export class GetService {
                   ? `AND locations_history.location_id = $${index++}`
                   : ''
               }
+              ${
+                search && false
+                  ? `AND something LIKE '%'  || $${index++} || '%'`
+                  : ''
+              }
               order by ${orderBy || 'locations_history.id'}
               limit $1 offset $2
               `;
 
-    const queryParams = [limit, offset];
+    const queryParams: any[] = [limit, offset];
 
     id && queryParams.push(id);
     sock_id && queryParams.push(sock_id);
     location_id && queryParams.push(location_id);
+    // search && queryParams.push(search);
 
     const result = await query(queryStr, queryParams).then((res) => res.rows);
 
@@ -111,18 +129,20 @@ export class GetService {
     offset: number = 1,
     searchParams: IOfficersFilters = {},
   ) {
-    const { id, orderBy } = searchParams;
+    const { id, orderBy, search } = searchParams;
 
     let index = 3;
 
     const queryStr = `SELECT * from officers
           WHERE 1=1
           ${id ? `AND officers.id = $${index++}` : ''}
+          ${search ? `AND officers.name LIKE '%'  || $${index++} || '%'` : ''}
           order by ${orderBy || 'id'}
           ${limit ? `limit $1 offset $2` : ''}`;
 
-    const queryParams = [limit, offset];
+    const queryParams: any[] = [limit, offset];
     id && queryParams.push(id);
+    search && queryParams.push(search);
     return query(queryStr, queryParams).then((res) => res.rows);
   }
 }

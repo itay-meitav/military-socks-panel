@@ -11,6 +11,7 @@ interface IGetLocationsOptions {
   id?: number;
   limit: number;
   offset: number;
+  search?: string;
 }
 
 const getLocations = async (options: IGetLocationsOptions) => {
@@ -43,8 +44,9 @@ function LocationsPage(props: { setPage: Function }) {
     const page = Number(searchParams.get("page")) || 1;
     setPage(page);
     const id = Number(searchParams.get("id")) || undefined;
-    const officer_id = Number(searchParams.get("officer_id")) || undefined;
-    const location_id = Number(searchParams.get("location_id")) || undefined;
+    // const officer_id = Number(searchParams.get("officer_id")) || undefined;
+    // const location_id = Number(searchParams.get("location_id")) || undefined;
+    const search = searchParams.get("search") || undefined;
     const limit = 20;
     const offset = (page - 1) * limit;
 
@@ -52,6 +54,7 @@ function LocationsPage(props: { setPage: Function }) {
     const options: IGetLocationsOptions = { limit, offset };
 
     id && (options.id = id);
+    search && (options.search = search);
 
     // get socks
     getLocations(options).then((data) => {

@@ -13,6 +13,7 @@ interface IGetHistoryOptions {
   location_id?: number;
   limit: number;
   offset: number;
+  search?: string;
 }
 
 const getHistory = async (options: IGetHistoryOptions) => {
@@ -49,6 +50,7 @@ function HistoryPage(props: { setPage: Function }) {
     const id = Number(searchParams.get("id")) || undefined;
     const sock_id = Number(searchParams.get("sock_id")) || undefined;
     const location_id = Number(searchParams.get("location_id")) || undefined;
+    const search = searchParams.get("search") || undefined;
     const limit = 20;
     const offset = (page - 1) * limit;
 
@@ -58,6 +60,7 @@ function HistoryPage(props: { setPage: Function }) {
     id && (options.id = id);
     sock_id && (options.sock_id = sock_id);
     location_id && (options.location_id = location_id);
+    search && (options.search = search);
 
     // get socks
     getHistory(options).then((data) => {
