@@ -22,11 +22,21 @@ export const PageContext = React.createContext<[string, Function]>([
 
 function App() {
   const [currPage, setCurrPage] = useState("history");
-  function SetPage({ page }: { page: string }) {
+  // function SetPage({ page }: { page: string }) {
+  //   useEffect(() => {
+  //     console.log("currPage", currPage);
+  //     console.log("page", page);
+
+  //     if (currPage !== page) setCurrPage(page);
+  //   }, []);
+
+  //   return <></>;
+  // }
+
+  function SetPage(page: string) {
     useEffect(() => {
       if (currPage !== page) setCurrPage(page);
     }, []);
-    return <></>;
   }
 
   return (
@@ -38,8 +48,8 @@ function App() {
               index
               element={
                 <>
-                  <SetPage page="socks" />
-                  <SocksPage />
+                  {/* <SetPage page="socks" /> */}
+                  <SocksPage setPage={SetPage} />
                 </>
               }
             />
@@ -48,8 +58,8 @@ function App() {
                 path="add"
                 element={
                   <>
-                    <SetPage page="socks" />
-                    <AddSock />
+                    {/* <SetPage page="socks" /> */}
+                    <AddSock setPage={SetPage} />
                   </>
                 }
               />
@@ -57,8 +67,8 @@ function App() {
                 path="edit/:id"
                 element={
                   <>
-                    <SetPage page="socks" />
-                    <EditSock />
+                    {/* <SetPage page="socks" /> */}
+                    <EditSock setPage={SetPage} />
                   </>
                 }
               />
@@ -66,8 +76,8 @@ function App() {
                 index
                 element={
                   <>
-                    <SetPage page="socks" />
-                    <SocksPage />
+                    {/* <SetPage page="socks" /> */}
+                    <SocksPage setPage={SetPage} />
                   </>
                 }
               />
@@ -77,8 +87,8 @@ function App() {
                 path="add"
                 element={
                   <>
-                    <SetPage page="officers" />
-                    <AddOfficer />
+                    {/* <SetPage page="officers" /> */}
+                    <AddOfficer setPage={SetPage} />
                   </>
                 }
               />
@@ -86,8 +96,8 @@ function App() {
                 path="edit/:id"
                 element={
                   <>
-                    <SetPage page="officers" />
-                    <EditOfficer />
+                    {/* <SetPage page="officers" /> */}
+                    <EditOfficer setPage={SetPage} />
                   </>
                 }
               />
@@ -95,8 +105,8 @@ function App() {
                 index
                 element={
                   <>
-                    <SetPage page="officers" />
-                    <OfficersPage />
+                    {/* <SetPage page="officers" /> */}
+                    <OfficersPage setPage={SetPage} />
                   </>
                 }
               />
@@ -106,8 +116,8 @@ function App() {
                 path="add"
                 element={
                   <>
-                    <SetPage page="locations" />
-                    <AddLocation />
+                    {/* <SetPage page="locations" /> */}
+                    <AddLocation setPage={SetPage} />
                   </>
                 }
               />
@@ -115,8 +125,8 @@ function App() {
                 path="edit/:id"
                 element={
                   <>
-                    <SetPage page="locations" />
-                    <EditLocation />
+                    {/* <SetPage page="locations" /> */}
+                    <EditLocation setPage={SetPage} />
                   </>
                 }
               />
@@ -124,8 +134,8 @@ function App() {
                 index
                 element={
                   <>
-                    <SetPage page="locations" />
-                    <LocationsPage />
+                    {/* <SetPage page="locations" /> */}
+                    <LocationsPage setPage={SetPage} />
                   </>
                 }
               />
@@ -135,8 +145,8 @@ function App() {
                 path="add"
                 element={
                   <>
-                    <SetPage page="history" />
-                    <AddHistory />
+                    {/* <SetPage page="history" /> */}
+                    <AddHistory setPage={SetPage} />
                   </>
                 }
               />
@@ -144,8 +154,8 @@ function App() {
                 path="edit/:id"
                 element={
                   <>
-                    <SetPage page="history" />
-                    <EditHistory />
+                    {/* <SetPage page="history" /> */}
+                    <EditHistory setPage={SetPage} />
                   </>
                 }
               />
@@ -153,8 +163,8 @@ function App() {
                 index
                 element={
                   <>
-                    <SetPage page="history" />
-                    <HistoryPage />
+                    {/* <SetPage page="history" /> */}
+                    <HistoryPage setPage={SetPage} />
                   </>
                 }
               />

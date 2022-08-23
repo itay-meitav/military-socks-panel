@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-const pool = new Pool({
+const pool: Pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
@@ -19,9 +19,7 @@ async function connect() {
 
 export default async function query(text: string, values: any[] = []) {
   try {
-    return await pool.query(text, values).then((res) => {
-      return res;
-    });
+    return pool.query(text, values);
   } catch (e) {
     console.error(e);
     return { error: e, rows: [] };

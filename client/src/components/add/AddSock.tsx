@@ -52,7 +52,8 @@ async function submitSock(
     .catch((err) => err);
 }
 
-function AddSock() {
+function AddSock(props: { setPage: Function }) {
+  props.setPage("socks");
   const [model, setModel] = useState("");
   const [quantity, setQuantity] = useState("");
   const [size, setSize] = useState("");

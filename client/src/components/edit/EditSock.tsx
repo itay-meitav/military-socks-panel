@@ -55,7 +55,8 @@ async function updateSock(
     .catch((err) => err);
 }
 
-function EditSock() {
+function EditSock(props: { setPage: Function }) {
+  props.setPage("socks");
   const [model, setModel] = useState("");
   const [quantity, setQuantity] = useState("");
   const [size, setSize] = useState("");

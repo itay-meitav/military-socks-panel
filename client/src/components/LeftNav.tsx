@@ -13,10 +13,17 @@ import { useContext, useState } from "react";
 import NavItem from "./mini/NavItem";
 import config from "../assets/config";
 import { PageContext } from "../App";
+import SearchPopup from "./mini/SearchPopup";
 
 function LeftNav() {
   const [showNav, setShowNav] = useState(false);
   const [spinIcon, setSpinIcon] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const validPagesForSearch = ["socks", "locations", "officers"];
+  function showPopup() {
+    setPopupOpen(true);
+  }
 
   function hideNav() {
     setShowNav(false);
@@ -27,6 +34,7 @@ function LeftNav() {
   const [page, setPage] = useContext(PageContext);
   return (
     <>
+      <SearchPopup open={popupOpen} setOpen={setPopupOpen} />
       <div className={"left-nav" + (showNav ? " show" : "")}>
         <div className="page-name">
           <Link to="/" className="title">
@@ -78,10 +86,23 @@ function LeftNav() {
 
         <div className="nav-panel">
           <div className="nav-items">
+            {validPagesForSearch.includes(page) ? (
+              <Button
+                variant={"text"}
+                style={{ color: "white" }}
+                className="nav-item"
+                onClick={() => {
+                  showPopup();
+                }}
+              >
+                Search
+              </Button>
+            ) : (
+              <></>
+            )}
             <span style={{ userSelect: "none" }} className="title">
               Menu
             </span>
-
             <NavItem
               hide={hideNav}
               path="/socks"
@@ -113,7 +134,6 @@ function LeftNav() {
             <span style={{ userSelect: "none" }} className="title">
               Tools
             </span>
-
             <NavItem
               hide={hideNav}
               path={`/${

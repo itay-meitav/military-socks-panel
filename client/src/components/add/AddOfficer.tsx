@@ -34,7 +34,8 @@ async function submitOfficer(
     .catch((err) => err);
 }
 
-function AddOfficer() {
+function AddOfficer(props: { setPage: Function }) {
+  props.setPage("officers");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("@wpra.ru");
   const [phone, setPhone] = useState("+7");

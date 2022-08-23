@@ -47,7 +47,8 @@ async function updateLocation(
     .catch((err) => err);
 }
 
-function EditLocation() {
+function EditLocation(props: { setPage: Function }) {
+  props.setPage("locations");
   const [base, setBase] = useState("");
   const [city, setCity] = useState("");
   const [lon, setLon] = useState("");

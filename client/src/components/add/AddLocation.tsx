@@ -34,7 +34,8 @@ async function submitLocation(
     .catch((err) => err);
 }
 
-function AddLocation() {
+function AddLocation(props: { setPage: Function }) {
+  props.setPage("locations");
   const [base, setBase] = useState("");
   const [city, setCity] = useState("");
   const [lon, setLon] = useState("");

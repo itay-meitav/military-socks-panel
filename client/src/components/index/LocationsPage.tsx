@@ -29,7 +29,8 @@ const getLocations = async (options: IGetLocationsOptions) => {
   }
 };
 
-function LocationsPage() {
+function LocationsPage(props: { setPage: Function }) {
+  props.setPage("locations");
   const [locations, setLocations] = useState<ILocation[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(

@@ -48,7 +48,8 @@ async function submitHistory(
     .catch((err) => err);
 }
 
-function AddHistory() {
+function AddHistory(props: { setPage: Function }) {
+  props.setPage("history");
   const [arrivalDate, setArrivalDate] = useState(new Date());
   const [departureDate, setDepartureDate] = useState(new Date());
   const [locationId, setLocationId] = useState("");

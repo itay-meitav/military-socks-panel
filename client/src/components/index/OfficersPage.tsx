@@ -30,7 +30,8 @@ const getofficers = async (options: IGetofficersOptions) => {
   }
 };
 
-function OfficersPage() {
+function OfficersPage(props: { setPage: Function }) {
+  props.setPage("officers");
   const [officers, setOfficers] = useState<IOfficer[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(

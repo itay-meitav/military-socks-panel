@@ -31,7 +31,8 @@ const getHistory = async (options: IGetHistoryOptions) => {
   }
 };
 
-function HistoryPage() {
+function HistoryPage(props: { setPage: Function }) {
+  props.setPage("history");
   const [history, setHistory] = useState<IHistory[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(

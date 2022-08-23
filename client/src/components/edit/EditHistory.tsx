@@ -51,7 +51,8 @@ async function updateHistory(
     .catch((err) => err);
 }
 
-function EditHistory() {
+function EditHistory(props: { setPage: Function }) {
+  props.setPage("history");
   const [arrivalDate, setArrivalDate] = useState(new Date());
   const [departureDate, setDepartureDate] = useState(new Date());
   const [locationId, setLocationId] = useState("");

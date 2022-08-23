@@ -31,7 +31,8 @@ const getSocks = async (options: IGetSocksOptions) => {
   }
 };
 
-function SocksPage() {
+function SocksPage(props: { setPage: Function }) {
+  props.setPage("socks");
   const [socks, setSocks] = useState<ISock[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(
