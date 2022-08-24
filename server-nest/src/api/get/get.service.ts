@@ -1,34 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import query from '../../db';
 
-interface ISocksFilters {
-  id?: number | undefined;
-  officer_id?: number | undefined;
-  location_id?: number | undefined;
-  orderBy?: string;
-  search?: string | undefined;
-}
-
-interface ILocationsFilters {
-  id?: number | undefined;
-  orderBy?: string | undefined;
-  search?: string | undefined;
-}
-
-interface IHistoryFilters {
-  id?: number | undefined;
-  sock_id?: number | undefined;
-  location_id?: number | undefined;
-  search?: string | undefined;
-  orderBy?: string | undefined;
-}
-
-interface IOfficersFilters {
-  id?: number | undefined;
-  orderBy?: string | undefined;
-  search?: string | undefined;
-}
-
 @Injectable()
 export class GetService {
   async getSocks(
@@ -47,7 +19,11 @@ export class GetService {
           ${id ? `AND socks.id = $${index++}` : ''}
           ${officer_id ? `AND officer_id = $${index++}` : ''}
           ${location_id ? `AND location_id = $${index++}` : ''}
-          ${search ? `AND model LIKE '%'  || $${index++} || '%'` : ''}
+          ${
+            search
+              ? `AND LOWER(model) LIKE '%'  || LOWER($${index++}) || '%'`
+              : ''
+          }
           order by ${orderBy || 'socks.id'}
           limit $1 offset $2	`;
 
@@ -72,7 +48,7 @@ export class GetService {
           ${id ? `AND locations.id = $${index++}` : ''}
           ${
             search
-              ? `AND locations.base_name LIKE '%'  || $${index++} || '%'`
+              ? `AND LOWER(locations.base_name) LIKE '%'  || LOWER($${index++}) || '%'`
               : ''
           }
           ORDER BY ${orderBy || 'id'}
@@ -105,7 +81,7 @@ export class GetService {
               }
               ${
                 search && false
-                  ? `AND something LIKE '%'  || $${index++} || '%'`
+                  ? `AND LOWER(something) LIKE '%'  || LOWER($${index++}) || '%'`
                   : ''
               }
               order by ${orderBy || 'locations_history.id'}
@@ -136,7 +112,11 @@ export class GetService {
     const queryStr = `SELECT * from officers
           WHERE 1=1
           ${id ? `AND officers.id = $${index++}` : ''}
-          ${search ? `AND officers.name LIKE '%'  || $${index++} || '%'` : ''}
+          ${
+            search
+              ? `AND LOWER(officers.name) LIKE '%'  || LOWER($${index++}) || '%'`
+              : ''
+          }
           order by ${orderBy || 'id'}
           ${limit ? `limit $1 offset $2` : ''}`;
 
@@ -145,4 +125,32 @@ export class GetService {
     search && queryParams.push(search);
     return query(queryStr, queryParams).then((res) => res.rows);
   }
+}
+
+interface ISocksFilters {
+  id?: number | undefined;
+  officer_id?: number | undefined;
+  location_id?: number | undefined;
+  orderBy?: string;
+  search?: string | undefined;
+}
+
+interface ILocationsFilters {
+  id?: number | undefined;
+  orderBy?: string | undefined;
+  search?: string | undefined;
+}
+
+interface IHistoryFilters {
+  id?: number | undefined;
+  sock_id?: number | undefined;
+  location_id?: number | undefined;
+  search?: string | undefined;
+  orderBy?: string | undefined;
+}
+
+interface IOfficersFilters {
+  id?: number | undefined;
+  orderBy?: string | undefined;
+  search?: string | undefined;
 }

@@ -19,10 +19,10 @@ async function connect() {
 
 export async function query(
 	type: string,
-	query: { text: string; values: any[] }
+	query: { text: string; values?: any[] }
 ) {
 	try {
-		return await pool.query(query.text, query.values).then((res) => {
+		return await pool.query(query.text, query.values || []).then((res) => {
 			return res;
 		});
 	} catch (e) {

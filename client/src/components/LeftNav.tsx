@@ -34,7 +34,7 @@ function LeftNav() {
   const [page, setPage] = useContext(PageContext);
   return (
     <>
-      <SearchPopup open={popupOpen} setOpen={setPopupOpen} />
+     {popupOpen ?  <SearchPopup open={popupOpen} setOpen={setPopupOpen} />:<></> }
       <div className={"left-nav" + (showNav ? " show" : "")}>
         <div className="page-name">
           <Link to="/" className="title">

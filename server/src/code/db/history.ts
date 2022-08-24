@@ -5,6 +5,7 @@ interface ISearchParams {
 	sock_id?: number | undefined;
 	location_id?: number | undefined;
 	orderBy?: string | undefined;
+	search?: string | undefined;
 }
 
 export async function getHistory(
@@ -12,7 +13,7 @@ export async function getHistory(
 	offset: number = 1,
 	searchParams: ISearchParams = {}
 ) {
-	const { id, sock_id, location_id, orderBy } = searchParams;
+	const { id, sock_id, location_id, orderBy, search } = searchParams;
 	let index = 3;
 	const queryStr = `SELECT locations_history.*, model, lon, lat, base_name from locations_history
             left join socks on socks.id = locations_history.sock_id
@@ -25,6 +26,11 @@ export async function getHistory(
 						? `AND locations_history.location_id = $${index++}`
 						: ""
 				}
+				${
+					search && false
+						? `AND LOWER(something) LIKE '%'  || LOWER($${index++}) || '%'`
+						: ""
+				}
             order by ${orderBy || "locations_history.id"}
             limit $1 offset $2
             `;
@@ -34,6 +40,7 @@ export async function getHistory(
 	id && queryParams.push(id);
 	sock_id && queryParams.push(sock_id);
 	location_id && queryParams.push(location_id);
+	// search && queryParams.push(search);
 
 	const query = {
 		text: queryStr,
