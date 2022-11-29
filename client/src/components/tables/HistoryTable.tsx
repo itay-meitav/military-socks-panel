@@ -1,31 +1,8 @@
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
+import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
-import Popup from "../mini/Popup";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import config from "../../assets/config";
-
-import DateIcon from "@mui/icons-material/CalendarMonth";
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
 
 interface IHistoryTableProps {
   rows: IHistory[];
@@ -59,96 +36,100 @@ function deleteItem(id: number) {
 
 export default function HistoryTable(props: IHistoryTableProps) {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {/* <TableCell>id</TableCell> */}
-            <TableCell align="center">id</TableCell>
-            <TableCell align="center">Model</TableCell>
-            <TableCell align="center">Arrival</TableCell>
-            <TableCell align="center">Departure</TableCell>
-            <TableCell align="center">Coordinates</TableCell>
-            <TableCell align="center">Base Name</TableCell>
-            <TableCell align="center"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell align="center" style={{ position: "relative" }}>
-                <div style={{ marginBottom: "10px" }}> {row.id}</div>
-                <Popup>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={0}
+    <Table striped bordered hover responsive size="sm">
+      <thead>
+        <tr style={{ textAlign: "center" }}>
+          <th></th>
+          <th>id</th>
+          <th>Model</th>
+          <th>Arrival</th>
+          <th>Departure</th>
+          <th>Coordinates</th>
+          <th>Base Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.rows.map((row) => (
+          <tr
+            key={row.id}
+            style={{ verticalAlign: "middle", textAlign: "center" }}
+          >
+            <td align="center">
+              <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                spacing={0}
+              >
+                <Link to={"/history/edit/" + row.id}>
+                  <IconButton
+                    aria-label="edit"
+                    sx={{ height: "40px", width: "40px" }}
                   >
-                    <Link to={"/history/edit/" + row.id}>
-                      <IconButton aria-label="edit">
-                        <DriveFileRenameOutlineIcon
-                          color="success"
-                          fontSize="small"
-                        />
-                      </IconButton>
-                    </Link>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={async () => {
-                        const { success } = await deleteItem(row.id);
-                        if (success) {
-                          props.deleteItemById(row.id);
-                        }
-                      }}
-                    >
-                      <DeleteIcon color="error" fontSize="small" />
-                    </IconButton>
-                  </Stack>
-                </Popup>
-              </TableCell>
-              <TableCell align="center">{row.model}</TableCell>
-              <TableCell align="center">
-                {row.arrival_date
-                  // .toISOString()
-                  .split("T")[0]
-                  .split("-")
-                  .reverse()
-                  .join("/")}
-              </TableCell>
-              <TableCell align="center">
-                {row.departure_date
-                  // .toISOString()
-                  .split("T")[0]
-                  .split("-")
-                  .reverse()
-                  .join("/")}
-              </TableCell>
-              <TableCell align="center">
-                <Link to={"/locations?id=" + row.location_id}>
-                  {row.lat + "," + row.lon}
+                    <i
+                      style={{ transform: `scale(0.8)` }}
+                      className="bi bi-pencil-square"
+                    ></i>
+                  </IconButton>
                 </Link>
-              </TableCell>
-              <TableCell align="center">
-                <Link to={"/locations?id=" + row.location_id}>
-                  {row.base_name}
-                </Link>
-              </TableCell>
-              {/* <TableCell align="center">
+                <IconButton
+                  sx={{ height: "40px", width: "40px" }}
+                  aria-label="delete"
+                  onClick={async () => {
+                    const { success } = await deleteItem(row.id);
+                    if (success) {
+                      props.deleteItemById(row.id);
+                    }
+                  }}
+                >
+                  <i
+                    style={{ transform: `scale(0.8)` }}
+                    className="bi bi-trash2"
+                  ></i>
+                </IconButton>
+              </Stack>
+            </td>
+            <td align="center" style={{ position: "relative", paddingTop: 15 }}>
+              <div style={{ marginBottom: "10px" }}> {row.id}</div>
+            </td>
+            <td align="center">{row.model}</td>
+            <td align="center">
+              {row.arrival_date
+                // .toISOString()
+                .split("T")[0]
+                .split("-")
+                .reverse()
+                .join("/")}
+            </td>
+            <td align="center">
+              {row.departure_date
+                // .toISOString()
+                .split("T")[0]
+                .split("-")
+                .reverse()
+                .join("/")}
+            </td>
+            <td align="center">
+              <Link to={"/locations?id=" + row.location_id}>
+                {row.lat + "," + row.lon}
+              </Link>
+            </td>
+            <td align="center">
+              <Link to={"/locations?id=" + row.location_id}>
+                {row.base_name}
+              </Link>
+            </td>
+            {/* <TableCell align="center">
 								<Link to={"/locations?id=" + row.location_id}>
 									{row.base_name}
 								</Link>
 							</TableCell> */}
-              <TableCell align="center">
-                <Link to={"/socks?id=" + row.sock_id}>View Sock</Link>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            <td align="center">
+              <Link to={"/socks?id=" + row.sock_id}>View Sock</Link>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 }

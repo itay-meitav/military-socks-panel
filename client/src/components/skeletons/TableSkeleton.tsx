@@ -18,30 +18,36 @@ function TableSkeleton(props: { cols: number; rows: number }) {
           </tr>
         </thead>
         <tbody className="table-body">
-          {rowsArr.map((row: any[], i) => [
-            <tr key={"row" + i}>
-              {row.map((_: any, j) => (
-                <td key={j}>
-                  <Skeleton
-                    animation={"wave"}
-                    className={
-                      "skeleton animation={'wave'}" + (j == 0 ? " small" : "")
-                    }
-                  />
-                </td>
-              ))}
-            </tr>,
-            <tr key={"separator" + i}>
-              <td colSpan={cols}>
-                <Skeleton
-                  variant="rectangular"
-                  width={"100%"}
-                  height={1}
-                  animation={"wave"}
-                ></Skeleton>
-              </td>
-            </tr>,
-          ])}
+          {rowsArr.map(
+            (row: any[], i) =>
+              // <>
+              [
+                <tr key={i}>
+                  {row.map((_: any, j) => (
+                    <td key={j}>
+                      <Skeleton
+                        animation={"wave"}
+                        className={
+                          "skeleton animation={'wave'}" +
+                          (j == 0 ? " small" : "")
+                        }
+                      />
+                    </td>
+                  ))}
+                </tr>,
+                <tr key={"skeleton" + i}>
+                  <td colSpan={cols}>
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={1}
+                      animation={"wave"}
+                    ></Skeleton>
+                  </td>
+                </tr>,
+              ]
+            // </>
+          )}
         </tbody>
       </table>
     </div>

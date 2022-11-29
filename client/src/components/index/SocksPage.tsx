@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Card from "../mini/Card";
+import Card from "../Card";
 import SocksTable, { ISock } from "../tables/SocksTable";
 import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
-
 import config from "../../assets/config";
 import TableSkeleton from "../skeletons/TableSkeleton";
-
 interface IGetSocksOptions {
   id?: number;
   officer_id?: number;
@@ -76,7 +74,7 @@ function SocksPage(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card subTitle="this is the socks table" title="socks table">
+      <Card title="socks table">
         {skeleton ? (
           <>
             <TableSkeleton cols={9} rows={10} />

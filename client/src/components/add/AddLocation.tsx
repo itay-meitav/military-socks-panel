@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import config from "../../assets/config";
 import Alert from "@mui/material/Alert";
 
@@ -52,7 +52,7 @@ function AddLocation(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card subTitle="" title="Add Location">
+      <CardTemplate title="Add Location">
         <form
           autoComplete={"on"}
           role="form"
@@ -141,7 +141,7 @@ function AddLocation(props: { setPage: Function }) {
           </Stack>
           {alert ? <Alert severity="error">{alert}</Alert> : <></>}
         </form>
-      </Card>
+      </CardTemplate>
     </div>
   );
 }

@@ -1,45 +1,51 @@
 .skeleton {
-	margin: 10px 10px 20px;
+  margin: 10px 10px 20px;
 
-	&.row {
-		display: inline-block;
-	}
+  &.row {
+    display: inline-block;
+  }
+}
+
+.form-skeleton {
+  .skeleton {
+    margin: 20px 10px 20px;
+  }
 }
 
 .skeleton-table {
-	width: 100%;
-	overflow: auto;
+  width: 100%;
+  overflow: auto;
 
-	.skeleton {
-		// margin: auto;
-	}
-	.table-head {
-		// width: 100%;
-		// display: flex;
+  .skeleton {
+    // margin: auto;
+  }
+  .table-head {
+    // width: 100%;
+    // display: flex;
 
-		.skeleton {
-			width: 35px;
-			height: 30px;
-			margin: auto;
-		}
-		th:first-child {
-			.skeleton {
-				width: 25px;
-			}
-		}
-	}
-	.table-body {
-		// width: 100%;
-		// display: flex;
+    .skeleton {
+      width: 35px;
+      height: 30px;
+      margin: auto;
+    }
+    th:first-child {
+      .skeleton {
+        width: 25px;
+      }
+    }
+  }
+  .table-body {
+    // width: 100%;
+    // display: flex;
 
-		.skeleton {
-			width: 65px;
-			margin: 10px auto;
-			height: 25px;
+    .skeleton {
+      width: 65px;
+      margin: 10px auto;
+      height: 25px;
 
-			&.small {
-				width: 35px;
-			}
-		}
-	}
+      &.small {
+        width: 35px;
+      }
+    }
+  }
 }

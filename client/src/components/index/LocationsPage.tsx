@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import LocationsTable, { ILocation } from "../tables/LocationsTable";
 import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
-
 import config from "../../assets/config";
 import TableSkeleton from "../skeletons/TableSkeleton";
-
 interface IGetLocationsOptions {
   id?: number;
   limit: number;
@@ -44,8 +42,8 @@ function LocationsPage(props: { setPage: Function }) {
     const page = Number(searchParams.get("page")) || 1;
     setPage(page);
     const id = Number(searchParams.get("id")) || undefined;
-    // const officer_id = Number(searchParams.get("officer_id")) || undefined;
-    // const location_id = Number(searchParams.get("location_id")) || undefined;
+    const officer_id = Number(searchParams.get("officer_id")) || undefined;
+    const location_id = Number(searchParams.get("location_id")) || undefined;
     const search = searchParams.get("search") || undefined;
     const limit = 20;
     const offset = (page - 1) * limit;
@@ -73,10 +71,7 @@ function LocationsPage(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card
-        title="locations table"
-        subTitle="this is a locations table of all the locations"
-      >
+      <CardTemplate title="locations table">
         {skeleton ? (
           <>
             <TableSkeleton cols={6} rows={10} />
@@ -87,7 +82,7 @@ function LocationsPage(props: { setPage: Function }) {
             rows={locations}
           ></LocationsTable>
         )}
-      </Card>
+      </CardTemplate>
       <div className="pagination">
         <Pagination
           count={pages}

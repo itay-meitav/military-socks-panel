@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -87,7 +87,7 @@ function AddSock(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card subTitle="" title="Add Sock">
+      <CardTemplate title="Add Sock">
         <form
           autoComplete={"on"}
           role="form"
@@ -218,7 +218,7 @@ function AddSock(props: { setPage: Function }) {
           </Stack>
           {alert ? <Alert severity="error">{alert}</Alert> : <></>}
         </form>
-      </Card>
+      </CardTemplate>
     </div>
   );
 }

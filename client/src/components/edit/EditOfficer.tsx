@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import config from "../../assets/config";
 import { useNavigate, useParams } from "react-router-dom";
 import { Alert } from "@mui/material";
@@ -83,7 +83,7 @@ function EditOfficer(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card subTitle="" title="Edit Officer">
+      <CardTemplate title="Edit Officer">
         {skeleton ? (
           <>
             <FormSkeleton />
@@ -189,7 +189,7 @@ function EditOfficer(props: { setPage: Function }) {
             {alert ? <Alert severity="error">{alert}</Alert> : <></>}
           </form>
         )}
-      </Card>
+      </CardTemplate>
     </div>
   );
 }

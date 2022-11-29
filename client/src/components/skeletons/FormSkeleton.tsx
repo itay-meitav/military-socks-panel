@@ -3,46 +3,46 @@ import React from "react";
 
 function FormSkeleton() {
   return (
-    <div>
+    <div className="form-skeleton">
       <Skeleton
         className="skeleton"
         variant="rounded"
-        width={"60%"}
+        width={"50%"}
         height={45}
         animation={"wave"}
       ></Skeleton>
       <Skeleton
         className="skeleton row"
         variant="rounded"
-        width={"30%"}
+        width={"20%"}
         height={45}
         animation={"wave"}
       ></Skeleton>
       <Skeleton
         className="skeleton row"
         variant="rounded"
-        width={"30%"}
+        width={"20%"}
         height={45}
         animation={"wave"}
       ></Skeleton>
       <Skeleton
         className="skeleton"
         variant="rounded"
-        width={"60%"}
+        width={"50%"}
         height={45}
         animation={"wave"}
       ></Skeleton>
       <Skeleton
         className="skeleton row"
         variant="rounded"
-        width={"15%"}
+        width={"10%"}
         height={35}
         animation={"wave"}
       ></Skeleton>
       <Skeleton
         className="skeleton row"
         variant="rounded"
-        width={"15%"}
+        width={"10%"}
         height={35}
         animation={"wave"}
       ></Skeleton>

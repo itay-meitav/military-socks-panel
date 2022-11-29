@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import config from "../../assets/config";
 import { Alert, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
@@ -86,7 +86,7 @@ function EditHistory(props: { setPage: Function }) {
   }, []);
   return (
     <div id="container">
-      <Card subTitle="" title="Edit History">
+      <CardTemplate title="Edit History">
         {skeleton ? (
           <>
             <FormSkeleton />
@@ -199,7 +199,7 @@ function EditHistory(props: { setPage: Function }) {
             {alert ? <Alert severity="error">{alert}</Alert> : <></>}
           </form>
         )}
-      </Card>
+      </CardTemplate>
     </div>
   );
 }

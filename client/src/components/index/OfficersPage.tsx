@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import Pagination from "@mui/material/Pagination";
 import OfficersTable, { IOfficer } from "../tables/OfficersTable";
-
 import config from "../../assets/config";
 import TableSkeleton from "../skeletons/TableSkeleton";
-
 interface IGetofficersOptions {
   id?: number;
   page: number;
@@ -46,8 +44,6 @@ function OfficersPage(props: { setPage: Function }) {
     const page = Number(searchParams.get("page")) || 1;
     setPage(page);
     const id = Number(searchParams.get("id")) || undefined;
-    // const officer_id = Number(searchParams.get("officer_id")) || undefined;
-    // const location_id = Number(searchParams.get("location_id")) || undefined;
     const search = searchParams.get("search") || undefined;
     const limit = 20;
     const offset = (page - 1) * limit;
@@ -74,10 +70,7 @@ function OfficersPage(props: { setPage: Function }) {
   }
   return (
     <div id="container">
-      <Card
-        title="officers table"
-        subTitle="this table shows a list of all officers on the russian army"
-      >
+      <CardTemplate title="officers table">
         {skeleton ? (
           <>
             <TableSkeleton cols={6} rows={10} />
@@ -88,7 +81,7 @@ function OfficersPage(props: { setPage: Function }) {
             rows={officers}
           ></OfficersTable>
         )}
-      </Card>
+      </CardTemplate>
       <div className="pagination">
         <Pagination
           count={pages}

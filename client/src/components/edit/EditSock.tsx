@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -99,7 +99,7 @@ function EditSock(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card subTitle="" title="Edit Sock">
+      <CardTemplate title="Edit Sock">
         {skeleton ? (
           <>
             <FormSkeleton />
@@ -233,7 +233,7 @@ function EditSock(props: { setPage: Function }) {
             {alert ? <Alert severity="error">{alert}</Alert> : <></>}
           </form>
         )}
-      </Card>
+      </CardTemplate>
     </div>
   );
 }

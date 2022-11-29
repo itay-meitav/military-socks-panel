@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import HistoryTable, { IHistory } from "../tables/HistoryTable";
 import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
-
 import config from "../../assets/config";
 import TableSkeleton from "../skeletons/TableSkeleton";
 
@@ -13,7 +12,6 @@ interface IGetHistoryOptions {
   location_id?: number;
   limit: number;
   offset: number;
-  search?: string;
 }
 
 const getHistory = async (options: IGetHistoryOptions) => {
@@ -50,7 +48,6 @@ function HistoryPage(props: { setPage: Function }) {
     const id = Number(searchParams.get("id")) || undefined;
     const sock_id = Number(searchParams.get("sock_id")) || undefined;
     const location_id = Number(searchParams.get("location_id")) || undefined;
-    const search = searchParams.get("search") || undefined;
     const limit = 20;
     const offset = (page - 1) * limit;
 
@@ -60,7 +57,6 @@ function HistoryPage(props: { setPage: Function }) {
     id && (options.id = id);
     sock_id && (options.sock_id = sock_id);
     location_id && (options.location_id = location_id);
-    search && (options.search = search);
 
     // get socks
     getHistory(options).then((data) => {
@@ -79,10 +75,7 @@ function HistoryPage(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card
-        title="locations history table"
-        subTitle="table to view sock location history"
-      >
+      <CardTemplate title="locations history table">
         {skeleton ? (
           <>
             <TableSkeleton cols={7} rows={10} />
@@ -93,7 +86,7 @@ function HistoryPage(props: { setPage: Function }) {
             rows={history}
           ></HistoryTable>
         )}
-      </Card>
+      </CardTemplate>
 
       <div className="pagination">
         <Pagination

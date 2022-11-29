@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import Card from "../mini/Card";
+import CardTemplate from "../Card";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../assets/config";
 import { Alert } from "@mui/material";
@@ -77,7 +77,7 @@ function EditLocation(props: { setPage: Function }) {
 
   return (
     <div id="container">
-      <Card subTitle="" title="Edit location">
+      <CardTemplate title="Edit location">
         {skeleton ? (
           <>
             <FormSkeleton />
@@ -178,7 +178,7 @@ function EditLocation(props: { setPage: Function }) {
             {alert ? <Alert severity="error">{alert}</Alert> : <></>}
           </form>
         )}
-      </Card>
+      </CardTemplate>
     </div>
   );
 }
