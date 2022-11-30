@@ -15,7 +15,7 @@ async function submitOfficer(
   phone: string,
   armyIdNumber: number
 ) {
-  return fetch(`${config.apiHost}/api/add/officer`, {
+  return fetch(`${config.apiHost}api/add/officer`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

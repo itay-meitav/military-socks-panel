@@ -18,7 +18,7 @@ export interface ILocation {
 }
 
 function deleteItem(id: number) {
-  return fetch(`${config.apiHost}/api/delete/location/${id}`, {
+  return fetch(`${config.apiHost}api/delete/location/${id}`, {
     method: "DELETE",
   }).then(async (res) => {
     if (res.ok) {

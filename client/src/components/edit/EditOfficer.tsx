@@ -11,7 +11,7 @@ import { Alert } from "@mui/material";
 import FormSkeleton from "../skeletons/FormSkeleton";
 
 function getInfo(id: number, navigate: Function) {
-  return fetch(`${config.apiHost}/api/get/edit/officer/${id}`).then((res) => {
+  return fetch(`${config.apiHost}api/get/edit/officer/${id}`).then((res) => {
     if (res.ok) {
       return res.json();
     } else {
@@ -28,7 +28,7 @@ function updateOfficer(
   armyIdNumber: number,
   id: number
 ) {
-  return fetch(`${config.apiHost}/api/edit/officer/${id}`, {
+  return fetch(`${config.apiHost}api/edit/officer/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

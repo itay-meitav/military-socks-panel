@@ -14,7 +14,7 @@ import config from "../../assets/config";
 import Alert from "@mui/material/Alert";
 
 async function getLocationsAndOfficers() {
-  const response = await fetch(`${config.apiHost}/api/get/add/sock`);
+  const response = await fetch(`${config.apiHost}api/get/add/sock`);
   if (response.ok) {
     const data = await response.json();
     return data as { locations: any[]; officers: any[] };
@@ -31,7 +31,7 @@ async function submitSock(
   locationId: number,
   officerId: number
 ) {
-  return fetch(`${config.apiHost}/api/add/sock`, {
+  return fetch(`${config.apiHost}api/add/sock`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

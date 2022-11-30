@@ -15,7 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import FormSkeleton from "../skeletons/FormSkeleton";
 
 function getInfo(id: number, navigate: Function) {
-  return fetch(`${config.apiHost}/api/get/edit/history/${id}`).then((res) => {
+  return fetch(`${config.apiHost}api/get/edit/history/${id}`).then((res) => {
     if (res.ok) {
       return res.json();
     } else {
@@ -32,7 +32,7 @@ async function updateHistory(
   locationId: number,
   sockId: number
 ) {
-  return fetch(`${config.apiHost}/api/edit/history/${id}`, {
+  return fetch(`${config.apiHost}api/edit/history/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

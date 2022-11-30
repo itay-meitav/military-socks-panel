@@ -14,7 +14,7 @@ interface IGetLocationsOptions {
 
 const getLocations = async (options: IGetLocationsOptions) => {
   const searchParams = new URLSearchParams(Object.entries(options));
-  const url = `${config.apiHost}/api/get/Locations?${searchParams.toString()}`;
+  const url = `${config.apiHost}api/get/Locations?${searchParams.toString()}`;
 
   const response = await fetch(url);
   if (response.ok) {

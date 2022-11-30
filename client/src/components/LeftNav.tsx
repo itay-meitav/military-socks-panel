@@ -82,7 +82,7 @@ function LeftNav() {
               >
                 <NavDropdown.Item
                   onClick={() => {
-                    fetch(config.apiHost + "/api/reset", {
+                    fetch(config.apiHost + "api/reset", {
                       method: "put",
                     })
                       .then((res) => {

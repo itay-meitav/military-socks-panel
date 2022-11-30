@@ -16,7 +16,7 @@ interface IGetSocksOptions {
 
 const getSocks = async (options: IGetSocksOptions) => {
   const searchParams = new URLSearchParams(Object.entries(options));
-  const url = `${config.apiHost}/api/get/socks?${searchParams.toString()}`;
+  const url = `${config.apiHost}api/get/socks?${searchParams.toString()}`;
 
   const response = await fetch(url);
   if (response.ok) {

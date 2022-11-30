@@ -25,7 +25,7 @@ export interface ISock {
 }
 
 function deleteItem(id: number) {
-  return fetch(`${config.apiHost}/api/delete/sock/${id}`, {
+  return fetch(`${config.apiHost}api/delete/sock/${id}`, {
     method: "DELETE",
   }).then(async (res) => {
     if (res.ok) {

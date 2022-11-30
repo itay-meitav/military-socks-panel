@@ -32,7 +32,7 @@ function getOptions(page: string) {
   if (!validPages.includes(page))
     return Promise.reject("cant search for this page");
 
-  return fetch(config.apiHost + "/api/get/search-options/" + page)
+  return fetch(config.apiHost + "api/get/search-options/" + page)
     .then((res) => {
       if (res.ok) return res.json();
       else throw new Error("something went wrong");

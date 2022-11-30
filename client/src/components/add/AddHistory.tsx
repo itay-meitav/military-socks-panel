@@ -14,7 +14,7 @@ import config from "../../assets/config";
 import Alert from "@mui/material/Alert";
 
 async function getLocationsAndSocks() {
-  const response = await fetch(`${config.apiHost}/api/get/add/history`);
+  const response = await fetch(`${config.apiHost}api/get/add/history`);
   if (response.ok) {
     const data = await response.json();
     return data as { locations: any[]; socks: any[] };
@@ -29,7 +29,7 @@ async function submitHistory(
   locationId: number,
   sockId: number
 ) {
-  return fetch(`${config.apiHost}/api/add/history`, {
+  return fetch(`${config.apiHost}api/add/history`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

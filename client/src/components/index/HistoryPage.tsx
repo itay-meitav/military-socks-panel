@@ -16,7 +16,7 @@ interface IGetHistoryOptions {
 
 const getHistory = async (options: IGetHistoryOptions) => {
   const searchParams = new URLSearchParams(Object.entries(options));
-  const url = `${config.apiHost}/api/get/history?${searchParams.toString()}`;
+  const url = `${config.apiHost}api/get/history?${searchParams.toString()}`;
 
   const response = await fetch(url);
   if (response.ok) {

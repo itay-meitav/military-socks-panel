@@ -18,7 +18,7 @@ export interface IOfficer {
 }
 
 function deleteItem(id: number) {
-  return fetch(`${config.apiHost}/api/delete/officer/${id}`, {
+  return fetch(`${config.apiHost}api/delete/officer/${id}`, {
     method: "DELETE",
   }).then(async (res) => {
     if (res.ok) {

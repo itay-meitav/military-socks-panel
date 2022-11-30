@@ -1,6 +1,4 @@
-if (process.env.MODE_ENV != "production") {
-  require("dotenv").config();
-}
+require("dotenv").config();
 import path from "path";
 import express from "express";
 import cors from "cors";
@@ -20,10 +18,14 @@ app.use(
 app.use("/api", RestApi);
 
 if (process.env.NODE_ENV == "production") {
-  app.use(express.static("build"));
+  app.use(express.static(path.join(__dirname, "build")));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
+    res.sendFile("index.html", { root: path.join(__dirname, "build") });
   });
+  // app.use(express.static("build"));
+  // app.get("*", (req, res) => {
+  //   res.sendFile(path.join(__dirname, "build", "index.html"));
+  // });
 }
 
 const port = process.env.PORT || 5000;

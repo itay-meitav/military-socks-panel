@@ -22,7 +22,7 @@ export interface IHistory {
 }
 
 function deleteItem(id: number) {
-  return fetch(`${config.apiHost}/api/delete/history/${id}`, {
+  return fetch(`${config.apiHost}api/delete/history/${id}`, {
     method: "DELETE",
   }).then(async (res) => {
     if (res.ok) {

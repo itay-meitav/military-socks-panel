@@ -15,7 +15,7 @@ async function submitLocation(
   lon: string,
   lat: string
 ) {
-  return fetch(`${config.apiHost}/api/add/location`, {
+  return fetch(`${config.apiHost}api/add/location`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

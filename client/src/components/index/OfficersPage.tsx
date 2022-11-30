@@ -16,7 +16,7 @@ interface IGetofficersOptions {
 const getofficers = async (options: IGetofficersOptions) => {
   const searchParams = new URLSearchParams(Object.entries(options));
   const response = await fetch(
-    `${config.apiHost}/api/get/officers?${searchParams.toString()}`
+    `${config.apiHost}api/get/officers?${searchParams.toString()}`
   );
   if (response.ok) {
     const data = await response.json();
