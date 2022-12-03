@@ -30,7 +30,7 @@ Bonus - support search and pagination.
 
 ## Live Version:
 
-### [military-socks](http://www.military-socks.tk/)
+### [military-socks](https://www.military-socks.tk/)
 
 <br/>
 
