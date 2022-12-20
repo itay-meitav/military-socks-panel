@@ -1,5 +1,9 @@
 # Socks project
 
+## Live Version:
+
+### [military-socks](https://military-socks.tk/)
+
 ## About the project:
 
 This project was a part of the Cyber4s program by Scale-Up Velocity.
@@ -26,39 +30,34 @@ The webapp should allow for all CRUD operations. So overall, you should have an 
 
 Bonus - support search and pagination.
 
-   <br/>
-
-## Live Version:
-
-### [military-socks](https://www.military-socks.tk/)
-
-<br/>
 
 ## Local Installation:
 
----
-
 1. **Clone the repo**
-   ```
-   git clone https://github.com/itay-meitav/military-socks-panel.git
-   ```
+
+```
+git clone https://github.com/itay-meitav/military-socks-panel.git
+```
+
 2. **Install all the dependencies**
-   ```
-   npm run init-p
-   ```
+
+```
+npm run init-p
+```
+
 3. **Run server**
-   ```
-   npm run server
-   ```
+
+```
+npm run server
+```
+
 4. **Run Client**
 
-   ```
-   npm run client
-   ```
+```
+npm run client
+```
 
 5. **Go to http://localhost:3000 and have fun**!
-
-   <br/>
 
 # Important Note
 
