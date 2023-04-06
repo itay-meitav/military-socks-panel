@@ -1,28 +1,33 @@
-require("dotenv").config({ path: __dirname + "/../../../.env" });
-const { Client, Pool } = require("pg");
-const fs = require("fs");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../../../.env") });
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+(async () => {
+  try {
+    await pool.connect();
+    console.log("Connected to database");
+    await initDB();
+  } catch (error) {
+    console.log("Could not connect to database: " + error);
+  }
+})();
 
 function Range(n) {
   return Array(n).fill(1);
 }
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-async function connectSql() {
-  try {
-    await pool.connect();
-    console.log("Connected to database");
-  } catch (error) {
-    console.log(error);
-    console.log("Could not connect to database");
-  }
+async function initDB() {
+  await dropAllTables();
+  await addOfficersToDb();
+  await addLocationsToDb();
+  await addSocksToDb();
+  await addLocationsHistoryToDb().then(() => console.log("done!"));
 }
-connectSql().then(() => initDB());
 
 let socks = [
   "Rothco Coyote Brown Crew Socks",
@@ -315,6 +320,7 @@ function generateRandomLong() {
   }
   return num;
 }
+
 // LATITUDE -90 to +90
 function generateRandomLat() {
   var num = (Math.random() * 90).toFixed(3) * 1.0;
@@ -343,12 +349,4 @@ function generateID(length = 7) {
       numbers[Math.floor(Math.random() * (numbers.length + (i == 0 ? -1 : 0)))];
   }
   return base;
-}
-module.exports = initDB;
-async function initDB() {
-  await dropAllTables();
-  await addOfficersToDb();
-  await addLocationsToDb();
-  await addSocksToDb();
-  await addLocationsHistoryToDb().then(() => console.log("done!"));
 }
